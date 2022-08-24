@@ -1,6 +1,6 @@
 import axios from "axios";
-import {redis} from "../redis"
-import {isString, isNumber} from "../guards"
+import { redis } from "../redis";
+import { isString, isNumber } from "../guards";
 
 const getCredentials = () => {
   const clientId = process.env.PM_STATION_SPOTIFY_CLIENT_ID;
@@ -15,15 +15,25 @@ type TokenResponse = {
 };
 
 type TokenData = Pick<TokenResponse, "access_token"> & {
-    "expires_at": number
-}
+  expires_at: number;
+};
 
 const TOKEN_KEY = process.env.PM_STATION_SPOTIFY_TOKEN_KEY as string;
-const EXPIRES_KEY = process.env.PM_STATION_SPOTIFY_EXPIRES_KEY as string;
 
+const tokenResponseToData = ({
+  access_token,
+  expires_in,
+}: Pick<TokenResponse, "access_token" | "expires_in">): TokenData => {
+  return {
+    access_token,
+    expires_at: new Date().valueOf() + expires_in * 1000,
+  };
+};
+
+/** Token Data: NEVER USE THIS VAR DIRECTLY */
 let tokenData: TokenData | undefined;
 
-export const getToken = async (): Promise<TokenData> => {
+const getRemoteToken = async (): Promise<TokenData> => {
   const { data } = await axios.post<TokenResponse>(
     "/api/token",
     new URLSearchParams({
@@ -36,33 +46,45 @@ export const getToken = async (): Promise<TokenData> => {
       },
     }
   );
-  tokenData = {
-      "access_token": data["access_token"],
-      expires_at: new Date().valueOf() + data["expires_in"]
-  };
-  await redis.set(TOKEN_KEY,data["access_token"]);
-  await redis.set(EXPIRES_KEY,data["expires_in"])
-  return tokenData;
+  await redis.set(TOKEN_KEY, data["access_token"]);
+  await redis.expire(TOKEN_KEY, data["expires_in"]);
+  return tokenResponseToData(data);
 };
 
+const getCachedToken = async (): Promise<TokenData | undefined> => {
+  const access_token = await redis.get(TOKEN_KEY);
+  const expires_in = await redis.ttl(TOKEN_KEY);
+  if (isString(access_token) && isNumber(expires_in)) {
+    tokenData = tokenResponseToData({
+      access_token,
+      expires_in,
+    });
+    if (await isTokenValid()) return tokenData;
+  }
+  return undefined;
+};
 
-export const getCachedToken = async (): Promise<TokenData> => {
-    const access_token = await redis.get(TOKEN_KEY);
-    const expires_at = await redis.get(EXPIRES_KEY);
-    if(isString(access_token) && isNumber(expires_at)) {
-        tokenData = {
-            access_token,
-            expires_at
-        }
-        return tokenData
-    }
-    throw new Error("Invalid token data");
-}
+const invalidateToken = async () => {
+  tokenData = undefined;
+  await redis.del(TOKEN_KEY);
+};
 
-export const invalidateToken = async () => {
-    tokenData = undefined;
-    await redis.del(TOKEN_KEY);
-    await redis.del(EXPIRES_KEY)
-}
+const isTokenValid = async () => {
+  if (tokenData) {
+    const valid = new Date().valueOf() < tokenData.expires_at;
+    if (!valid) await invalidateToken();
+    return valid;
+  }
+  return false;
+};
 
-export const 
+export const getToken = async (): Promise<TokenData> => {
+  if (tokenData && (await isTokenValid())) return tokenData;
+  try {
+    const cachedToken = await getCachedToken();
+    if (cachedToken) return cachedToken;
+  } catch (err) {
+    console.error(err);
+  }
+  return getRemoteToken();
+};

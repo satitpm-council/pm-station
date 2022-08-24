@@ -2127,6 +2127,11 @@
     "@types/mime" "*"
     "@types/node" "*"
 
+"@types/spotify-api@^0.0.17":
+  version "0.0.17"
+  resolved "https://registry.yarnpkg.com/@types/spotify-api/-/spotify-api-0.0.17.tgz#cdd3834508f171939340bdf813cc10af05cf4083"
+  integrity sha512-9CM+iRqR3EBF3pw2WTXKcKPghiEV4HYxIfRvdHstT6QRrcYOQMjLNvI0qCwab/w5RkupNxDgnGHvOrsalLCUWQ==
+
 "@types/unist@*", "@types/unist@^2.0.0":
   version "2.0.6"
   resolved "https://registry.yarnpkg.com/@types/unist/-/unist-2.0.6.tgz#250a7b16c3b91f672a24552ec64678eeb1d3a08d"
