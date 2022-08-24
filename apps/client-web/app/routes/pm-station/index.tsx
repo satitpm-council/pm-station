@@ -29,11 +29,12 @@ export default function LoginPage() {
           value={searchParams.get("redirectTo") ?? undefined}
         />
 
-        <div>
-          <label htmlFor="username-input">Username</label>
+        <div className="flex flex-col gap-4 items-center justify-center">
+          <label htmlFor="username-input">Enter Phone</label>
           <input
             type="text"
             id="username-input"
+            className="rounded px-4 py-2"
             name="username"
             defaultValue={actionData?.fields?.username}
             aria-invalid={Boolean(actionData?.fieldErrors?.username)}
