@@ -11,9 +11,11 @@ export const loader: LoaderFunction = async ({ request: { url } }) => {
 
 export default function Index() {
   return (
-    <div className="h-full min-h-screen flex flex-col items-center justify-center text-center gap-6">
-      <h1 className="text-3xl font-bold">Welcome to Remix App Nesyed</h1>
-      <Outlet />
+    <div className="py-8 h-full min-h-screen flex flex-col items-center justify-center text-center gap-6">
+      <h1 className="text-3xl font-bold">App</h1>
+      <main className="px-6 py-8 flex-1 flex flex-col gap-6 w-full">
+        <Outlet />
+      </main>
     </div>
   );
 }

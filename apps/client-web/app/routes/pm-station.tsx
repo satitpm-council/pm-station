@@ -10,6 +10,8 @@ type PUBLIC_ENV = {
   };
 };
 
+export const unstable_shouldReload = () => false;
+
 export const loader: LoaderFunction = async () => {
   const firebaseConfig = {
     apiKey: process.env.PM_STATION_FIREBASE_PUBLIC_API_KEY,
