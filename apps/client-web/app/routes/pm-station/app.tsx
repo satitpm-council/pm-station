@@ -5,8 +5,8 @@ import { Outlet } from "@remix-run/react";
 
 export const loader: LoaderFunction = async ({ request: { url } }) => {
   console.log("Hello", url);
-  return redirect("/pm-station");
-  //return json({});
+  //return redirect("/pm-station");
+  return json({});
 };
 
 export default function Index() {

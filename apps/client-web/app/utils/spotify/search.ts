@@ -2,11 +2,12 @@ import SpotifyRequest from "./request";
 
 /// <reference types="spotify-api" />
 
-type TrackResponse = Pick<
+export type TrackResponse = Pick<
   SpotifyApi.TrackSearchResponse["tracks"]["items"]["0"],
   "explicit" | "name" | "duration_ms" | "id" | "preview_url"
 > & {
   artists: string[];
+  albumImages: SpotifyApi.AlbumObjectSimplified["images"]
 };
 
 export const searchTrack = async (q: string) => {
@@ -19,10 +20,11 @@ export const searchTrack = async (q: string) => {
       q,
       type: "track",
       limit: 10,
+      market: "TH"
     },
   });
   return items.map<TrackResponse>(
-    ({ explicit, name, artists, duration_ms, id, preview_url }) => {
+    ({ explicit, name, artists, duration_ms, id, preview_url,album: {images} }) => {
       return {
         explicit,
         name,
@@ -30,6 +32,7 @@ export const searchTrack = async (q: string) => {
         duration_ms,
         id,
         preview_url,
+        albumImages: images
       };
     }
   );
