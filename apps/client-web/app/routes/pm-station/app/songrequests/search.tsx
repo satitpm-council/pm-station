@@ -1,4 +1,5 @@
-import type { LoaderFunction } from "@remix-run/node";
+import type { ErrorBoundaryComponent, LoaderFunction } from "@remix-run/node";
+import { redirect } from "@remix-run/node";
 import { json } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
 import { isString } from "~/utils/guards";
@@ -13,49 +14,60 @@ export const loader: LoaderFunction = async ({ request }) => {
   const url = new URL(request.url);
   const q = url.searchParams.get("q");
   if (isString(q)) {
-    try {
-      return json(await searchTrack(q));
-    } catch (err) {
-      console.error(err);
-      return json({ success: false }, 500);
-    }
+    return json(await searchTrack(q));
   }
-  return json({ success: false }, 400);
+  return redirect("/pm-station/app/songrequests");
 };
 
 export default function TrackResults() {
   const tracks = useLoaderData<TrackResponse[]>();
   return (
-    <div className="flex flex-col w-full divide-y">
+    <div className="py-4 flex flex-col md:items-center md:justify-center md:flex-row md:flex-wrap gap-4 md:gap-8">
       {tracks.map((track) => (
         <div
           key={track.id}
-          className="px-4 py-2 bg-gray-100 flex flex-row items-center justify-center gap-4 min-w-0 min-h-0"
+          className="md:flex items-center justify-center bg-white bg-opacity-10 rounded-lg hover:bg-opacity-20 min-w-0 min-h-0"
         >
-          <div className="basis-1/4 min-w-[90px]">
-            <img
-              className="max-w-full w-full h-auto"
-              src={track.albumImages.at(1)?.url}
-              alt={track.name}
-            />
-          </div>
-          <div className="flex basis-3/4 flex-grow text-left flex-col items-start min-w-0 min-h-0 truncate">
-            <b className="truncate min-w-0 w-full">
-              {track.explicit && (
-                <span className="text-sm rounded bg-gray-400 text-white py-1 px-2 inline mr-2">
-                  E
-                </span>
-              )}
-              {track.name}
-            </b>
+          <div className="items-center md:items-baseline px-4 py-2 md:p-6 flex flex-row md:flex-col gap-4 min-w-0 min-h-0 md:w-[250px]">
+            <div className="basis-1/4 min-w-[85px]">
+              <img
+                draggable={false}
+                className="w-full h-auto rounded-lg"
+                src={track.albumImages.at(1)?.url}
+                alt={track.name}
+                title={`${track.name} - ${track.artists[0]}`}
+              />
+            </div>
+            <div className="basis-3/4 text-gray-300 max-w-full text-sm flex flex-grow text-left flex-col items-start min-w-0 min-h-0 truncate">
+              <b className="text-white text-base truncate min-w-0 w-full mb-1">
+                {track.explicit && (
+                  <span
+                    title="Explict"
+                    className="text-sm bg-gray-500 text-white py-1 px-2 inline mr-2"
+                  >
+                    E
+                  </span>
+                )}
+                {track.name}
+              </b>
 
-            <span className="truncate min-w-0 w-full">
-              {track.artists.join("/")}
-            </span>
-            <span>{dayjs.duration(track.duration_ms).format("mm:ss")}</span>
+              <span className="truncate min-w-0 w-full">
+                {track.artists.join("/")}
+              </span>
+              <span>{dayjs.duration(track.duration_ms).format("mm:ss")}</span>
+            </div>
           </div>
         </div>
       ))}
     </div>
   );
 }
+
+export const ErrorBoundary: ErrorBoundaryComponent = ({ error }) => {
+  console.error(error);
+  return (
+    <div className="flex flex-col">
+      <h4>ไม่สามารถโหลดรายการเพลงได้</h4>
+    </div>
+  );
+};

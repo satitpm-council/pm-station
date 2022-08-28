@@ -7,7 +7,28 @@ export type TrackResponse = Pick<
   "explicit" | "name" | "duration_ms" | "id" | "preview_url"
 > & {
   artists: string[];
-  albumImages: SpotifyApi.AlbumObjectSimplified["images"]
+  albumImages: SpotifyApi.AlbumObjectSimplified["images"];
+};
+
+const toTrackResponse = (track: SpotifyApi.TrackObjectFull): TrackResponse => {
+  const {
+    explicit,
+    name,
+    artists,
+    duration_ms,
+    id,
+    preview_url,
+    album: { images },
+  } = track;
+  return {
+    explicit,
+    name,
+    artists: artists.map((v) => v.name),
+    duration_ms,
+    id,
+    preview_url,
+    albumImages: images,
+  };
 };
 
 export const searchTrack = async (q: string) => {
@@ -19,21 +40,16 @@ export const searchTrack = async (q: string) => {
     params: {
       q,
       type: "track",
-      limit: 10,
-      market: "TH"
+      limit: 12,
+      market: "TH",
     },
   });
-  return items.map<TrackResponse>(
-    ({ explicit, name, artists, duration_ms, id, preview_url,album: {images} }) => {
-      return {
-        explicit,
-        name,
-        artists: artists.map((v) => v.name),
-        duration_ms,
-        id,
-        preview_url,
-        albumImages: images
-      };
-    }
+  return items.map<TrackResponse>(toTrackResponse);
+};
+
+export const getTrack = async (id: string) => {
+  const { data } = await SpotifyRequest.get<SpotifyApi.SingleTrackResponse>(
+    `/tracks/${id}`
   );
+  return toTrackResponse(data);
 };
