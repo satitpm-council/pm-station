@@ -20,7 +20,9 @@ export const useFirebase = (
   }
   if (initialConfig) {
     const app = initializeApp(initialConfig);
-    const store = { app, auth: getAuth(app) };
+    const auth = getAuth(app);
+    auth.languageCode = "th";
+    const store = { app, auth };
     firebaseStore.set(appName, store);
     return store;
   }

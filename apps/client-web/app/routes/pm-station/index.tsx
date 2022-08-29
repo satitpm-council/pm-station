@@ -1,92 +1,68 @@
-import { useActionData, useSearchParams } from "@remix-run/react";
-import { useFirebase } from "~/utils/firebase";
+import type { ActionFunction, LoaderFunction } from "@remix-run/node";
+import { json } from "@remix-run/node";
+import { redirect } from "@remix-run/node";
+import { useState } from "react";
+import { HeaderLarge } from "~/components/Header";
+import type { LoginRequest } from "~/components/LoginStep";
+import { EnterCode, EnterPhone } from "~/components/LoginStep";
 
-type ActionData = {
-  formError?: string;
-  fieldErrors?: {
-    username: string | undefined;
-    password: string | undefined;
-  };
-  fields?: {
-    loginType: string;
-    username: string;
-    password: string;
-  };
+import { withTitle } from "~/utils/pm-station/title";
+import {
+  createSession,
+  verifySession,
+} from "~/utils/pm-station/session.server";
+
+export const meta = withTitle("เข้าสู่ระบบ");
+
+type LoginAction = {
+  token?: string;
+  continueUrl?: string;
+};
+
+export const action: ActionFunction = async ({ request }) => {
+  const { continueUrl, token } = Object.fromEntries(
+    await request.formData()
+  ) as LoginAction;
+  if (token) {
+    try {
+      const session = await createSession(token);
+      return redirect(continueUrl ?? `/pm-station/app`, {
+        headers: {
+          "Set-Cookie": session,
+        },
+      });
+    } catch (err) {
+      console.error(err);
+    }
+  }
+  return redirect("/pm-station");
+};
+
+export const loader: LoaderFunction = async ({ request: { headers } }) => {
+  if (await verifySession(headers)) return redirect("/pm-station/app");
+  return json({});
 };
 
 export default function LoginPage() {
-  const [searchParams] = useSearchParams();
-  const actionData = useActionData<ActionData>();
-  const { auth } = useFirebase("pm-station");
+  const [loginRequest, setLoginRequest] = useState<LoginRequest>();
+
   return (
-    <div className="h-full min-h-screen flex flex-col items-center justify-center text-center gap-6">
-      <h1 className="text-3xl font-bold">Login to PM Station</h1>
+    <div className="bg-gradient-to-b from-[#151515] to-[#121212] text-white h-full min-h-screen flex flex-col items-center justify-center text-center gap-6">
+      <header className="scale-75 sm:scale-100">
+        <HeaderLarge />
+      </header>
 
-      <form method="post">
-        <input
-          type="hidden"
-          name="redirectTo"
-          value={searchParams.get("redirectTo") ?? undefined}
-        />
-
-        <div className="flex flex-col gap-4 items-center justify-center">
-          <label htmlFor="username-input">Enter Phone</label>
-          <input
-            type="text"
-            id="username-input"
-            className="rounded px-4 py-2"
-            name="username"
-            defaultValue={actionData?.fields?.username}
-            aria-invalid={Boolean(actionData?.fieldErrors?.username)}
-            aria-errormessage={
-              actionData?.fieldErrors?.username ? "username-error" : undefined
-            }
+      <main className="flex flex-col gap-4 text-center items-center justify-center bg-white rounded-lg bg-opacity-10 mx-6 px-6 sm:px-10 py-6 text-sm">
+        <h2 className="font-bold text-2xl">เข้าสู่ระบบ</h2>
+        {loginRequest ? (
+          <EnterCode
+            loginRequest={loginRequest}
+            setLoginRequest={setLoginRequest}
           />
-          {actionData?.fieldErrors?.username ? (
-            <p
-              className="form-validation-error"
-              role="alert"
-              id="username-error"
-            >
-              {actionData.fieldErrors.username}
-            </p>
-          ) : null}
-        </div>
-        <div>
-          <label htmlFor="password-input">Password</label>
-          <input
-            id="password-input"
-            name="password"
-            defaultValue={actionData?.fields?.password}
-            type="password"
-            aria-invalid={
-              Boolean(actionData?.fieldErrors?.password) || undefined
-            }
-            aria-errormessage={
-              actionData?.fieldErrors?.password ? "password-error" : undefined
-            }
-          />
-          {actionData?.fieldErrors?.password ? (
-            <p
-              className="form-validation-error"
-              role="alert"
-              id="password-error"
-            >
-              {actionData.fieldErrors.password}
-            </p>
-          ) : null}
-        </div>
-        <div id="form-error-message">
-          {actionData?.formError ? (
-            <p className="form-validation-error" role="alert">
-              {actionData.formError}
-            </p>
-          ) : null}
-        </div>
-        <button type="submit" className="button">
-          Submit
-        </button>
-      </form>
+        ) : (
+          <EnterPhone setLoginRequest={setLoginRequest} />
+        )}
+      </main>
     </div>
   );
 }

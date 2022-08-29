@@ -1,8 +1,10 @@
-import type { LoaderFunction } from "@remix-run/node";
+import type { LinksFunction, LoaderFunction } from "@remix-run/node";
 import { json } from "@remix-run/node";
 import { Outlet, useLoaderData } from "@remix-run/react";
 import type { FirebaseOptions } from "firebase/app";
 import { useFirebase } from "../utils/firebase";
+
+import pmStation from "~/styles/pm-station.css";
 
 type PUBLIC_ENV = {
   ENV: {
@@ -11,6 +13,10 @@ type PUBLIC_ENV = {
 };
 
 export const unstable_shouldReload = () => false;
+
+export const links: LinksFunction = () => [
+  { rel: "stylesheet", href: pmStation },
+];
 
 export const loader: LoaderFunction = async () => {
   const firebaseConfig = {

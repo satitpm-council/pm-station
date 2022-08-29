@@ -2,7 +2,7 @@ import { Dialog, Transition } from "@headlessui/react";
 import { useCallback, useEffect } from "react";
 import { useRef } from "react";
 import { Fragment, useState } from "react";
-import type { TrackResponse } from "~/utils/spotify/search";
+import type { TrackResponse } from "~/utils/pm-station/spotify/search";
 import { PlayIcon, PauseIcon, XMarkIcon } from "@heroicons/react/20/solid";
 
 function MusicPreview({
@@ -59,7 +59,7 @@ function MusicPreview({
         <button
           onClick={onClick}
           title="เล่นตัวอย่างเพลง"
-          className="absolute bottom-4 right-4 z-10 rounded-full shadow-md bg-green-500 p-4 hover:scale-110 transition-transform"
+          className="absolute right-2 bottom-2 md:bottom-4 md:right-4 z-10 rounded-full shadow-md bg-green-500 p-4 scale-75 hover:scale-90 md:scale-100 md:hover:scale-110 transition-transform focus:outline-none"
         >
           {isPlaying ? (
             <PauseIcon className="h-5 w-5" />
@@ -125,19 +125,19 @@ export default function TrackModal({
               leaveFrom="opacity-100 scale-100"
               leaveTo="opacity-0 scale-95"
             >
-              <Dialog.Panel className="flex flex-col md:flex-row items-center gap-8 min-w-[400px] md:w-full mr-5 max-w-2xl transform overflow-hidden rounded-xl bg-stone-800 px-6 py-8 shadow-xl transition-all text-white">
+              <Dialog.Panel className="flex flex-col md:flex-row items-center gap-8 md:w-full mr-5 max-w-2xl transform overflow-hidden rounded-xl bg-stone-800 px-6 py-12 md:px-6 md:py-8 shadow-xl transition-all text-white">
                 <button
                   onClick={closeModal}
                   className="absolute top-4 right-4 items-center justify-center md:items-start text-center md:text-left focus:outline-none opacity-80 hover:opacity-50 transition-opacity"
                 >
-                  <XMarkIcon className="h-8 w-8" />
+                  <XMarkIcon className="md:h-8 md:w-8 h-6 w-6" />
                 </button>
                 <MusicPreview
                   canPlay={isOpen}
                   className="flex-shrink-0 max-w-[200px] md:max-w-none"
                   track={track.current}
                 />
-                <div className="flex flex-col items-start gap-4 text-left">
+                <div className="flex flex-col items-center md:items-start gap-4 text-center md:text-left">
                   <div className="flex flex-col gap-3">
                     <Dialog.Title
                       as="h3"

@@ -5,6 +5,9 @@
 .pm-station-btn {
   @apply px-4 py-2 rounded-md transition-colors border border-transparent;
 }
+.pm-station-input {
+  @apply bg-stone-700 border-stone-500 pm-station-focus-ring focus:ring-gray-400;
+}
 
 .line-clamp {
   display: -webkit-box;

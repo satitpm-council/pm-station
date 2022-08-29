@@ -1,6 +1,6 @@
 import axios from "axios";
-import { redis } from "../redis";
-import { isString, isNumber } from "../guards";
+import { redis } from "../../redis";
+import { isString, isNumber } from "../../guards";
 
 const getCredentials = () => {
   const clientId = process.env.PM_STATION_SPOTIFY_CLIENT_ID;

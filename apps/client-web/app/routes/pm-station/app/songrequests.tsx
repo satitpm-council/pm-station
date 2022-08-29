@@ -1,5 +1,8 @@
 import { Form, Outlet, useSearchParams, useTransition } from "@remix-run/react";
 import { Audio } from "react-loader-spinner";
+import { withTitle } from "~/utils/pm-station/title";
+
+export const meta = withTitle("คำขอเพลง");
 
 export default function SongRequests() {
   const transition = useTransition();
@@ -21,7 +24,7 @@ export default function SongRequests() {
           name="q"
           type="search"
           autoComplete="off"
-          className="pm-station-btn bg-stone-700 border-stone-500 pm-station-focus-ring focus:ring-gray-400"
+          className="pm-station-btn pm-station-input"
           placeholder="ป้อนชื่อเพลงหรือศิลปิน"
           defaultValue={params.get("q") ?? undefined}
         />

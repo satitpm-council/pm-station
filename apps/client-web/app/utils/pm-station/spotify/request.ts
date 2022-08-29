@@ -21,7 +21,6 @@ if (process.env.NODE_ENV === "development") {
       config.url + "_" + new URLSearchParams(config.params).toString()
     );
     const cached = await SpotifyCachedResponse.get(url);
-    console.log(cached?.expires, new Date().valueOf());
     if (cached?.expires) {
       if (new Date().valueOf() <= cached.expires) {
         console.log("Used cached response for", url);
