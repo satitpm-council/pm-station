@@ -1,0 +1,31 @@
+.pro-sidebar > .pro-sidebar-inner {
+  @apply px-4 py-2;
+}
+
+.pro-sidebar,
+.pro-sidebar > .pro-sidebar-inner {
+  @apply h-full min-h-screen;
+}
+
+.pro-inner-list-item {
+  @apply rounded-b-md;
+}
+
+.pro-sidebar .pro-menu .pro-menu-item > .pro-inner-item > .pro-item-content {
+  @apply font-medium;
+}
+
+.pro-sidebar .pro-menu .pro-menu-item {
+  @apply font-normal;
+}
+
+.pro-sidebar
+  .pro-menu
+  > ul
+  > .pro-sub-menu
+  > .pro-inner-list-item
+  > div
+  > ul
+  > li {
+  @apply text-sm font-normal;
+}
