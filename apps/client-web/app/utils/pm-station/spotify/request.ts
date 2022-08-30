@@ -43,7 +43,7 @@ if (process.env.NODE_ENV === "development") {
 SpotifyRequest.interceptors.request.use(async (config) => {
   config.headers = {
     ...(config.headers || {}),
-    Authorization: `Bearer ${await (await getToken()).access_token}`,
+    Authorization: `Bearer ${(await getToken()).access_token}`,
   };
   return config;
 });

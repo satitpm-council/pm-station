@@ -7,22 +7,14 @@ import type { LoginRequest } from "~/components/LoginStep";
 import { EnterCode, EnterPhone } from "~/components/LoginStep";
 
 import { withTitle } from "~/utils/pm-station/title";
-import {
-  createSession,
-  verifySession,
-} from "~/utils/pm-station/session.server";
+import { createSession, verifySession } from "~/utils/pm-station/auth.server";
+import type { LoginAction } from "~/utils/pm-station/api-types";
+import { getFormData } from "~/utils/api";
 
 export const meta = withTitle("เข้าสู่ระบบ");
 
-type LoginAction = {
-  token?: string;
-  continueUrl?: string;
-};
-
 export const action: ActionFunction = async ({ request }) => {
-  const { continueUrl, token } = Object.fromEntries(
-    await request.formData()
-  ) as LoginAction;
+  const { continueUrl, token } = await getFormData<LoginAction>(request);
   if (token) {
     try {
       const session = await createSession(token);

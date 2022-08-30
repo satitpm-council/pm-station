@@ -13,7 +13,7 @@ import {
 import sidebar from "react-pro-sidebar/dist/css/styles.css";
 import sidebarOverrides from "~/styles/sidebar.css";
 import { Header } from "~/components/Header";
-import { verifySession } from "~/utils/pm-station/session.server";
+import { verifySession } from "~/utils/pm-station/auth.server";
 
 export const loader: LoaderFunction = async ({ request: { url, headers } }) => {
   if (!(await verifySession(headers))) {

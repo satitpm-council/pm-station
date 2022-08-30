@@ -4,9 +4,11 @@ import { useState, useRef } from "react";
 import type { FormEventHandler } from "react";
 
 import { useFirebase } from "~/utils/firebase";
-import { SubmitButton } from "./SubmitButton";
+import { SubmitButton } from "../SubmitButton";
 import type { PhoneLoginStepProps } from "./types";
 import { useSearchParams, useSubmit } from "@remix-run/react";
+import { toFormData } from "~/utils/api";
+import type { LoginAction } from "~/utils/pm-station/api-types";
 
 export function EnterCode({
   setLoginRequest,
@@ -18,15 +20,16 @@ export function EnterCode({
   const serverLogin = async (user: User) => {
     // grab the id token and pass it to the backend
     const token = await user.getIdToken();
-    const formData = new FormData();
-    formData.set("token", token);
-    if (searchParams.has("continueUrl")) {
-      formData.set("continueUrl", searchParams.get("continueUrl") as string);
-    }
-    submit(formData, {
-      action: "/pm-station?index",
-      method: "post",
-    });
+    submit(
+      toFormData<LoginAction>({
+        token,
+        continueUrl: searchParams.get("continueUrl"),
+      }),
+      {
+        action: "/pm-station?index",
+        method: "post",
+      }
+    );
   };
 
   const [loading, setLoading] = useState(false);

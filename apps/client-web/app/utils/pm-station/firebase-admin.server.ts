@@ -1,8 +1,8 @@
-import * as firebase from "firebase-admin";
+import { initializeApp, getApps, cert, getApp } from "firebase-admin/app";
 
-const admin = !firebase.apps.length
-  ? firebase.initializeApp({
-      credential: firebase.credential.cert({
+const admin = !getApps().length
+  ? initializeApp({
+      credential: cert({
         projectId: process.env.PM_STATION_FIREBASE_PUBLIC_PROJECT_ID,
         clientEmail: process.env.PM_STATION_FIREBASE_CLIENT_EMAIL,
         privateKey: (
@@ -10,6 +10,6 @@ const admin = !firebase.apps.length
         ).replace(/\\n/g, "\n"),
       }),
     })
-  : firebase.app();
+  : getApp();
 
 export default admin;

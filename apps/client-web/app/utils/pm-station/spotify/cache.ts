@@ -11,7 +11,7 @@ export default class FileSystemCache<T extends Record<string, any>> {
     if (!fs.existsSync(this.dir)) fs.mkdirSync(this.dir);
     try {
       return JSON.parse(
-        await readFile(path.join(this.dir, `${name}.json`), {
+        await readFile(this.fileName(name), {
           encoding: "utf-8",
         })
       );
@@ -19,10 +19,13 @@ export default class FileSystemCache<T extends Record<string, any>> {
       return undefined;
     }
   }
+  private fileName(name: string) {
+    return path.join(this.dir, `${name.replace(/\//g, "_")}.json`);
+  }
   async set(name: string, data: T) {
-    return writeFile(path.join(this.dir, `${name}.json`), JSON.stringify(data));
+    return writeFile(this.fileName(name), JSON.stringify(data));
   }
   async delete(name: string) {
-    return unlink(path.join(this.dir, `${name}.json`));
+    return unlink(this.fileName(name));
   }
 }

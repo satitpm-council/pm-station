@@ -10,7 +10,9 @@ export type TrackResponse = Pick<
   albumImage: SpotifyApi.ImageObject;
 };
 
-const toTrackResponse = (track: SpotifyApi.TrackObjectFull): TrackResponse => {
+export const toTrackResponse = (
+  track: SpotifyApi.TrackObjectFull
+): TrackResponse => {
   const {
     explicit,
     name,
@@ -51,5 +53,5 @@ export const getTrack = async (id: string) => {
   const { data } = await SpotifyRequest.get<SpotifyApi.SingleTrackResponse>(
     `/tracks/${id}`
   );
-  return toTrackResponse(data);
+  return data;
 };

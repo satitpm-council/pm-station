@@ -35,7 +35,8 @@ export default function SongRequests() {
           ค้นหา
         </button>
       </Form>
-      {transition.state === "submitting" ? (
+      {transition.state === "submitting" &&
+      !transition.location.pathname.endsWith("/select") ? (
         <div className="flex flex-col gap-4 items-center justify-center py-6 opacity-75 text-sm">
           <Audio
             height="50"

@@ -4,7 +4,7 @@ import { json } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
 import { isString } from "~/utils/guards";
 import type { TrackResponse } from "~/utils/pm-station/spotify/search";
-import { searchTrack } from "~/utils/pm-station/spotify/search";
+import { searchTrack } from "~/utils/pm-station/spotify/index.server";
 import dayjs from "dayjs";
 import duration from "dayjs/plugin/duration";
 import loadable from "@loadable/component";

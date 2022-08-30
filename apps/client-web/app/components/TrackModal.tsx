@@ -4,6 +4,11 @@ import { useRef } from "react";
 import { Fragment, useState } from "react";
 import type { TrackResponse } from "~/utils/pm-station/spotify/search";
 import { PlayIcon, PauseIcon, XMarkIcon } from "@heroicons/react/20/solid";
+import { useSubmit } from "@remix-run/react";
+import { useFirebase } from "~/utils/firebase";
+import { SubmitButton } from "./SubmitButton";
+import { toFormData } from "~/utils/api";
+import type { SelectTrackAction } from "~/utils/pm-station/api-types";
 
 function MusicPreview({
   canPlay,
@@ -79,6 +84,8 @@ export default function TrackModal({
   track?: TrackResponse;
   onClose: () => void;
 }) {
+  const { auth } = useFirebase("pm-station");
+  const submit = useSubmit();
   const track = useRef<TrackResponse>();
   const [isOpen, setIsOpen] = useState(false);
 
@@ -98,6 +105,30 @@ export default function TrackModal({
   const afterLeave = useCallback(() => {
     onClose();
   }, [onClose]);
+
+  const [loading, setLoading] = useState(false);
+  const selectTrack = useCallback(async () => {
+    console.log(auth.currentUser);
+    if (!auth || !auth.currentUser || !track.current) return;
+    try {
+      setLoading(true);
+      const token = await auth.currentUser.getIdToken();
+      submit(
+        toFormData<SelectTrackAction>({
+          token,
+          trackId: track.current.id,
+        }),
+        {
+          action: "/pm-station/app/songrequests/select",
+          method: "post",
+        }
+      );
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setLoading(false);
+    }
+  }, [auth, submit, track]);
 
   return (
     <Transition appear show={isOpen} as={Fragment} afterLeave={afterLeave}>
@@ -151,13 +182,9 @@ export default function TrackModal({
                   </div>
 
                   <div>
-                    <button
-                      type="button"
-                      className="text-sm pm-station-btn bg-green-500 hover:bg-green-600 pm-station-focus-ring focus-visible:ring-green-500"
-                      onClick={closeModal}
-                    >
+                    <SubmitButton onClick={selectTrack} loading={loading}>
                       เลือกเพลงนี้
-                    </button>
+                    </SubmitButton>
                   </div>
                 </div>
               </Dialog.Panel>
