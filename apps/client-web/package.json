@@ -6,6 +6,7 @@
     "build:css": "postcss styles --base styles --dir app/styles --env production",
     "dev": "concurrently \"yarn run dev:css\" \"remix dev\"",
     "dev:css": "postcss styles --base styles --dir app/styles -w --verbose",
+    "watch": "concurrently \"yarn run dev:css\" \"remix watch\"",
     "start": "cross-env NODE_ENV=production netlify dev"
   },
   "dependencies": {
