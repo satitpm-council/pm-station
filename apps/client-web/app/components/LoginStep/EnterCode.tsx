@@ -62,8 +62,9 @@ export function EnterCode({
       <input
         name="code-input"
         autoComplete="off"
-        type="number"
+        type="text"
         required
+        inputMode="numeric"
         className="pm-station-input pm-station-btn"
         pattern="[0-9]{6}"
         ref={codeInput}

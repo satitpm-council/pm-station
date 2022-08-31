@@ -5,6 +5,7 @@ import { getAuth } from "firebase-admin/auth";
 
 import { createAuthenticityToken, verifyAuthenticityToken } from "remix-utils";
 import { createCookieSessionStorage } from "@remix-run/node"; // or cloudflare/deno
+import axios from "axios";
 
 export type UserClaims = {
   type: "guest" | "student" | "teacher";
@@ -12,6 +13,8 @@ export type UserClaims = {
 };
 export type User = Pick<UserRecord, "displayName" | "phoneNumber" | "uid"> &
   Partial<UserClaims>;
+
+const expiresIn = 60 * 60 * 24 * 1000;
 
 const { getSession, commitSession, destroySession } =
   createCookieSessionStorage({
@@ -23,6 +26,7 @@ const { getSession, commitSession, destroySession } =
       secure: process.env.NODE_ENV !== "development",
       httpOnly: true,
       path: "/pm-station",
+      maxAge: expiresIn,
     },
   });
 
@@ -31,7 +35,6 @@ export const createSession = async (
   token: string
 ): Promise<string> => {
   const session = await getSession(headers.get("Cookie"));
-  const expiresIn = 60 * 60 * 24 * 1000;
   const tokenCookie = await getAuth(admin).createSessionCookie(token, {
     expiresIn,
   });
@@ -88,4 +91,37 @@ export const isFirebaseError = (err: unknown): err is FirebaseError => {
 export const logoutSession = async (request: Request) => {
   const session = await getSession(request.headers.get("Cookie"));
   return await destroySession(session);
+};
+
+const customTokenToIdToken = async (token: string) => {
+  const key = process.env.PM_STATION_FIREBASE_PUBLIC_API_KEY;
+  const { data } = await axios.post<{ idToken: string }>(
+    "/accounts:signInWithCustomToken",
+    {
+      token,
+      returnSecureToken: true,
+    },
+    {
+      baseURL: "https://identitytoolkit.googleapis.com/v1",
+      params: {
+        key,
+      },
+    }
+  );
+  return data.idToken;
+};
+
+export const updateProfile = async (
+  request: Request,
+  uid: string,
+  { displayName, role, type }: Pick<User, "displayName"> & UserClaims
+) => {
+  const auth = getAuth(admin);
+  await auth.updateUser(uid, {
+    displayName,
+  });
+  const claims: UserClaims = { role, type };
+  await auth.setCustomUserClaims(uid, claims);
+  const token = await auth.createCustomToken(uid, claims);
+  return createSession(request.headers, await customTokenToIdToken(token));
 };

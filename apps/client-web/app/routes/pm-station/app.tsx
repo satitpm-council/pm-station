@@ -36,11 +36,10 @@ export const loader: LoaderFunction = async ({ request: { url, headers } }) => {
   if (!user) {
     return redirect(`/pm-station/?continueUrl=${pathname}`);
   }
-  console.log("P", pathname);
-  /*if ((!user.role || !user.type) && pathname !== "/pm-station/app/profile") {
-    // WARN: We can't prevent client-side transitions. This is for server only.
+  if ((!user.role || !user.type) && pathname !== "/pm-station/app/profile") {
+    // WARN: This can't prevent client-side navigation.
     return redirect("/pm-station/app/profile");
-  }*/
+  }
 
   return json<UserStore>({ user });
 };
@@ -93,7 +92,7 @@ export default function Index() {
         </Menu>
       </ProSidebar>
       <div className="flex flex-col overflow-auto h-full min-h-screen w-full">
-        <nav className="flex flex-row gap-1 items-center px-4 py-2">
+        <nav className="flex flex-row gap-1 items-center px-4 py-2 md:hidden">
           <button
             onClick={() => setOpen(true)}
             className="rounded-full bg-white bg-opacity-10 hover:bg-opacity-20 transition-colors p-2.5"

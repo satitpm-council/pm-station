@@ -15,3 +15,8 @@ export type SelectTrackActionResponse = {
   track?: TrackResponse;
   code?: string;
 };
+
+export type UpdateProfileActionResponse = {
+  success: boolean;
+  error?: string;
+};

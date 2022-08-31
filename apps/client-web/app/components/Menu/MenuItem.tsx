@@ -15,8 +15,8 @@ export const MenuItem = ({
   const active = useDefaultOpen(route, true);
   return (
     <Component active={active} {...props}>
-      {/* We don't allow transition if user doesn't registered yet. */}
-      {route && !isRegistered ? (
+      {/* We don't allow navigation if user doesn't registered yet. */}
+      {route && isRegistered ? (
         <Link
           title={typeof children === "string" ? children : undefined}
           to={route}
