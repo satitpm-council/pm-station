@@ -62,7 +62,7 @@ export default function Profile() {
           กรุณาลงทะเบียนก่อนเข้าใช้งาน
         </span>
       )}
-      {success !== undefined && (
+      {success !== undefined && transition.state !== "submitting" && (
         <div
           className={`px-6 py-4 text-sm rounded-lg ${
             success ? "bg-green-600 text-green-100" : "bg-red-600 text-red-100"
