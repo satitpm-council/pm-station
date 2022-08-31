@@ -4,11 +4,11 @@ import { useRef } from "react";
 import { Fragment, useState } from "react";
 import type { TrackResponse } from "~/utils/pm-station/spotify/search";
 import { PlayIcon, PauseIcon, XMarkIcon } from "@heroicons/react/20/solid";
-import { useSubmit } from "@remix-run/react";
-import { useFirebase } from "~/utils/firebase";
+import { useSubmit, useTransition } from "@remix-run/react";
 import { SubmitButton } from "./SubmitButton";
 import { toFormData } from "~/utils/api";
 import type { SelectTrackAction } from "~/utils/pm-station/api-types";
+import { useAuthenticityToken } from "remix-utils";
 
 function MusicPreview({
   canPlay,
@@ -19,8 +19,6 @@ function MusicPreview({
   track?: TrackResponse;
   className: string;
 }) {
-  const wrapper = useRef<HTMLDivElement>(null);
-
   const [isPlaying, setIsPlaying] = useState(false);
   const audioInstance = useRef<HTMLAudioElement>();
 
@@ -54,9 +52,9 @@ function MusicPreview({
     }
   };
   return (
-    <div className={`${className} relative`} ref={wrapper}>
+    <div className={`${className} relative`}>
       <img
-        draggable
+        draggable={false}
         src={track?.albumImage?.url}
         alt={`${track?.name} - ${track?.artists[0]}`}
       />
@@ -84,9 +82,10 @@ export default function TrackModal({
   track?: TrackResponse;
   onClose: () => void;
 }) {
-  const { auth } = useFirebase("pm-station");
+  const token = useAuthenticityToken();
   const submit = useSubmit();
   const track = useRef<TrackResponse>();
+  const transition = useTransition();
   const [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
@@ -106,16 +105,12 @@ export default function TrackModal({
     onClose();
   }, [onClose]);
 
-  const [loading, setLoading] = useState(false);
   const selectTrack = useCallback(async () => {
-    console.log(auth.currentUser);
-    if (!auth || !auth.currentUser || !track.current) return;
+    if (!token || !track.current) return;
     try {
-      setLoading(true);
-      const token = await auth.currentUser.getIdToken();
       submit(
         toFormData<SelectTrackAction>({
-          token,
+          sessionToken: token,
           trackId: track.current.id,
         }),
         {
@@ -125,10 +120,8 @@ export default function TrackModal({
       );
     } catch (err) {
       console.error(err);
-    } finally {
-      setLoading(false);
     }
-  }, [auth, submit, track]);
+  }, [token, submit, track]);
 
   return (
     <Transition appear show={isOpen} as={Fragment} afterLeave={afterLeave}>
@@ -156,7 +149,7 @@ export default function TrackModal({
               leaveFrom="opacity-100 scale-100"
               leaveTo="opacity-0 scale-95"
             >
-              <Dialog.Panel className="flex flex-col md:flex-row items-center gap-8 md:w-full mr-5 max-w-2xl transform overflow-hidden rounded-xl bg-stone-800 px-6 py-12 md:px-6 md:py-8 shadow-xl transition-all text-white">
+              <Dialog.Panel className="flex flex-col md:flex-row items-center gap-8 md:w-full mr-5 max-w-2xl transform overflow-hidden rounded-xl bg-stone-800 px-6 py-12 md:py-8 shadow-xl transition-all text-white">
                 <button
                   onClick={closeModal}
                   className="absolute top-4 right-4 items-center justify-center md:items-start text-center md:text-left focus:outline-none opacity-80 hover:opacity-50 transition-opacity"
@@ -182,7 +175,10 @@ export default function TrackModal({
                   </div>
 
                   <div>
-                    <SubmitButton onClick={selectTrack} loading={loading}>
+                    <SubmitButton
+                      onClick={selectTrack}
+                      loading={transition.state === "submitting"}
+                    >
                       เลือกเพลงนี้
                     </SubmitButton>
                   </div>

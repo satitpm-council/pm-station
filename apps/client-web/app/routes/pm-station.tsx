@@ -1,14 +1,17 @@
 import type { LinksFunction, LoaderFunction } from "@remix-run/node";
 import { json } from "@remix-run/node";
 import { Outlet, useLoaderData } from "@remix-run/react";
+import { AuthenticityTokenProvider } from "remix-utils";
 import type { FirebaseOptions } from "firebase/app";
 import { useFirebase } from "../utils/firebase";
 
 import pmStation from "~/styles/pm-station.css";
+import { createCSRFToken } from "~/utils/pm-station/auth.server";
 
 type PUBLIC_ENV = {
   ENV: {
     firebaseConfig: FirebaseOptions;
+    csrf: string;
   };
 };
 
@@ -18,7 +21,7 @@ export const links: LinksFunction = () => [
   { rel: "stylesheet", href: pmStation },
 ];
 
-export const loader: LoaderFunction = async () => {
+export const loader: LoaderFunction = async ({ request }) => {
   const firebaseConfig = {
     apiKey: process.env.PM_STATION_FIREBASE_PUBLIC_API_KEY,
     authDomain: process.env.PM_STATION_FIREBASE_PUBLIC_AUTH_DOMAIN,
@@ -29,19 +32,28 @@ export const loader: LoaderFunction = async () => {
     appId: process.env.PM_STATION_FIREBASE_PUBLIC_APP_ID,
     measurementId: process.env.PM_STATION_FIREBASE_PUBLIC_MEASUREMENT_ID,
   };
-  return json<PUBLIC_ENV>({
-    ENV: {
-      firebaseConfig,
+  const { csrf, headers } = await createCSRFToken(request.headers);
+  return json<PUBLIC_ENV>(
+    {
+      ENV: {
+        firebaseConfig,
+        csrf,
+      },
     },
-  });
+    await headers()
+  );
 };
 
 export default function PMStationApp() {
   const {
-    ENV: { firebaseConfig },
+    ENV: { firebaseConfig, csrf },
   } = useLoaderData<PUBLIC_ENV>();
 
   useFirebase("pm-station", firebaseConfig);
 
-  return <Outlet />;
+  return (
+    <AuthenticityTokenProvider token={csrf}>
+      <Outlet />
+    </AuthenticityTokenProvider>
+  );
 }

@@ -17,7 +17,7 @@ export const action: ActionFunction = async ({ request }) => {
   const { continueUrl, token } = await getFormData<LoginAction>(request);
   if (token) {
     try {
-      const session = await createSession(token);
+      const session = await createSession(request.headers, token);
       return redirect(continueUrl ?? `/pm-station/app`, {
         headers: {
           "Set-Cookie": session,

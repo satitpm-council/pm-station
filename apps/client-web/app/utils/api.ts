@@ -1,6 +1,6 @@
 export const getFormData = async <T extends Record<string, string>>(
   request: Request
-) => Object.fromEntries(await request.formData()) as Partial<T>;
+) => Object.fromEntries(await request.clone().formData()) as Partial<T>;
 
 type Falsy = false | 0 | "" | null | undefined;
 

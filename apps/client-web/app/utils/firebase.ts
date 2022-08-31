@@ -1,8 +1,7 @@
 import type { FirebaseApp, FirebaseOptions } from "firebase/app";
 import { initializeApp } from "firebase/app";
-import type { Auth, User } from "firebase/auth";
+import type { Auth } from "firebase/auth";
 import { getAuth } from "firebase/auth";
-import { useEffect, useState } from "react";
 
 type FirebaseStore = {
   app: FirebaseApp;
@@ -30,12 +29,4 @@ export const useFirebase = (
   throw new Error(
     "Attempt to access the firebase instance, but wasn't initialized properly."
   );
-};
-
-export const useUser = (appName: FirebaseAppName) => {
-  const { auth } = useFirebase(appName);
-  const [user, setUser] = useState<User | null>();
-  useEffect(() => auth.onAuthStateChanged(setUser), [auth]);
-  useEffect(() => console.log(user), [user]);
-  return user;
 };

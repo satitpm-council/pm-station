@@ -1,30 +1,32 @@
-import type { ActionFunction, LoaderFunction } from "@remix-run/node";
+import type { ActionFunction } from "@remix-run/node";
 import { redirect } from "@remix-run/node";
 import { json } from "@remix-run/node";
-import { useActionData, useCatch } from "@remix-run/react";
+import { Link, useActionData, useCatch, useSubmit } from "@remix-run/react";
+import { useEffect } from "react";
 import { getFormData } from "~/utils/api";
-import type { SelectTrackAction } from "~/utils/pm-station/api-types";
-import { isFirebaseError, verifyIdToken } from "~/utils/pm-station/auth.server";
-import type { TrackResponse } from "~/utils/pm-station/spotify/index.server";
+import type {
+  SelectTrackAction,
+  SelectTrackActionResponse,
+} from "~/utils/pm-station/api-types";
+import {
+  isFirebaseError,
+  verifyCSRFToken,
+} from "~/utils/pm-station/auth.server";
 import {
   getTrack,
   selectTrack,
   toTrackResponse,
 } from "~/utils/pm-station/spotify/index.server";
 
-type SelectTrackActionResponse = {
-  success: boolean;
-  track?: TrackResponse;
-  code?: string;
-};
-
 export const action: ActionFunction = async ({ request }) => {
-  const { token, trackId } = await getFormData<SelectTrackAction>(request);
-  if (!trackId || !token) {
+  const { sessionToken, trackId } = await getFormData<SelectTrackAction>(
+    request
+  );
+  if (!trackId || !sessionToken) {
     return redirect("/pm-station/app/songrequests");
   }
   try {
-    const user = await verifyIdToken(request.headers, token);
+    const user = await verifyCSRFToken(request, sessionToken);
     const track = await getTrack(trackId);
     await selectTrack(user.sub, track);
     return json<SelectTrackActionResponse>({
@@ -43,17 +45,49 @@ export const action: ActionFunction = async ({ request }) => {
   }
 };
 
-export const loader: LoaderFunction = async ({ request }) => {
-  if (request.method === "post") {
-    return json({});
-  }
-  return redirect("/pm-station/app/songrequests");
-};
-
 export default function Result() {
-  const data = useActionData();
-  console.log(data);
-  return <>Result</>;
+  const submit = useSubmit();
+  const { track } = useActionData<SelectTrackActionResponse>() ?? {};
+  useEffect(() => {
+    if (!track) {
+      submit(null, {
+        action: "/pm-station/app/songrequests",
+      });
+    }
+  }, [track, submit]);
+  if (!track) return null;
+  return (
+    <div className="my-4 flex flex-col gap-6 md:w-full max-w-2xl transform rounded-xl bg-stone-800 px-6 sm:px-8 py-8 shadow-xl transition-all text-white">
+      <h3 className="text-2xl font-bold text-center">
+        ส่งคำขอเพลงเรียบร้อยแล้ว
+      </h3>
+      <div className="flex flex-col sm:flex-row md:flex-col lg:flex-row items-center gap-6 lg:gap-8">
+        <div className={`flex-shrink-0 md:basis-1/2 max-w-[200px] relative`}>
+          <img
+            draggable={false}
+            src={track?.albumImage?.url}
+            alt={`${track?.name} - ${track?.artists[0]}`}
+          />
+        </div>
+        <div className="flex flex-col items-center sm:items-start md:items-center lg:items-start gap-6 text-center sm:text-left md:text-center lg:text-left">
+          <div className="flex flex-col gap-3">
+            <h3 className="text-2xl font-medium line-clamp">{track?.name}</h3>
+            <span className="text-sm">{track?.artists.join("/")}</span>
+          </div>
+
+          <div>
+            <Link
+              to={"/pm-station/app/songrequests"}
+              className={`
+  text-sm pm-station-btn bg-green-500 hover:bg-green-600 pm-station-focus-ring focus:ring-green-500`}
+            >
+              กลับไปยังหน้าแรก
+            </Link>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
 }
 
 export const CatchBoundary = () => {
