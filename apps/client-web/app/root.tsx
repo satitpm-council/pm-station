@@ -12,7 +12,7 @@ import styles from "./styles/root.css";
 
 export const meta: MetaFunction = () => ({
   charset: "utf-8",
-  title: "New Remix App",
+  title: "coolkidssatit",
   viewport: "width=device-width,initial-scale=1",
 });
 
