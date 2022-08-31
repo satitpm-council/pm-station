@@ -1,22 +1,30 @@
 import admin from "~/utils/pm-station/firebase-admin.server";
-import type { DecodedIdToken } from "firebase-admin/lib/auth/token-verifier";
 import type { FirebaseError } from "firebase-admin";
+import type { UserRecord } from "firebase-admin/auth";
 import { getAuth } from "firebase-admin/auth";
 
 import { createAuthenticityToken, verifyAuthenticityToken } from "remix-utils";
 import { createCookieSessionStorage } from "@remix-run/node"; // or cloudflare/deno
 
-const { getSession, commitSession } = createCookieSessionStorage({
-  // a Cookie from `createCookie` or the same CookieOptions to create one
-  cookie: {
-    name: "__session",
-    secrets: [process.env.PM_STATION_SESSION_SECRET as string],
-    sameSite: "lax",
-    secure: process.env.NODE_ENV !== "development",
-    httpOnly: true,
-    path: "/pm-station",
-  },
-});
+export type UserClaims = {
+  type: "guest" | "student" | "teacher";
+  role: "user" | "editor" | "moderator" | "admin";
+};
+export type User = Pick<UserRecord, "displayName" | "phoneNumber" | "uid"> &
+  Partial<UserClaims>;
+
+const { getSession, commitSession, destroySession } =
+  createCookieSessionStorage({
+    // a Cookie from `createCookie` or the same CookieOptions to create one
+    cookie: {
+      name: "__session",
+      secrets: [process.env.PM_STATION_SESSION_SECRET as string],
+      sameSite: "lax",
+      secure: process.env.NODE_ENV !== "development",
+      httpOnly: true,
+      path: "/pm-station",
+    },
+  });
 
 export const createSession = async (
   headers: Response["headers"],
@@ -34,11 +42,16 @@ export const createSession = async (
 
 export const verifySession = async (
   headers: Response["headers"]
-): Promise<DecodedIdToken | undefined> => {
+): Promise<User | undefined> => {
   const cookie = await getSession(headers.get("Cookie"));
   if (cookie.has("fb:token")) {
     try {
-      return await getAuth(admin).verifySessionCookie(cookie.get("fb:token"));
+      const auth = getAuth(admin);
+      const { sub } = await auth.verifySessionCookie(cookie.get("fb:token"));
+      const { uid, phoneNumber, customClaims, displayName } =
+        await auth.getUser(sub);
+      const { role, type } = (customClaims ?? {}) as Partial<UserClaims>;
+      return { uid, phoneNumber, displayName, role, type };
     } catch (err) {
       console.error(err);
     }
@@ -56,10 +69,7 @@ export const createCSRFToken = async (headers: Request["headers"]) => {
   };
 };
 
-export const verifyCSRFToken = async (
-  request: Request,
-  csrfToken: string
-): Promise<DecodedIdToken> => {
+export const verifyCSRFToken = async (request: Request) => {
   const user = await verifySession(request.headers);
   if (!user) throw new Error("No user!");
   const session = await getSession(request.headers.get("Cookie"));
@@ -73,4 +83,9 @@ export const isFirebaseError = (err: unknown): err is FirebaseError => {
     (err as any as FirebaseError).code !== null &&
     typeof (err as any as FirebaseError).code === "string"
   );
+};
+
+export const logoutSession = async (request: Request) => {
+  const session = await getSession(request.headers.get("Cookie"));
+  return await destroySession(session);
 };

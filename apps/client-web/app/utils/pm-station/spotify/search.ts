@@ -8,6 +8,7 @@ export type TrackResponse = Pick<
 > & {
   artists: string[];
   albumImage: SpotifyApi.ImageObject;
+  external_urls: string;
 };
 
 export const toTrackResponse = (
@@ -21,6 +22,7 @@ export const toTrackResponse = (
     id,
     preview_url,
     album: { images },
+    external_urls: { spotify },
   } = track;
   return {
     explicit,
@@ -30,6 +32,7 @@ export const toTrackResponse = (
     id,
     preview_url,
     albumImage: images[1],
+    external_urls: spotify,
   };
 };
 

@@ -15,7 +15,7 @@ export function HeaderLarge() {
 
 export function Header() {
   return (
-    <div className="px-2 py-3 flex gap-2 items-center">
+    <div className="px-2 py-3 flex gap-3 items-center">
       <img
         draggable={false}
         src="/logo.png"

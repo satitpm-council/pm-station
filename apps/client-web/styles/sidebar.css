@@ -4,7 +4,7 @@
 
 .pro-sidebar,
 .pro-sidebar > .pro-sidebar-inner {
-  @apply h-full min-h-screen;
+  @apply h-full min-h-screen select-none;
 }
 
 .pro-inner-list-item {
@@ -19,13 +19,31 @@
   @apply font-normal;
 }
 
-.pro-sidebar
-  .pro-menu
-  > ul
-  > .pro-sub-menu
-  > .pro-inner-list-item
-  > div
-  > ul
-  > li {
-  @apply text-sm font-normal;
+.pro-sidebar .pro-menu .pro-menu-item.open {
+  @apply bg-white bg-opacity-20 rounded-lg;
+}
+.pro-menu-item.open > .pro-inner-item > .pro-item-content,
+.pro-menu-item.active > .pro-inner-item > .pro-item-content {
+  @apply text-gray-100;
+}
+
+.pro-sidebar .pro-menu .pro-menu-item > .pro-inner-item {
+  @apply py-2 px-2;
+}
+.pro-sidebar .pro-menu .pro-menu-item {
+  font-size: 14px;
+  @apply transition-colors hover:bg-white hover:bg-opacity-10 rounded-lg;
+}
+
+.pro-sidebar .pro-menu .pro-menu-item.pro-sub-menu .pro-inner-list-item {
+  @apply px-4;
+}
+
+.pro-sidebar .pro-menu a {
+  text-decoration: none;
+  color: unset;
+}
+
+.pro-sidebar > .pro-sidebar-inner > .pro-sidebar-layout ul {
+  @apply space-y-2;
 }

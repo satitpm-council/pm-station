@@ -1,6 +1,6 @@
 import { Form, Outlet, useSearchParams, useTransition } from "@remix-run/react";
 import { Audio } from "react-loader-spinner";
-import { withTitle } from "~/utils/pm-station/title";
+import { withTitle } from "~/utils/pm-station/client";
 
 export const meta = withTitle("คำขอเพลง");
 
@@ -10,7 +10,7 @@ export default function SongRequests() {
   return (
     <>
       <header className="flex flex-col gap-3">
-        <h2 className="text-4xl font-bold">PM Music Request</h2>
+        <h1 className="text-4xl font-bold">PM Music Request</h1>
         <span className="text-sm text-gray-300">
           ส่งคำขอเพลงสำหรับเปิดในรายการ
         </span>

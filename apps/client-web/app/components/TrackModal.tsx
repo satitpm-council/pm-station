@@ -9,6 +9,7 @@ import { SubmitButton } from "./SubmitButton";
 import { toFormData } from "~/utils/api";
 import type { SelectTrackAction } from "~/utils/pm-station/api-types";
 import { useAuthenticityToken } from "remix-utils";
+import { ArrowTopRightOnSquareIcon } from "@heroicons/react/20/solid";
 
 function MusicPreview({
   canPlay,
@@ -149,7 +150,7 @@ export default function TrackModal({
               leaveFrom="opacity-100 scale-100"
               leaveTo="opacity-0 scale-95"
             >
-              <Dialog.Panel className="flex flex-col md:flex-row items-center gap-8 md:w-full mr-5 max-w-2xl transform overflow-hidden rounded-xl bg-stone-800 px-6 py-12 md:py-8 shadow-xl transition-all text-white">
+              <Dialog.Panel className="flex flex-col md:flex-row items-center gap-8 w-full max-w-sm mr-5 sm:max-w-md md:max-w-2xl transform overflow-hidden rounded-xl bg-stone-800 px-6 py-12 md:py-8 shadow-xl transition-all text-white">
                 <button
                   onClick={closeModal}
                   className="absolute top-4 right-4 items-center justify-center md:items-start text-center md:text-left focus:outline-none opacity-80 hover:opacity-50 transition-opacity"
@@ -162,16 +163,23 @@ export default function TrackModal({
                   track={track.current}
                 />
                 <div className="flex flex-col items-center md:items-start gap-4 text-center md:text-left">
-                  <div className="flex flex-col gap-3">
+                  <div className="flex flex-col gap-3 text-sm">
                     <Dialog.Title
                       as="h3"
                       className="text-3xl font-medium line-clamp"
                     >
                       {track.current?.name}
                     </Dialog.Title>
-                    <span className="text-sm">
-                      {track.current?.artists.join("/")}
-                    </span>
+                    <span>{track.current?.artists.join("/")}</span>
+                    <a
+                      target="_blank"
+                      rel="noreferrer"
+                      href={track.current?.external_urls}
+                      className="text-green-400 hover:text-green-500 underline"
+                    >
+                      <ArrowTopRightOnSquareIcon className="inline mr-2 -mt-1 w-5 h-5" />
+                      เปิดใน Spotify
+                    </a>
                   </div>
 
                   <div>

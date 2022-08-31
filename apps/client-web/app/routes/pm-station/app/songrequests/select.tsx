@@ -26,9 +26,9 @@ export const action: ActionFunction = async ({ request }) => {
     return redirect("/pm-station/app/songrequests");
   }
   try {
-    const user = await verifyCSRFToken(request, sessionToken);
+    const user = await verifyCSRFToken(request);
     const track = await getTrack(trackId);
-    await selectTrack(user.sub, track);
+    await selectTrack(user.uid, track);
     return json<SelectTrackActionResponse>({
       success: true,
       track: toTrackResponse(track),
@@ -77,7 +77,7 @@ export default function Result() {
 
           <div>
             <Link
-              to={"/pm-station/app/songrequests"}
+              to={"/pm-station/app"}
               className={`
   text-sm pm-station-btn bg-green-500 hover:bg-green-600 pm-station-focus-ring focus:ring-green-500`}
             >

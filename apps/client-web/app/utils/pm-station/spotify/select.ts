@@ -8,12 +8,12 @@ export const selectTrack = async (
   { id, artists, external_urls, name }: SpotifyApi.TrackObjectFull
 ) => {
   const db = getFirestore(admin);
-  return db.doc(`/songrequests/${id}/submission/${uid}`).set({
+  return db.doc(`/songrequests/${id}`).set({
     id,
     artists: artists.map((a) => a.name),
     external_urls: external_urls.spotify,
     name,
     selectedAt: FieldValue.serverTimestamp(),
-    selectedBy: db.doc(`/users/${uid}`),
+    selectedBy: FieldValue.arrayUnion(db.doc(`/users/${uid}`)),
   });
 };

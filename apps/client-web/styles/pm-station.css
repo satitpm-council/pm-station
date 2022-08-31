@@ -3,10 +3,28 @@
 }
 
 .pm-station-btn {
-  @apply px-4 py-2 rounded-md transition-colors border border-transparent;
+  @apply px-4 py-2 rounded-md transition-colors;
 }
 .pm-station-input {
-  @apply bg-stone-700 border-stone-500 pm-station-focus-ring focus:ring-gray-400;
+  @apply bg-stone-700 border-stone-500 pm-station-focus-ring focus:ring-gray-400
+   disabled:cursor-not-allowed border border-transparent focus:border-transparent text-sm;
+}
+
+form > label {
+  @apply font-medium;
+}
+
+form > input[type="text"],
+form > input[type="tel"] {
+  @apply pm-station-focus-ring pm-station-btn pm-station-input 
+  border-transparent focus:border-transparent disabled:bg-gray-500 disabled:border-gray-500;
+}
+form > div > div > input[type="radio"] {
+  @apply p-1.5 mr-0.5 rounded-full
+  bg-gray-200
+  border-transparent
+  focus:border-transparent focus:bg-gray-200 focus:ring-gray-500
+  text-gray-500 pm-station-focus-ring;
 }
 
 .line-clamp {

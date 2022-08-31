@@ -5,11 +5,12 @@ import { ColorRing } from "react-loader-spinner";
 
 type SubmitButtonProps = {
   children: string;
+  className?: string;
   loading?: boolean;
   onClick?: MouseEventHandler<HTMLButtonElement>;
 };
 export const SubmitButton = forwardRef<HTMLButtonElement, SubmitButtonProps>(
-  function SubmitButton({ children, loading, onClick }, ref) {
+  function SubmitButton({ children, loading, onClick, className }, ref) {
     return (
       <button
         ref={ref}
@@ -17,8 +18,8 @@ export const SubmitButton = forwardRef<HTMLButtonElement, SubmitButtonProps>(
         type={onClick ? "button" : "submit"}
         onClick={onClick}
         disabled={loading}
-        className={`
-  text-sm pm-station-btn bg-green-500 hover:bg-green-600 pm-station-focus-ring focus:ring-green-500 disabled:cursor-not-allowed disabled:bg-green-300`}
+        className={`${className ? className : ""}
+  text-sm pm-station-btn bg-green-500 hover:bg-green-600 pm-station-focus-ring focus:ring-green-500 disabled:bg-green-300`}
       >
         {loading && (
           <ColorRing
