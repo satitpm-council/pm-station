@@ -71,7 +71,7 @@ export function EnterCode({
 
   if (!loginRequest) return null;
   return (
-    <form className="flex flex-col gap-4" onSubmit={submitForm}>
+    <form className="flex flex-col gap-1 sm:gap-0" onSubmit={submitForm}>
       <label htmlFor="code-input">
         ป้อนรหัส 6 หลักที่ถูกส่งไปยังหมายเลข {loginRequest.phoneNo}
       </label>
