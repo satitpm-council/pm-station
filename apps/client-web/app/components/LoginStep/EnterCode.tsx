@@ -71,7 +71,7 @@ export function EnterCode({
 
   if (!loginRequest) return null;
   return (
-    <form className="flex flex-col gap-1 sm:gap-0" onSubmit={submitForm}>
+    <form className="flex flex-col gap-4" onSubmit={submitForm}>
       <label htmlFor="code-input">
         ป้อนรหัส 6 หลักที่ถูกส่งไปยังหมายเลข {loginRequest.phoneNo}
       </label>
@@ -89,7 +89,7 @@ export function EnterCode({
       <SubmitButton loading={loading}>เข้าสู่ระบบ</SubmitButton>
       <button
         disabled={loading}
-        className="underline disabled:cursor-not-allowed"
+        className="underline disabled:cursor-not-allowed w-max self-center"
         onClick={() => setLoginRequest(undefined)}
       >
         ยกเลิก

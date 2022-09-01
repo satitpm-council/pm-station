@@ -6,6 +6,7 @@ import { useMemo } from "react";
 export const withTitle: (title: string) => MetaFunction =
   (title: string) => () => ({
     title: `${title} - PM Station`,
+    "og:title": `${title} - PM Station`,
   });
 
 export enum UserRole {

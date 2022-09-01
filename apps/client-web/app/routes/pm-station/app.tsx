@@ -26,7 +26,10 @@ export const loader: LoaderFunction = async ({ request: { url, headers } }) => {
   if (!user) {
     return redirect(`/pm-station/?continueUrl=${pathname}`);
   }
-  if ((!user.role || !user.type) && pathname !== "/pm-station/app/profile") {
+  if (
+    (user.role === undefined || !user.type) &&
+    pathname !== "/pm-station/app/profile"
+  ) {
     // WARN: This can't prevent client-side navigation.
     return redirect("/pm-station/app/profile");
   }

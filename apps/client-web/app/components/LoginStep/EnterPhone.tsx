@@ -82,11 +82,7 @@ export function EnterPhone({ setLoginRequest }: PhoneLoginStepProps) {
         ref={phoneInput}
         disabled={loading}
       />
-      <SubmitButton
-        className="w-max self-center"
-        loading={loading}
-        ref={recaptchaSubmit}
-      >
+      <SubmitButton loading={loading} ref={recaptchaSubmit}>
         ต่อไป
       </SubmitButton>
     </form>
