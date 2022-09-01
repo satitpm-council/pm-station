@@ -28,7 +28,8 @@
     "react-dom": "^18.2.0",
     "react-hook-form": "^7.34.2",
     "react-loader-spinner": "^5.3.3",
-    "react-pro-sidebar": "^0.7.1"
+    "react-pro-sidebar": "^0.7.1",
+    "react-toastify": "^9.0.8"
   },
   "devDependencies": {
     "@remix-run/dev": "^1.6.8",

@@ -1,5 +1,4 @@
 import admin from "~/utils/pm-station/firebase-admin.server";
-import type { FirebaseError } from "firebase-admin";
 
 import { getAuth } from "firebase-admin/auth";
 
@@ -72,14 +71,6 @@ export const verifyCSRFToken = async (request: Request) => {
   const session = await getSession(request.headers.get("Cookie"));
   await verifyAuthenticityToken(request, session, "sessionToken");
   return user;
-};
-
-export const isFirebaseError = (err: unknown): err is FirebaseError => {
-  return (
-    err instanceof Error &&
-    (err as any as FirebaseError).code !== null &&
-    typeof (err as any as FirebaseError).code === "string"
-  );
 };
 
 export const logoutSession = async (request: Request) => {

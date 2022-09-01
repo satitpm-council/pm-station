@@ -4,14 +4,12 @@ import { json } from "@remix-run/node";
 import { Link, useActionData, useCatch, useSubmit } from "@remix-run/react";
 import { useEffect } from "react";
 import { getFormData } from "~/utils/api";
+import { isFirebaseError } from "~/utils/firebase";
 import type {
   SelectTrackAction,
   SelectTrackActionResponse,
 } from "~/utils/pm-station/api-types";
-import {
-  isFirebaseError,
-  verifyCSRFToken,
-} from "~/utils/pm-station/auth.server";
+import { verifyCSRFToken } from "~/utils/pm-station/auth.server";
 import {
   getTrack,
   selectTrack,

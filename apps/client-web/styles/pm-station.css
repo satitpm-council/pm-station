@@ -1,13 +1,39 @@
+:root {
+  --toastify-color-dark: #2c2c2c;
+  --toastify-font-family: unset;
+}
+
+.Toastify__toast-body > div:last-child {
+  @apply flex flex-col gap-0.5 pl-2;
+}
+
+.Toastify__toast-body > div > b {
+  @apply text-base font-medium;
+}
+.Toastify__toast-body > div > span {
+  @apply text-sm text-gray-300;
+}
+
 .pm-station-focus-ring {
   @apply focus:outline-none focus:ring-2 focus:ring-offset-4 focus:ring-offset-[#151515];
 }
 
-.pm-station-btn {
-  @apply px-4 py-2 rounded-md transition-colors;
+.pm-station-btn,
+.pm-station-input {
+  @apply rounded-md transition-colors;
 }
+
+.pm-station-btn {
+  @apply px-6 py-3 md:px-4;
+}
+
+.pm-station-input {
+  @apply px-4 py-3;
+}
+
 .pm-station-input {
   @apply bg-stone-700 border-stone-500 pm-station-focus-ring focus:ring-gray-400
-   disabled:cursor-not-allowed border border-transparent focus:border-transparent text-sm;
+   disabled:cursor-not-allowed border border-transparent focus:border-transparent sm:text-sm;
 }
 
 .form > label {
@@ -16,7 +42,7 @@
 
 .form > input[type="text"],
 .form > input[type="tel"] {
-  @apply pm-station-focus-ring pm-station-btn pm-station-input 
+  @apply pm-station-focus-ring pm-station-input 
   border-transparent focus:border-transparent disabled:bg-gray-500 disabled:border-gray-500;
 }
 .form > div > div > input[type="radio"] {

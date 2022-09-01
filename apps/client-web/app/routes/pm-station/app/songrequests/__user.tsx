@@ -22,7 +22,7 @@ export default function SongRequests() {
           name="q"
           type="search"
           autoComplete="off"
-          className="pm-station-btn pm-station-input"
+          className="pm-station-input"
           placeholder="ป้อนชื่อเพลงหรือศิลปิน"
           defaultValue={params.get("q") ?? undefined}
         />

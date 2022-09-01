@@ -10,6 +10,8 @@ import type { FirebaseOptions } from "firebase/app";
 import { useFirebase } from "../utils/firebase";
 
 import pmStation from "~/styles/pm-station.css";
+import toastify from "react-toastify/dist/ReactToastify.min.css";
+import { ToastContainer } from "react-toastify";
 import { createCSRFToken } from "~/utils/pm-station/auth.server";
 
 type PUBLIC_ENV = {
@@ -22,12 +24,14 @@ type PUBLIC_ENV = {
 export const unstable_shouldReload = () => false;
 
 export const links: LinksFunction = () => [
+  { rel: "stylesheet", href: toastify },
   { rel: "stylesheet", href: pmStation },
 ];
 
 export const meta: MetaFunction = () => ({
   description:
     "โครงการ PM Station โดยคณะกรรมการนักเรียนฝ่ายเทคโนโลยีสารสนเทศ ประจำปีการศึกษา 2565 โรงเรียนมัธยมสาธิตวัดพระศรีมหาธาตุ มหาวิทยาลัยราชภัฏพระนคร",
+  "twitter:card": "summary",
 });
 
 export const loader: LoaderFunction = async ({ request }) => {
@@ -61,8 +65,16 @@ export default function PMStationApp() {
   useFirebase("pm-station", firebaseConfig);
 
   return (
-    <AuthenticityTokenProvider token={csrf}>
-      <Outlet />
-    </AuthenticityTokenProvider>
+    <>
+      <AuthenticityTokenProvider token={csrf}>
+        <Outlet />
+      </AuthenticityTokenProvider>
+      <ToastContainer
+        position="top-right"
+        closeOnClick
+        draggable
+        theme="dark"
+      />
+    </>
   );
 }

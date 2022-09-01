@@ -77,7 +77,7 @@ export function EnterPhone({ setLoginRequest }: PhoneLoginStepProps) {
         autoComplete="off"
         type="tel"
         required
-        className="pm-station-input pm-station-btn my-4"
+        className="pm-station-input my-4"
         pattern="[0-9]{10}"
         ref={phoneInput}
         disabled={loading}

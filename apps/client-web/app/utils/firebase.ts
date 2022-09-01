@@ -1,4 +1,4 @@
-import type { FirebaseApp, FirebaseOptions } from "firebase/app";
+import type { FirebaseApp, FirebaseError, FirebaseOptions } from "firebase/app";
 import { initializeApp } from "firebase/app";
 import type { Auth } from "firebase/auth";
 import { getAuth } from "firebase/auth";
@@ -28,5 +28,13 @@ export const useFirebase = (
   }
   throw new Error(
     "Attempt to access the firebase instance, but wasn't initialized properly."
+  );
+};
+
+export const isFirebaseError = (err: unknown): err is FirebaseError => {
+  return (
+    err instanceof Error &&
+    (err as any as FirebaseError).code !== null &&
+    typeof (err as any as FirebaseError).code === "string"
   );
 };

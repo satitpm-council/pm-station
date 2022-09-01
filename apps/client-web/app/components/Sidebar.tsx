@@ -33,13 +33,15 @@ export default function Sidebar() {
           <MenuItem route="/pm-station/app/songrequests/">
             ส่งคำขอเปิดเพลง
           </MenuItem>
-          {isRegistered && user?.role && user?.role >= UserRole.MODERATOR && (
-            <>
-              <MenuItem route="/pm-station/app/songrequests/editor/manage">
-                จัดการคำขอเพลง
-              </MenuItem>
-            </>
-          )}
+          {isRegistered &&
+            user?.role !== undefined &&
+            user.role >= UserRole.MODERATOR && (
+              <>
+                <MenuItem route="/pm-station/app/songrequests/editor/manage">
+                  จัดการคำขอเพลง
+                </MenuItem>
+              </>
+            )}
         </SubMenu>
       </Menu>
       <Menu className="border-t border-gray-600">

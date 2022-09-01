@@ -45,7 +45,7 @@ export default function LoginPage() {
           <HeaderLarge />
         </header>
 
-        <main className="flex flex-col gap-4 text-center items-center justify-center bg-white rounded-lg bg-opacity-10 mx-6 px-6 sm:px-10 py-6 text-sm">
+        <main className="flex flex-col gap-4 text-center items-center justify-center bg-white rounded-lg bg-opacity-10 mx-8 px-6 sm:px-10 py-6 text-sm">
           <h2 className="font-bold text-2xl">เข้าสู่ระบบ</h2>
           {loginRequest ? (
             <EnterCode
@@ -57,7 +57,7 @@ export default function LoginPage() {
           )}
         </main>
       </div>
-      <footer className="text-sm p-6 text-gray-300">
+      <footer className="text-sm mx-2 p-6 text-gray-300">
         ดำเนินการโดย คณะกรรมการนักเรียนฝ่ายเทคโนโลยีสารสนเทศ ประจำปีการศึกษา
         2565
       </footer>

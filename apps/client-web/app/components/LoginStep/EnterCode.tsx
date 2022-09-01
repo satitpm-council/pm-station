@@ -2,8 +2,9 @@ import type { User } from "firebase/auth";
 import { PhoneAuthProvider, signInWithCredential } from "firebase/auth";
 import { useState, useRef } from "react";
 import type { FormEventHandler } from "react";
+import { toast } from "react-toastify";
 
-import { useFirebase } from "~/utils/firebase";
+import { isFirebaseError, useFirebase } from "~/utils/firebase";
 import { SubmitButton } from "../SubmitButton";
 import type { PhoneLoginStepProps } from "./types";
 import { useSearchParams, useSubmit } from "@remix-run/react";
@@ -48,6 +49,21 @@ export function EnterCode({
       await serverLogin(user);
     } catch (err) {
       console.error(err);
+      const error = isFirebaseError(err)
+        ? err.code.endsWith("-verification-code")
+          ? "รหัส OTP ไม่ถูกต้อง"
+          : err.code.replace("auth/", "")
+        : (err as Error).message;
+
+      toast(
+        <>
+          <b>ไม่สามารถเข้าสู่ระบบได้</b>
+          {error && <span>{error}</span>}
+        </>,
+        {
+          type: "error",
+        }
+      );
     } finally {
       setLoading(false);
     }
@@ -65,7 +81,7 @@ export function EnterCode({
         type="text"
         required
         inputMode="numeric"
-        className="pm-station-input pm-station-btn"
+        className="pm-station-input"
         pattern="[0-9]{6}"
         ref={codeInput}
         disabled={loading}

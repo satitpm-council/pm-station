@@ -33,7 +33,7 @@ export const useUser = (): UseUserReturn => {
     [matches]
   );
   const isRegistered = useMemo(
-    () => Boolean(user?.role && user?.type),
+    () => user?.role !== undefined && user?.type !== undefined,
     [user?.role, user?.type]
   );
   return { user, isRegistered };
