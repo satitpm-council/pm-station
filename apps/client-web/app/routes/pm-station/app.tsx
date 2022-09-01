@@ -2,26 +2,16 @@ import type { LinksFunction, LoaderFunction } from "@remix-run/node";
 import { redirect } from "@remix-run/node";
 import { json } from "@remix-run/node";
 import { Link, Outlet, useMatches } from "@remix-run/react";
-import {
-  ProSidebar,
-  Menu,
-  MenuItem,
-  SubMenu,
-  SidebarHeader,
-} from "~/components/Menu";
+import { ProSidebar } from "react-pro-sidebar";
 
 import sidebar from "react-pro-sidebar/dist/css/styles.css";
 import sidebarOverrides from "~/styles/sidebar.css";
 import { Header } from "~/components/Header";
-import type { User } from "~/utils/pm-station/auth.server";
+import type { User } from "~/utils/pm-station/client";
 import { verifySession } from "~/utils/pm-station/auth.server";
-import {
-  ArrowLeftOnRectangleIcon,
-  Bars4Icon,
-  MusicalNoteIcon,
-  UserIcon,
-} from "@heroicons/react/20/solid";
+import { Bars4Icon } from "@heroicons/react/20/solid";
 import { useEffect, useState } from "react";
+import Sidebar from "~/components/Sidebar";
 
 type UserStore = {
   user: User;
@@ -58,38 +48,7 @@ export default function Index() {
   return (
     <div className="overflow-hidden flex  items-stretch h-screen gap-4 bg-gradient-to-b from-[#151515] to-[#121212] text-white">
       <ProSidebar toggled={open} onToggle={setOpen} breakPoint="md">
-        <SidebarHeader>
-          <Link to="/pm-station/app" title="PM Station">
-            <Header />
-          </Link>
-        </SidebarHeader>
-
-        <Menu iconShape="circle">
-          <MenuItem
-            icon={<UserIcon className="h-4 w-4" />}
-            route="/pm-station/app/profile"
-          >
-            ข้อมูลส่วนตัว
-          </MenuItem>
-          <SubMenu
-            route="/pm-station/app/songrequests"
-            title="PM Music Request"
-            icon={<MusicalNoteIcon className="h-4 w-4" />}
-          >
-            <MenuItem route="/pm-station/app/songrequests">
-              ส่งคำขอเปิดเพลง
-            </MenuItem>
-          </SubMenu>
-        </Menu>
-        <Menu className="border-t border-gray-600">
-          <MenuItem icon={<ArrowLeftOnRectangleIcon className="h-4 w-4" />}>
-            <form method="post" action="/pm-station/app/logout">
-              <button type="submit" title="ออกจากระบบ">
-                ออกจากระบบ
-              </button>
-            </form>
-          </MenuItem>
-        </Menu>
+        <Sidebar />
       </ProSidebar>
       <div className="flex flex-col overflow-auto h-full min-h-screen w-full">
         <nav className="flex flex-row gap-1 items-center px-4 py-2 md:hidden">

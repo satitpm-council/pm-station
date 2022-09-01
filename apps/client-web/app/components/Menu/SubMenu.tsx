@@ -1,3 +1,4 @@
+import { useRef } from "react";
 import { useEffect } from "react";
 import { useState } from "react";
 import type { SubMenuProps } from "react-pro-sidebar";
@@ -11,13 +12,19 @@ export const SubMenu = ({
   const defaultOpen = useDefaultOpen(route);
   const [open, setOpen] = useState<boolean | undefined>(undefined);
   useEffect(() => {
-    setOpen(undefined);
+    setOpen(defaultOpen);
   }, [defaultOpen]);
-  return (
-    <Component
-      onClick={() => setOpen(!open)}
-      open={open ?? defaultOpen}
-      {...props}
-    />
-  );
+
+  const ref = useRef<HTMLLIElement | null>();
+
+  useEffect(() => {
+    const element = ref.current;
+    if (!element) return;
+    const onClick = () => setOpen((open) => !open);
+    const target = element.children.item(0);
+    target?.addEventListener("click", onClick);
+    return () => target?.removeEventListener("click", onClick);
+  }, []);
+
+  return <Component ref={ref} open={open} {...props} />;
 };

@@ -38,12 +38,20 @@
 .pro-sidebar .pro-menu .pro-menu-item.pro-sub-menu .pro-inner-list-item {
   @apply px-4;
 }
+.pro-sidebar
+  .pro-menu
+  .pro-menu-item.pro-sub-menu
+  .pro-inner-list-item
+  > div
+  > ul {
+  @apply space-y-1;
+}
 
 .pro-sidebar .pro-menu a {
   text-decoration: none;
   color: unset;
 }
 
-.pro-sidebar > .pro-sidebar-inner > .pro-sidebar-layout ul {
+.pro-menu > ul {
   @apply space-y-2;
 }

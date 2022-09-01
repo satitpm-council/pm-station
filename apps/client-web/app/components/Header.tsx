@@ -27,3 +27,18 @@ export function Header() {
     </div>
   );
 }
+
+export const PageHeader = ({
+  title,
+  children,
+}: {
+  title: React.ReactNode;
+  children?: string | boolean | null | undefined;
+}) => {
+  return (
+    <header className="flex flex-col gap-3">
+      <h1 className={`text-3xl xl:text-4xl font-bold`}>{title}</h1>
+      {children && <span className="text-gray-300 text-sm">{children}</span>}
+    </header>
+  );
+};

@@ -38,7 +38,7 @@ export default function TrackResults() {
             key={track.id}
             className="md:flex items-center justify-center bg-white bg-opacity-10 rounded-lg hover:bg-opacity-20 min-w-0 min-h-0 transition-colors"
           >
-            <div className="items-center md:items-baseline px-4 py-2 md:p-6 flex flex-row md:flex-col gap-4 min-w-0 min-h-0 md:w-[200px] xl:w-[250px]">
+            <div className="items-center md:items-baseline px-4 py-3 md:p-6 flex flex-row md:flex-col gap-4 min-w-0 min-h-0 md:w-[200px] xl:w-[250px]">
               <div className="basis-1/4 min-w-[85px]">
                 <img
                   draggable={false}

@@ -1,19 +1,21 @@
 import type { ActionFunction } from "@remix-run/node";
 import { redirect, json } from "@remix-run/node";
 import { Form, useActionData, useTransition } from "@remix-run/react";
+import { PageHeader } from "~/components/Header";
 import { SubmitButton } from "~/components/SubmitButton";
 import { getFormData } from "~/utils/api";
 import type { UpdateProfileActionResponse } from "~/utils/pm-station/api-types";
-import type { User, UserClaims } from "~/utils/pm-station/auth.server";
+import type { User, UserClaims } from "~/utils/pm-station/client";
+import { UserRole } from "~/utils/pm-station/client";
 import { verifySession, updateProfile } from "~/utils/pm-station/auth.server";
 import { useUser, withTitle } from "~/utils/pm-station/client";
 
 export const meta = withTitle("ข้อมูลส่วนตัว");
 
 const typeRadio: Record<UserClaims["type"], string> = {
-  guest: "บุคคลภายนอก",
   student: "นักเรียน",
   teacher: "อาจารย์",
+  guest: "บุคคลภายนอก",
 };
 
 export const action: ActionFunction = async ({ request }) => {
@@ -26,7 +28,7 @@ export const action: ActionFunction = async ({ request }) => {
       "Set-Cookie": await updateProfile(request, user?.uid, {
         displayName,
         type,
-        role: "user",
+        role: UserRole.USER,
       }),
     };
     if (user.role && user.type) {
@@ -54,14 +56,10 @@ export default function Profile() {
   const { user, isRegistered } = useUser();
   return (
     <>
-      <h1 className="text-3xl xl:text-4xl font-bold">
-        {isRegistered ? "ข้อมูลส่วนตัว" : "ลงทะเบียน"}
-      </h1>
-      {!isRegistered && (
-        <span className="text-sm text-gray-300">
-          กรุณาลงทะเบียนก่อนเข้าใช้งาน
-        </span>
-      )}
+      <PageHeader title={isRegistered ? "ข้อมูลส่วนตัว" : "ลงทะเบียน"}>
+        {!isRegistered && "กรุณาลงทะเบียนก่อนเข้าใช้งาน"}
+      </PageHeader>
+
       {success !== undefined && transition.state !== "submitting" && (
         <div
           className={`px-6 py-4 text-sm rounded-lg ${

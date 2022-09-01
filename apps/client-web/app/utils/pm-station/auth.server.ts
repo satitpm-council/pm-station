@@ -1,18 +1,12 @@
 import admin from "~/utils/pm-station/firebase-admin.server";
 import type { FirebaseError } from "firebase-admin";
-import type { UserRecord } from "firebase-admin/auth";
+
 import { getAuth } from "firebase-admin/auth";
 
 import { createAuthenticityToken, verifyAuthenticityToken } from "remix-utils";
 import { createCookieSessionStorage } from "@remix-run/node"; // or cloudflare/deno
 import axios from "axios";
-
-export type UserClaims = {
-  type: "guest" | "student" | "teacher";
-  role: "user" | "editor" | "moderator" | "admin";
-};
-export type User = Pick<UserRecord, "displayName" | "phoneNumber" | "uid"> &
-  Partial<UserClaims>;
+import type { User, UserClaims } from "./client";
 
 const expiresIn = 60 * 60 * 24 * 1000;
 
