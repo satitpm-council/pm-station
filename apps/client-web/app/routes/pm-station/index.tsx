@@ -57,8 +57,9 @@ export default function LoginPage() {
           )}
         </main>
       </div>
-      <footer className="text-sm py-6 px-4 text-gray-300">
-        จัดทำโดย คณะกรรมการนักเรียนฝ่ายเทคโนโลยีสารสนเทศ ประจำปีการศึกษา 2565
+      <footer className="text-sm p-6 text-gray-300">
+        ดำเนินการโดย คณะกรรมการนักเรียนฝ่ายเทคโนโลยีสารสนเทศ ประจำปีการศึกษา
+        2565
       </footer>
     </div>
   );

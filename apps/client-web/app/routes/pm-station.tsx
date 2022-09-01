@@ -1,4 +1,8 @@
-import type { LinksFunction, LoaderFunction } from "@remix-run/node";
+import type {
+  LinksFunction,
+  LoaderFunction,
+  MetaFunction,
+} from "@remix-run/node";
 import { json } from "@remix-run/node";
 import { Outlet, useLoaderData } from "@remix-run/react";
 import { AuthenticityTokenProvider } from "remix-utils";
@@ -20,6 +24,11 @@ export const unstable_shouldReload = () => false;
 export const links: LinksFunction = () => [
   { rel: "stylesheet", href: pmStation },
 ];
+
+export const meta: MetaFunction = () => ({
+  description:
+    "โครงการ PM Station โดยคณะกรรมการนักเรียนฝ่ายเทคโนโลยีสารสนเทศ ประจำปีการศึกษา 2565 โรงเรียนมัธยมสาธิตวัดพระศรีมหาธาตุ มหาวิทยาลัยราชภัฏพระนคร",
+});
 
 export const loader: LoaderFunction = async ({ request }) => {
   const firebaseConfig = {
