@@ -23,14 +23,14 @@ const typeRadio: Record<UserClaims["type"], string> = {
 export const action: ActionFunction = async ({ request }) => {
   try {
     const user = await verifySession(request.headers);
-    const { displayName, type } = await getFormData<User>(request);
+    const { displayName, type, role } = await getFormData<User>(request);
     if (!user || !displayName || !type)
       throw new Error("Missing required parameters.");
     const headers = {
       "Set-Cookie": await updateProfile(request, user?.uid, {
         displayName,
         type,
-        role: UserRole.USER,
+        role: role ?? UserRole.USER,
       }),
     };
     if (user.role !== undefined && user.type) {
@@ -89,6 +89,7 @@ export default function Profile() {
             className="pm-station-input"
             defaultValue={user?.phoneNumber}
             name="phoneNumber"
+            title="เบอร์โทรศัพท์"
             autoComplete="off"
           />
           <label htmlFor="displayName" className="font-bold">
@@ -100,6 +101,8 @@ export default function Profile() {
             defaultValue={user?.displayName}
             name="displayName"
             autoComplete="off"
+            title="ชื่อ"
+            placeholder="ป้อนชื่อและนามสกุล"
             required
           />
           <label htmlFor="type" className="self-start py-1 sm:self-center">
@@ -113,6 +116,7 @@ export default function Profile() {
                   type="radio"
                   name="type"
                   value={type}
+                  title="ประเภทบุคคล"
                   id={type}
                   defaultChecked={user?.type === type}
                   className="-mt-1 form-input"

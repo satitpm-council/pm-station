@@ -56,6 +56,7 @@ export default function Index() {
       <div className="flex flex-col overflow-auto h-full min-h-screen w-full">
         <nav className="flex flex-row gap-1 items-center px-4 py-2 md:hidden">
           <button
+            title="เปิดแถบนำทาง"
             onClick={() => setOpen(true)}
             className="rounded-full bg-white bg-opacity-10 hover:bg-opacity-20 transition-colors p-2.5"
           >

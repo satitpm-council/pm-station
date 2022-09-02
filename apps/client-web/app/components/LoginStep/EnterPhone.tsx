@@ -77,10 +77,11 @@ export function EnterPhone({ setLoginRequest }: PhoneLoginStepProps) {
         autoComplete="off"
         type="tel"
         required
-        className="pm-station-input my-4"
+        className="pm-station-input my-4 text-center"
         pattern="[0-9]{10}"
         ref={phoneInput}
         disabled={loading}
+        placeholder="ป้อนตัวเลขเท่านั้น"
       />
       <SubmitButton loading={loading} ref={recaptchaSubmit}>
         ต่อไป

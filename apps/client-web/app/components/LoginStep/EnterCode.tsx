@@ -11,6 +11,11 @@ import { useSearchParams, useSubmit } from "@remix-run/react";
 import { toFormData } from "~/utils/api";
 import type { LoginAction } from "~/utils/pm-station/api-types";
 
+const disclosePhoneNo = (phoneNo: string) => {
+  const hideLength = phoneNo.length - 4;
+  return Array(hideLength).fill("X").join("") + phoneNo.slice(hideLength);
+};
+
 export function EnterCode({
   setLoginRequest,
   loginRequest,
@@ -73,7 +78,8 @@ export function EnterCode({
   return (
     <form className="flex flex-col gap-4" onSubmit={submitForm}>
       <label htmlFor="code-input">
-        ป้อนรหัส 6 หลักที่ถูกส่งไปยังหมายเลข {loginRequest.phoneNo}
+        ป้อนรหัส 6 หลักที่ถูกส่งไปยังหมายเลข{" "}
+        {disclosePhoneNo(loginRequest.phoneNo)}
       </label>
       <input
         name="code-input"
@@ -81,10 +87,11 @@ export function EnterCode({
         type="text"
         required
         inputMode="numeric"
-        className="pm-station-input"
+        className="pm-station-input text-center"
         pattern="[0-9]{6}"
         ref={codeInput}
         disabled={loading}
+        placeholder="ป้อนตัวเลขเท่านั้น"
       />
       <SubmitButton loading={loading}>เข้าสู่ระบบ</SubmitButton>
       <button
