@@ -79,7 +79,7 @@ export default function Profile() {
         method="post"
         className="space-y-4 sm:py-2 text-sm"
       >
-        <div className="form grid sm:grid-cols-[max-content_1fr] items-center gap-4">
+        <div className="grid sm:grid-cols-[max-content_1fr] items-center gap-4">
           <label htmlFor="phoneNumber" className="mr-4">
             เบอร์โทรศัพท์:
           </label>
@@ -119,7 +119,7 @@ export default function Profile() {
                   title="ประเภทบุคคล"
                   id={type}
                   defaultChecked={user?.type === type}
-                  className="-mt-1 form-input"
+                  className="-mt-1"
                   disabled={transition.state === "submitting"}
                 />
                 <label htmlFor={type}>{value}</label>

@@ -36,28 +36,28 @@
    disabled:cursor-not-allowed border border-transparent focus:border-transparent sm:text-sm;
 }
 
-.form > label {
+form label {
   @apply font-medium;
 }
 
-.form > input[type="text"],
-.form > input[type="tel"] {
+form input[type="text"],
+form input[type="tel"] {
   @apply pm-station-focus-ring pm-station-input 
   border-transparent focus:border-transparent disabled:bg-gray-500 disabled:border-gray-500;
 }
-.form > div > div > input[type="radio"] {
-  @apply p-1.5 mr-0.5 rounded-full
+form input[type="radio"] {
+  @apply -mt-1 p-1.5 mr-0.5 rounded-full
   bg-gray-200
   border-transparent
   focus:border-transparent focus:bg-gray-200 focus:ring-gray-500 active:ring-gray-500
   text-gray-500 pm-station-focus-ring;
 }
 
-.form > div > div > input[type="radio"]:checked {
+form input[type="radio"]:checked {
   @apply bg-gray-500;
 }
 
-.form > div > div > input[type="radio"]:disabled {
+form input[type="radio"]:disabled {
   @apply bg-gray-300 cursor-not-allowed;
 }
 

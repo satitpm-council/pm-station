@@ -4,7 +4,7 @@ import SpotifyRequest from "./request";
 
 export type TrackResponse = Pick<
   SpotifyApi.TrackSearchResponse["tracks"]["items"]["0"],
-  "explicit" | "name" | "duration_ms" | "id" | "preview_url"
+  "explicit" | "name" | "duration_ms" | "id" | "preview_url" | "uri"
 > & {
   artists: string[];
   albumImage: SpotifyApi.ImageObject;
@@ -23,6 +23,7 @@ export const toTrackResponse = (
     preview_url,
     album: { images },
     external_urls: { spotify },
+    uri,
   } = track;
   return {
     explicit,
@@ -33,6 +34,7 @@ export const toTrackResponse = (
     preview_url,
     albumImage: images[1],
     external_urls: spotify,
+    uri,
   };
 };
 
@@ -56,5 +58,5 @@ export const getTrack = async (id: string) => {
   const { data } = await SpotifyRequest.get<SpotifyApi.SingleTrackResponse>(
     `/tracks/${id}`
   );
-  return data;
+  return toTrackResponse(data);
 };

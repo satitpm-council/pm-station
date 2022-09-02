@@ -10,11 +10,7 @@ import type {
   SelectTrackActionResponse,
 } from "~/utils/pm-station/api-types";
 import { verifyCSRFToken } from "~/utils/pm-station/auth.server";
-import {
-  getTrack,
-  selectTrack,
-  toTrackResponse,
-} from "~/utils/pm-station/spotify/index.server";
+import { getTrack, selectTrack } from "~/utils/pm-station/spotify/index.server";
 
 export const action: ActionFunction = async ({ request }) => {
   const { sessionToken, trackId } = await getFormData<SelectTrackAction>(
@@ -29,7 +25,7 @@ export const action: ActionFunction = async ({ request }) => {
     await selectTrack(user.uid, track);
     return json<SelectTrackActionResponse>({
       success: true,
-      track: toTrackResponse(track),
+      track,
     });
   } catch (err) {
     console.error(err);
