@@ -6,6 +6,7 @@ import type { FormEventHandler } from "react";
 import { useFirebase } from "~/utils/firebase";
 import { SubmitButton } from "../SubmitButton";
 import type { PhoneLoginStepProps } from "./types";
+import { captureException } from "@sentry/remix";
 
 export function EnterPhone({ setLoginRequest }: PhoneLoginStepProps) {
   const [loading, setLoading] = useState(false);
@@ -34,6 +35,7 @@ export function EnterPhone({ setLoginRequest }: PhoneLoginStepProps) {
       });
     } catch (err) {
       console.error(err);
+      captureException(err);
       setLoginRequest(undefined);
     } finally {
       setLoading(false);
@@ -65,6 +67,7 @@ export function EnterPhone({ setLoginRequest }: PhoneLoginStepProps) {
       await recaptchaVerifier.current?.verify();
     } catch (err) {
       console.error(err);
+      captureException(err);
       setLoading(false);
     }
   };

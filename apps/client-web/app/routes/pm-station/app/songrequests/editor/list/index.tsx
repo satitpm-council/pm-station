@@ -1,3 +1,4 @@
+import { captureException } from "@sentry/remix";
 import { useEffect, useRef } from "react";
 import { useInViewport } from "react-in-viewport";
 import dayjs from "~/utils/dayjs";
@@ -15,7 +16,12 @@ export default function ListSongRequestComponent() {
     console.log("Size", size);
   }, [size]);
 
-  if (error) console.error(error);
+  useEffect(() => {
+    if (error) {
+      console.error(error);
+      captureException(error);
+    }
+  }, [error]);
 
   const isInitial = useRef<boolean>(false);
   useEffect(() => {

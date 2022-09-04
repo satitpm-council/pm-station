@@ -10,6 +10,7 @@ import type { PhoneLoginStepProps } from "./types";
 import { useSearchParams, useSubmit } from "@remix-run/react";
 import { toFormData } from "~/utils/api";
 import type { LoginAction } from "~/utils/pm-station/api-types";
+import { captureException } from "@sentry/remix";
 
 const disclosePhoneNo = (phoneNo: string) => {
   const hideLength = phoneNo.length - 4;
@@ -54,6 +55,7 @@ export function EnterCode({
       await serverLogin(user);
     } catch (err) {
       console.error(err);
+      captureException(err);
       const error = isFirebaseError(err)
         ? err.code.endsWith("-verification-code")
           ? "รหัส OTP ไม่ถูกต้อง"

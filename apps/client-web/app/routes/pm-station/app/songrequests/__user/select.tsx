@@ -2,6 +2,7 @@ import type { ActionFunction } from "@remix-run/node";
 import { redirect } from "@remix-run/node";
 import { json } from "@remix-run/node";
 import { Link, useActionData, useCatch, useSubmit } from "@remix-run/react";
+import { captureException } from "@sentry/remix";
 import { useEffect } from "react";
 import { getFormData } from "~/utils/api";
 import { isFirebaseError } from "~/utils/firebase";
@@ -29,6 +30,7 @@ export const action: ActionFunction = async ({ request }) => {
     });
   } catch (err) {
     console.error(err);
+    captureException(err);
     throw json<SelectTrackActionResponse>(
       {
         success: false,

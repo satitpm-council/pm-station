@@ -4,8 +4,9 @@ import { getAuth } from "firebase-admin/auth";
 
 import { createAuthenticityToken, verifyAuthenticityToken } from "remix-utils";
 import { createCookieSessionStorage } from "@remix-run/node"; // or cloudflare/deno
-import axios from "axios";
+import axios from "../axios";
 import type { User, UserClaims } from "./client";
+import { captureException } from "@sentry/remix";
 
 const expiresIn = 60 * 60 * 24 * 1000;
 
@@ -49,6 +50,7 @@ export const verifySession = async (
       const { role, type } = (customClaims ?? {}) as Partial<UserClaims>;
       return { uid, phoneNumber, displayName, role, type };
     } catch (err) {
+      captureException(err);
       console.error(err);
     }
   }
@@ -80,20 +82,25 @@ export const logoutSession = async (request: Request) => {
 
 const customTokenToIdToken = async (token: string) => {
   const key = process.env.PM_STATION_FIREBASE_PUBLIC_API_KEY;
-  const { data } = await axios.post<{ idToken: string }>(
-    "/accounts:signInWithCustomToken",
-    {
-      token,
-      returnSecureToken: true,
-    },
-    {
-      baseURL: "https://identitytoolkit.googleapis.com/v1",
-      params: {
-        key,
+  try {
+    const { data } = await axios.post<{ idToken: string }>(
+      "/accounts:signInWithCustomToken",
+      {
+        token,
+        returnSecureToken: true,
       },
-    }
-  );
-  return data.idToken;
+      {
+        baseURL: "https://identitytoolkit.googleapis.com/v1",
+        params: {
+          key,
+        },
+      }
+    );
+    return data.idToken;
+  } catch (err) {
+    captureException(err);
+    throw err;
+  }
 };
 
 export const updateProfile = async (

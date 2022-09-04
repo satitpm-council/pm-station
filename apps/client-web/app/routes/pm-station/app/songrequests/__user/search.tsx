@@ -8,6 +8,7 @@ import { searchTrack } from "~/utils/pm-station/spotify/index.server";
 import dayjs from "~/utils/dayjs";
 import loadable from "@loadable/component";
 import { useState } from "react";
+import { captureException } from "@sentry/remix";
 
 const TrackModal = loadable(() => import("~/components/TrackModal"));
 
@@ -73,6 +74,7 @@ export default function TrackResults() {
 
 export const ErrorBoundary: ErrorBoundaryComponent = ({ error }) => {
   console.error(error);
+  captureException(error);
   return (
     <div className="flex flex-col">
       <h4>ไม่สามารถโหลดรายการเพลงได้</h4>
