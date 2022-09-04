@@ -3,6 +3,8 @@ import axios from "axios";
 import { getToken } from "./auth";
 import dayjs from "dayjs";
 import FileSystemCache from "./cache";
+import axiosRetry from "axios-retry";
+
 const SpotifyRequest = axios.create({
   baseURL: "https://api.spotify.com/v1",
 });
@@ -47,5 +49,7 @@ SpotifyRequest.interceptors.request.use(async (config) => {
   };
   return config;
 });
+
+axiosRetry(SpotifyRequest);
 
 export default SpotifyRequest;

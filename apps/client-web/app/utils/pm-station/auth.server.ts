@@ -110,3 +110,10 @@ export const updateProfile = async (
   const token = await auth.createCustomToken(uid, claims);
   return createSession(request.headers, await customTokenToIdToken(token));
 };
+
+export const createClientSignInToken = async ({ uid, role, type }: User) => {
+  const auth = getAuth(admin);
+  const claims: Partial<UserClaims> = { role, type };
+  const token = await auth.createCustomToken(uid, claims);
+  return token;
+};

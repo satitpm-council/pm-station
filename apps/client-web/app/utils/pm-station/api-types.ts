@@ -1,14 +1,28 @@
-import type { TrackResponse } from "~/utils/pm-station/spotify/index.server";
+import type {
+  SongRequestRecord,
+  TrackResponse,
+} from "~/utils/pm-station/spotify/index.server";
 
 export type LoginAction = {
   token: string;
   continueUrl: string;
 };
 
-export type SelectTrackAction = {
+/**
+ * Contains the CSRF token to verify the action on the server.
+ */
+export interface ActionWithSession {
   sessionToken: string;
-  trackId: string;
+}
+
+export type SessionActionResponse = {
+  success: boolean;
+  token: string;
 };
+
+export interface SelectTrackAction extends ActionWithSession {
+  trackId: string;
+}
 
 export type SelectTrackActionResponse = {
   success: boolean;
@@ -19,4 +33,9 @@ export type SelectTrackActionResponse = {
 export type UpdateProfileActionResponse = {
   success: boolean;
   error?: string;
+};
+
+export type ListSongRequestsResponse = {
+  success: boolean;
+  data: SongRequestRecord[];
 };

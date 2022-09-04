@@ -1,4 +1,4 @@
-import { inMemoryPersistence } from "firebase/auth";
+import { browserSessionPersistence } from "firebase/auth";
 import { RecaptchaVerifier, signInWithPhoneNumber } from "firebase/auth";
 import { useCallback, useEffect, useState, useRef } from "react";
 import type { FormEventHandler } from "react";
@@ -42,7 +42,7 @@ export function EnterPhone({ setLoginRequest }: PhoneLoginStepProps) {
 
   useEffect(() => {
     if (!auth || !recaptchaSubmit.current) return;
-    auth.setPersistence(inMemoryPersistence);
+    auth.setPersistence(browserSessionPersistence);
     recaptchaVerifier.current = new RecaptchaVerifier(
       recaptchaSubmit.current,
       {

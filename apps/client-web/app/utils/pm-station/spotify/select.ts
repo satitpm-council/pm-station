@@ -27,7 +27,7 @@ type SongRequestSubmission = {
 export type SongRequestRecord = TrackResponse & {
   version: 1;
   submissionCount: number;
-  lastUpdatedAt: Date;
+  lastUpdatedAt: string;
 };
 
 export const selectTrack = async (uid: string, response: TrackResponse) => {

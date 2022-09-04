@@ -15,7 +15,7 @@ type AllowFalsyValue<T extends Record<string, unknown>> = {
   [K in keyof T]: T[K] | Falsy;
 };
 
-export const toFormData = <T extends Record<string, unknown>>(
+export const toFormData = <T extends Record<string, any>>(
   data: AllowFalsyValue<T>
 ): FormData => {
   const form = new FormData();

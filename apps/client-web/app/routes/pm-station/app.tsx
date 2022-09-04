@@ -12,6 +12,15 @@ import { verifySession } from "~/utils/pm-station/auth.server";
 import { Bars4Icon } from "@heroicons/react/20/solid";
 import { useEffect, useState } from "react";
 import Sidebar from "~/components/Sidebar";
+import { useFirebase } from "~/utils/firebase";
+import { useAuthenticityToken } from "remix-utils";
+import axios from "axios";
+import { toFormData } from "~/utils/api";
+import type {
+  ActionWithSession,
+  SessionActionResponse,
+} from "~/utils/pm-station/api-types";
+import { signInWithCustomToken } from "firebase/auth";
 
 type UserStore = {
   user: User;
@@ -48,6 +57,31 @@ export default function Index() {
   useEffect(() => {
     setOpen(false);
   }, [matches]);
+
+  const { auth } = useFirebase("pm-station");
+  const sessionToken = useAuthenticityToken();
+  useEffect(() => {
+    if (!sessionToken) return;
+    if (!auth.currentUser) {
+      // It is possibly that the firebase client SDK hasn't initialized yet.
+      // Maybe from a new browsing session.
+      // Grab the sign-on token from backend.
+      (async () => {
+        try {
+          const {
+            data: { token },
+          } = await axios.post<SessionActionResponse>(
+            "/pm-station/session",
+            toFormData<ActionWithSession>({ sessionToken })
+          );
+          await signInWithCustomToken(auth, token);
+        } catch (err) {
+          console.error(err);
+        }
+      })();
+    }
+  }, [auth, sessionToken]);
+
   return (
     <div className="overflow-hidden flex  items-stretch h-screen gap-4 bg-gradient-to-b from-[#151515] to-[#121212] text-white">
       <ProSidebar toggled={open} onToggle={setOpen} breakPoint="md">
