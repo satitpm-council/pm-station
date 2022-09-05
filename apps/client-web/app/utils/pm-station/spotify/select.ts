@@ -39,7 +39,7 @@ export const selectTrack = async (uid: string, response: TrackResponse) => {
       trackId: response.id,
     };
     const trackDoc = db.doc(`/songrequests/${response.id}`);
-    if ((await transaction.get(trackDoc)).exists) {
+    if (!(await transaction.get(trackDoc)).exists) {
       const record: PartialWithFieldValue<SongRequestRecord> = {
         ...response,
         version: 1,
