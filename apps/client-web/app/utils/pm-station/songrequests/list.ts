@@ -35,6 +35,7 @@ export const options: Options = {
   sortBy: {
     lastUpdatedAt: "วันเวลาที่ส่ง",
     name: "ชื่อเพลง",
+    submissionCount: "จำนวนผู้ส่งคำขอ",
   },
   order: {
     asc: "ก่อน-หลัง",

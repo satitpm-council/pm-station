@@ -6,6 +6,7 @@ import type {
   QueryDocumentSnapshot,
   Timestamp,
 } from "firebase/firestore";
+import { where } from "firebase/firestore";
 import { getDocs } from "firebase/firestore";
 import {
   collection,
@@ -41,8 +42,11 @@ export const useSongRequests = () => {
     size,
     mutate,
     ...swr
-  } = useSWRInfinite<Result<SongRequestRecord>[]>(
-    (pageIndex, previousPageData: Result<SongRequestRecord>[]) => {
+  } = useSWRInfinite<Array<Result<SongRequestRecord> | undefined>>(
+    (
+      pageIndex,
+      previousPageData: Array<Result<SongRequestRecord> | undefined>
+    ) => {
       if (previousPageData && !previousPageData.length) return null; // reached the end
 
       const params: ListParams = {
@@ -50,7 +54,6 @@ export const useSongRequests = () => {
         sortBy,
         page: pageIndex,
       };
-      console.log(params);
       return params;
     },
     async ({ order, sortBy, page }: ListParams) => {
@@ -68,13 +71,14 @@ export const useSongRequests = () => {
       const { docs } = await getDocs(q);
       return docs.map((__snapshot) => {
         const data = __snapshot.data() as WithTimestamp<SongRequestRecord>;
+        if ((data as any).isSummary) return undefined;
         return {
           __snapshot,
           ...data,
           lastUpdatedAt: (data.lastUpdatedAt as Timestamp)
             .toDate()
             .toISOString(),
-        } as Result<SongRequestRecord>;
+        } as Result<SongRequestRecord> | undefined;
       });
     },
     {
@@ -85,7 +89,11 @@ export const useSongRequests = () => {
       revalidateIfStale: false,
     }
   );
-  const data = useMemo(() => _data?.flat(), [_data]);
+  const data = useMemo(
+    () =>
+      _data?.flat().filter((v) => Boolean(v)) as Result<SongRequestRecord>[],
+    [_data]
+  );
 
   const isEmpty = useMemo(() => _data?.[0].length === 0, [_data]);
 
@@ -101,7 +109,6 @@ export const useSongRequests = () => {
   useEffect(
     () =>
       onIdTokenChanged(auth, (user) => {
-        console.log(user);
         mutate();
       }),
     [auth, mutate]

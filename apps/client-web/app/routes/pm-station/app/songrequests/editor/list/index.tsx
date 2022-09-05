@@ -13,10 +13,6 @@ export default function ListSongRequestComponent() {
     useSongRequests();
 
   useEffect(() => {
-    console.log("Size", size);
-  }, [size]);
-
-  useEffect(() => {
     if (error) {
       console.error(error);
       captureException(error);

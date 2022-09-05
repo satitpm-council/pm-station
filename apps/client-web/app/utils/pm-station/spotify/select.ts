@@ -3,7 +3,6 @@ import type {
   DocumentReference,
   WithFieldValue,
   Timestamp,
-  PartialWithFieldValue,
 } from "firebase-admin/firestore";
 import { FieldValue, getFirestore } from "firebase-admin/firestore";
 import type { TrackResponse } from "./search";
@@ -18,7 +17,7 @@ export type SongRequestRecord_V0 = {
   selectedBy: DocumentReference[];
 };
 
-type SongRequestSubmission = {
+export type SongRequestSubmission = {
   submittedBy: string;
   updatedAt: Date;
   trackId: string;
@@ -39,8 +38,11 @@ export const selectTrack = async (uid: string, response: TrackResponse) => {
       trackId: response.id,
     };
     const trackDoc = db.doc(`/songrequests/${response.id}`);
-    if (!(await transaction.get(trackDoc)).exists) {
-      const record: PartialWithFieldValue<SongRequestRecord> = {
+    const trackDocResult = await transaction.get(trackDoc);
+    if (!trackDocResult.exists) {
+      const record: WithFieldValue<
+        Omit<SongRequestRecord, "submissionCount" | "lastUpdatedAt">
+      > = {
         ...response,
         version: 1,
       };
@@ -58,7 +60,7 @@ export const selectTrack = async (uid: string, response: TrackResponse) => {
 export const upgradeResponse = async (
   uid: string,
   _data: any,
-  version: SongRequestRecord["version"]
+  version?: SongRequestRecord["version"]
 ) => {
   switch (version) {
     case undefined:
