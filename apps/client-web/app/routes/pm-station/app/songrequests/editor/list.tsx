@@ -11,6 +11,7 @@ import {
   options,
   defaults,
 } from "~/utils/pm-station/songrequests/list";
+import { useSongRequestSummary } from "~/utils/pm-station/songrequests";
 
 export const meta = withTitle("จัดการคำขอเพลง");
 
@@ -21,6 +22,7 @@ export default function ListSongRequest() {
     [params]
   );
 
+  const { data, mutate } = useSongRequestSummary();
   const onSubmit: FormEventHandler = (e) => {
     e.preventDefault();
     const params = filterParams(
@@ -29,6 +31,7 @@ export default function ListSongRequest() {
     setParams(Object.entries(params) as any, {
       replace: true,
     });
+    mutate();
   };
 
   return (
@@ -70,6 +73,11 @@ export default function ListSongRequest() {
           <SubmitButton>ค้นหา</SubmitButton>
         </fieldset>
       </form>
+      {data && (
+        <div className="text-sm">
+          มีผู้ส่งคำขอทั้งหมด {data.submissionCount} คน {data.trackCount} เพลง
+        </div>
+      )}
       <Outlet context={settings} />
     </>
   );

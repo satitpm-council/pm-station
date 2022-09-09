@@ -5,8 +5,9 @@ import type {
   QueryConstraint,
   QueryDocumentSnapshot,
   Timestamp,
+  DocumentSnapshot,
 } from "firebase/firestore";
-import { where } from "firebase/firestore";
+import { doc, getDoc } from "firebase/firestore";
 import { getDocs } from "firebase/firestore";
 import {
   collection,
@@ -19,7 +20,8 @@ import {
 import { useOutletContext } from "@remix-run/react";
 import type { SongRequestRecord } from "../spotify/select";
 import { onIdTokenChanged } from "firebase/auth";
-import type { ListParams } from "./types";
+import type { ListParams, SongRequestSummary } from "./types";
+import useSWR from "swr";
 
 type WithTimestamp<T> = {
   [P in keyof T]: T[P] | Timestamp;
@@ -29,7 +31,45 @@ type Result<T extends Record<string, any>> = T & {
   __snapshot: QueryDocumentSnapshot;
 };
 
-const FETCH_LIMIT = 10;
+const FETCH_LIMIT = 6;
+
+const convertFirestoreData = <T extends Record<string, any>>(
+  __snapshot: DocumentSnapshot
+): Result<T> => {
+  const data = __snapshot.data() as WithTimestamp<T>;
+  return {
+    __snapshot,
+    ...data,
+    lastUpdatedAt: (data.lastUpdatedAt as Timestamp).toDate().toISOString(),
+  } as Result<T>;
+};
+export const useSongRequestSummary = () => {
+  const { app, auth } = useFirebase("pm-station");
+  const db = useMemo(() => getFirestore(app), [app]);
+  const swr = useSWR<Result<SongRequestSummary>>(
+    "/songrequests/summary",
+    (key) => {
+      return getDoc(doc(db, key)).then((v) =>
+        convertFirestoreData<SongRequestSummary>(v)
+      );
+    },
+    {
+      revalidateOnMount: false,
+      revalidateOnFocus: false,
+      revalidateOnReconnect: true,
+      revalidateIfStale: false,
+    }
+  );
+  const { mutate } = swr;
+  useEffect(
+    () =>
+      onIdTokenChanged(auth, (user) => {
+        mutate();
+      }),
+    [auth, mutate]
+  );
+  return swr;
+};
 
 export const useSongRequests = () => {
   const { order, sortBy } = useOutletContext<ListParams>();
@@ -64,21 +104,17 @@ export const useSongRequests = () => {
         _data[page - 1][_data[page - 1].length - 1]?.__snapshot;
       const constraints: QueryConstraint[] = [
         orderBy(sortBy, order),
+        ...(sortBy !== "lastUpdatedAt"
+          ? [orderBy("lastUpdatedAt", "asc")]
+          : []),
         ...(startAfterRef ? [startAfter(startAfterRef)] : []),
         limit(FETCH_LIMIT),
       ];
       const q = query(collection(db, "songrequests"), ...constraints);
       const { docs } = await getDocs(q);
       return docs.map((__snapshot) => {
-        const data = __snapshot.data() as WithTimestamp<SongRequestRecord>;
-        if ((data as any).isSummary) return undefined;
-        return {
-          __snapshot,
-          ...data,
-          lastUpdatedAt: (data.lastUpdatedAt as Timestamp)
-            .toDate()
-            .toISOString(),
-        } as Result<SongRequestRecord> | undefined;
+        if (__snapshot.id === "summary") return undefined;
+        return convertFirestoreData<SongRequestRecord>(__snapshot);
       });
     },
     {

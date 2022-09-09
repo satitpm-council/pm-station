@@ -6,7 +6,8 @@ import { useEffect } from "react";
 import SentryConfig from "./sentry.client.json";
 
 Sentry.init({
-  dsn: SentryConfig.SENTRY_DSN,
+  dsn:
+    process.env.NODE_ENV === "production" ? SentryConfig.SENTRY_DSN : undefined,
   tracesSampleRate: 1,
   integrations: [
     new Sentry.BrowserTracing({

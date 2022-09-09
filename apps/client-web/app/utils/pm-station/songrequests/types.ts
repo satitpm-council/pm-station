@@ -6,3 +6,10 @@ export type ListParams = {
   order: OrderByDirection;
   page?: number;
 };
+
+export type SongRequestSummary = {
+  lastUpdatedAt: Date;
+  submissionCount: number;
+  trackCount: number;
+  isSummary: true;
+};

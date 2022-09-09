@@ -6,7 +6,8 @@ import { renderToString } from "react-dom/server";
 require("dotenv").config();
 
 Sentry.init({
-  dsn: process.env.SENTRY_DSN,
+  dsn:
+    process.env.NODE_ENV === "production" ? process.env.SENTRY_DSN : undefined,
   tracesSampleRate: 1,
 });
 

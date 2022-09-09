@@ -9,8 +9,11 @@ import dayjs from "~/utils/dayjs";
 import loadable from "@loadable/component";
 import { useState } from "react";
 import { captureException } from "@sentry/remix";
+import type { TrackModalProps } from "~/components/TrackModal";
 
-const TrackModal = loadable(() => import("~/components/TrackModal"));
+const TrackModal = loadable<TrackModalProps>(() =>
+  import("~/components/TrackModal").then((c) => c.SelectTrackModal)
+);
 
 export const loader: LoaderFunction = async ({ request }) => {
   const url = new URL(request.url);
