@@ -7,6 +7,10 @@ import type {
 import { FieldValue, getFirestore } from "firebase-admin/firestore";
 import type { TrackResponse } from "./search";
 import { getTrack } from "./search";
+import type {
+  SongRequestRecord,
+  SongRequestSubmission,
+} from "~/schema/pm-station/songrequests/types";
 
 export type SongRequestRecord_V0 = {
   id: string;
@@ -15,18 +19,6 @@ export type SongRequestRecord_V0 = {
   name: string;
   selectedAt: Timestamp;
   selectedBy: DocumentReference[];
-};
-
-export type SongRequestSubmission = {
-  submittedBy: string;
-  updatedAt: Date;
-  trackId: string;
-};
-
-export type SongRequestRecord = TrackResponse & {
-  version: 1;
-  submissionCount: number;
-  lastUpdatedAt: string;
 };
 
 export const selectTrack = async (uid: string, response: TrackResponse) => {

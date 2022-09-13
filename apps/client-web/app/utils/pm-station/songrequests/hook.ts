@@ -18,14 +18,15 @@ import {
   limit,
 } from "firebase/firestore";
 import { useOutletContext } from "@remix-run/react";
-import type { SongRequestRecord } from "../spotify/select";
+import {
+  SongRequestRecord,
+  SongRequestSummary,
+} from "~/schema/pm-station/songrequests/schema";
 import { onIdTokenChanged } from "firebase/auth";
-import type { ListParams, SongRequestSummary } from "./types";
+import type { ListParams } from "./types";
 import useSWR from "swr";
-
-type WithTimestamp<T> = {
-  [P in keyof T]: T[P] | Timestamp;
-};
+import type { TypeOf, ZodObject, ZodRawShape } from "zod";
+import { captureException } from "@sentry/remix";
 
 type Result<T extends Record<string, any>> = T & {
   __snapshot: QueryDocumentSnapshot;
@@ -33,24 +34,40 @@ type Result<T extends Record<string, any>> = T & {
 
 const FETCH_LIMIT = 6;
 
-const convertFirestoreData = <T extends Record<string, any>>(
-  __snapshot: DocumentSnapshot
+const convertFirestoreData = <
+  Schema extends ZodObject<Shape>,
+  Shape extends ZodRawShape = ZodRawShape,
+  T extends TypeOf<Schema> = TypeOf<Schema>
+>(
+  __snapshot: DocumentSnapshot,
+  schema: Schema
 ): Result<T> => {
-  const data = __snapshot.data() as WithTimestamp<T>;
-  return {
-    __snapshot,
+  const data = __snapshot.data();
+  const result = {
     ...data,
-    lastUpdatedAt: (data.lastUpdatedAt as Timestamp).toDate().toISOString(),
-  } as Result<T>;
+    lastUpdatedAt: (data?.lastUpdatedAt as Timestamp).toDate().toISOString(),
+  };
+  try {
+    const validated = schema.parse(result);
+    return {
+      __snapshot,
+      ...validated,
+    } as Result<T>;
+  } catch (err) {
+    captureException(err);
+    console.error(err);
+    throw err;
+  }
 };
+
 export const useSongRequestSummary = () => {
   const { app, auth } = useFirebase("pm-station");
   const db = useMemo(() => getFirestore(app), [app]);
-  const swr = useSWR<Result<SongRequestSummary>>(
+  const swr = useSWR(
     "/songrequests/summary",
     (key) => {
       return getDoc(doc(db, key)).then((v) =>
-        convertFirestoreData<SongRequestSummary>(v)
+        convertFirestoreData<typeof SongRequestSummary>(v, SongRequestSummary)
       );
     },
     {
@@ -82,11 +99,10 @@ export const useSongRequests = () => {
     size,
     mutate,
     ...swr
-  } = useSWRInfinite<Array<Result<SongRequestRecord> | undefined>>(
-    (
-      pageIndex,
-      previousPageData: Array<Result<SongRequestRecord> | undefined>
-    ) => {
+  } = useSWRInfinite<
+    Array<Result<TypeOf<typeof SongRequestRecord>> | undefined>
+  >(
+    (pageIndex, previousPageData) => {
       if (previousPageData && !previousPageData.length) return null; // reached the end
 
       const params: ListParams = {
@@ -114,7 +130,14 @@ export const useSongRequests = () => {
       const { docs } = await getDocs(q);
       return docs.map((__snapshot) => {
         if (__snapshot.id === "summary") return undefined;
-        return convertFirestoreData<SongRequestRecord>(__snapshot);
+        try {
+          return convertFirestoreData<typeof SongRequestRecord>(
+            __snapshot,
+            SongRequestRecord
+          );
+        } catch {
+          return undefined;
+        }
       });
     },
     {
@@ -127,7 +150,9 @@ export const useSongRequests = () => {
   );
   const data = useMemo(
     () =>
-      _data?.flat().filter((v) => Boolean(v)) as Result<SongRequestRecord>[],
+      _data?.flat().filter((v) => Boolean(v)) as Result<
+        TypeOf<typeof SongRequestRecord>
+      >[],
     [_data]
   );
 
