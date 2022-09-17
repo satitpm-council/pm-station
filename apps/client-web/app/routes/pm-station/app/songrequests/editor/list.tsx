@@ -69,7 +69,22 @@ export default function ListSongRequest() {
               <label htmlFor={value}>{text}</label>
             </div>
           ))}
-
+          <div className="flex flex-row gap-4 items-center flex-grow">
+            <label htmlFor="filter" className="flex-shrink-0">
+              แสดงข้อมูล
+            </label>
+            <select
+              name="filter"
+              className="pm-station-input w-full flex-grow text-sm"
+              defaultValue={settings.filter}
+            >
+              {Object.entries(options["filter"]).map(([value, text]) => (
+                <option key={value} value={value}>
+                  {text}
+                </option>
+              ))}
+            </select>
+          </div>
           <SubmitButton>ค้นหา</SubmitButton>
         </fieldset>
       </form>

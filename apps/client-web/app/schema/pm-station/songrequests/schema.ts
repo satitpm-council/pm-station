@@ -1,7 +1,24 @@
+import type { Timestamp } from "firebase/firestore";
+import { DocumentReference } from "firebase/firestore";
 import { z } from "zod";
+import { isObject } from "~/utils/guards";
+
+const isTimestamp = (arg: unknown): arg is Timestamp => {
+  return (
+    isObject(arg) &&
+    typeof (arg as Timestamp).nanoseconds === "number" &&
+    typeof (arg as Timestamp).seconds === "number" &&
+    typeof (arg as Timestamp).toDate === "function"
+  );
+};
 
 const preprocessDate = (arg: unknown) => {
+  if (isTimestamp(arg)) return arg.toDate();
   if (typeof arg == "string" || arg instanceof Date) return new Date(arg);
+};
+
+const docRef = (arg: unknown) => {
+  if (arg instanceof DocumentReference) return arg.path;
 };
 
 const SongRequestSummary = z.object({
@@ -28,9 +45,11 @@ const TrackResponse = z.object({
 });
 
 const SongRequestRecord = TrackResponse.extend({
-  version: z.number().min(1).optional(),
+  version: z.number().min(1),
   submissionCount: z.number(),
-  lastUpdatedAt: z.string(),
+  lastUpdatedAt: z.preprocess(preprocessDate, z.date()),
+  lastPlayedAt: z.preprocess(preprocessDate, z.date()).nullable().optional(),
+  playlistId: z.array(z.preprocess(docRef, z.string())).optional(),
 });
 
 const SongRequestSubmission = z.object({

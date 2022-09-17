@@ -8,7 +8,7 @@ import { useSongRequests } from "~/utils/pm-station/songrequests";
 import type { ApproveTrackModalProps } from "~/components/TrackModal";
 
 import loadable from "@loadable/component";
-import type { SongRequestRecord } from "~/utils/pm-station/spotify/select";
+import type { SongRequestRecord } from "~/schema/pm-station/songrequests/types";
 
 const TrackModal = loadable<ApproveTrackModalProps>(() =>
   import("~/components/TrackModal").then((c) => c.ApproveTrackModal)

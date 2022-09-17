@@ -3,6 +3,7 @@ import type { ListParams } from "./types";
 export const defaults: ListParams = {
   order: "asc",
   sortBy: "lastUpdatedAt",
+  filter: "idle",
 };
 
 export const filterParams = (
@@ -40,5 +41,11 @@ export const options: Options = {
   order: {
     asc: "ก่อน-หลัง",
     desc: "หลัง-ก่อน",
+  },
+  filter: {
+    all: "ทั้งหมด",
+    idle: "ยังไม่ถูกเล่น",
+    played: "เล่นไปแล้ว",
+    rejected: "ถูกปฏิเสธ",
   },
 };

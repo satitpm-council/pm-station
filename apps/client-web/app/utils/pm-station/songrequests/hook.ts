@@ -1,12 +1,8 @@
 import { useEffect, useMemo } from "react";
 import useSWRInfinite from "swr/infinite";
 import { useFirebase } from "~/utils/firebase";
-import type {
-  QueryConstraint,
-  QueryDocumentSnapshot,
-  Timestamp,
-  DocumentSnapshot,
-} from "firebase/firestore";
+import type { QueryConstraint } from "firebase/firestore";
+import { where } from "firebase/firestore";
 import { doc, getDoc } from "firebase/firestore";
 import { getDocs } from "firebase/firestore";
 import {
@@ -25,39 +21,24 @@ import {
 import { onIdTokenChanged } from "firebase/auth";
 import type { ListParams } from "./types";
 import useSWR from "swr";
-import type { TypeOf, ZodObject, ZodRawShape } from "zod";
-import { captureException } from "@sentry/remix";
-
-type Result<T extends Record<string, any>> = T & {
-  __snapshot: QueryDocumentSnapshot;
-};
+import type { TypeOf } from "zod";
+import { ZodError } from "zod";
+import type { Result } from "./result";
+import { convertFirestoreData } from "./result";
 
 const FETCH_LIMIT = 6;
 
-const convertFirestoreData = <
-  Schema extends ZodObject<Shape>,
-  Shape extends ZodRawShape = ZodRawShape,
-  T extends TypeOf<Schema> = TypeOf<Schema>
->(
-  __snapshot: DocumentSnapshot,
-  schema: Schema
-): Result<T> => {
-  const data = __snapshot.data();
-  const result = {
-    ...data,
-    lastUpdatedAt: (data?.lastUpdatedAt as Timestamp).toDate().toISOString(),
-  };
-  try {
-    const validated = schema.parse(result);
-    return {
-      __snapshot,
-      ...validated,
-    } as Result<T>;
-  } catch (err) {
-    captureException(err);
-    console.error(err);
-    throw err;
+const getLastPlayedAtFromFilter = (
+  filter: ListParams["filter"]
+): QueryConstraint[] => {
+  if (filter === "idle") return [where("lastPlayedAt", "==", null)];
+  if (filter === "played" || filter === "rejected") {
+    return [
+      where("lastPlayedAt", filter === "played" ? ">=" : "==", new Date(0)),
+      orderBy("lastPlayedAt", "asc"),
+    ];
   }
+  return [];
 };
 
 export const useSongRequestSummary = () => {
@@ -89,7 +70,7 @@ export const useSongRequestSummary = () => {
 };
 
 export const useSongRequests = () => {
-  const { order, sortBy } = useOutletContext<ListParams>();
+  const context = useOutletContext<ListParams>();
   const { app, auth } = useFirebase("pm-station");
 
   const db = useMemo(() => getFirestore(app), [app]);
@@ -104,21 +85,23 @@ export const useSongRequests = () => {
   >(
     (pageIndex, previousPageData) => {
       if (previousPageData && !previousPageData.length) return null; // reached the end
-
+      const { order, sortBy, filter } = context;
       const params: ListParams = {
         order,
         sortBy,
         page: pageIndex,
+        filter,
       };
       return params;
     },
-    async ({ order, sortBy, page }: ListParams) => {
+    async ({ order, sortBy, page, filter }: ListParams) => {
       if (!auth.currentUser) throw new Error("Unauthorized");
       const startAfterRef =
         page &&
         _data &&
         _data[page - 1][_data[page - 1].length - 1]?.__snapshot;
       const constraints: QueryConstraint[] = [
+        ...getLastPlayedAtFromFilter(filter),
         orderBy(sortBy, order),
         ...(sortBy !== "lastUpdatedAt"
           ? [orderBy("lastUpdatedAt", "asc")]
@@ -131,12 +114,17 @@ export const useSongRequests = () => {
       return docs.map((__snapshot) => {
         if (__snapshot.id === "summary") return undefined;
         try {
-          return convertFirestoreData<typeof SongRequestRecord>(
+          const converted = convertFirestoreData<typeof SongRequestRecord>(
             __snapshot,
             SongRequestRecord
           );
-        } catch {
-          return undefined;
+          return converted;
+        } catch (err) {
+          console.error(err);
+          if (err instanceof ZodError) {
+            return undefined;
+          }
+          throw err;
         }
       });
     },
@@ -148,6 +136,11 @@ export const useSongRequests = () => {
       revalidateIfStale: false,
     }
   );
+
+  useEffect(() => {
+    mutate();
+  }, [context, mutate]);
+
   const data = useMemo(
     () =>
       _data?.flat().filter((v) => Boolean(v)) as Result<
@@ -174,6 +167,7 @@ export const useSongRequests = () => {
       }),
     [auth, mutate]
   );
+
   return {
     ...swr,
     data,

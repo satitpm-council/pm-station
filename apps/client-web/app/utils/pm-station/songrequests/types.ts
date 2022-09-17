@@ -5,4 +5,5 @@ export type ListParams = {
   sortBy: keyof SongRequestRecord;
   order: OrderByDirection;
   page?: number;
+  filter: "all" | "idle" | "played" | "rejected";
 };
