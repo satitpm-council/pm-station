@@ -9,9 +9,7 @@ jobs:
       steps:
         - uses: actions/checkout@v2
         - uses: superfly/flyctl-actions/setup-flyctl@master
-        - name: create .env
-          run: |
+        - run: |
               touch .env
               echo SENTRY_DSN=${{ secrets.SENTRY_DSN }} >> .env
-        - name: deploy
-          run: flyctl deploy --remote-only
+        - run: flyctl deploy --remote-only
