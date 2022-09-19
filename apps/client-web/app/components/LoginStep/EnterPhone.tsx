@@ -3,10 +3,11 @@ import { RecaptchaVerifier, signInWithPhoneNumber } from "firebase/auth";
 import { useCallback, useEffect, useState, useRef } from "react";
 import type { FormEventHandler } from "react";
 
-import { useFirebase } from "~/utils/firebase";
+import { isFirebaseError, useFirebase } from "~/utils/firebase";
 import { SubmitButton } from "../SubmitButton";
 import type { PhoneLoginStepProps } from "./types";
 import { captureException } from "@sentry/remix";
+import { toast } from "react-toastify";
 
 export function EnterPhone({ setLoginRequest }: PhoneLoginStepProps) {
   const [loading, setLoading] = useState(false);
@@ -37,6 +38,22 @@ export function EnterPhone({ setLoginRequest }: PhoneLoginStepProps) {
       console.error(err);
       captureException(err);
       setLoginRequest(undefined);
+      let error = (err as Error).message;
+      if (isFirebaseError(err)) {
+        if (err.code.endsWith("too-many-requests")) {
+          error = "กรุณารอสักครู่แล้วลองใหม่อีกครั้งในภายหลัง";
+        }
+      }
+
+      toast(
+        <>
+          <b>ไม่สามารถส่งคำขอรหัส OTP ได้</b>
+          {error && <span>{error}</span>}
+        </>,
+        {
+          type: "error",
+        }
+      );
     } finally {
       setLoading(false);
     }

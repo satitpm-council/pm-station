@@ -56,11 +56,14 @@ export function EnterCode({
     } catch (err) {
       console.error(err);
       captureException(err);
-      const error = isFirebaseError(err)
-        ? err.code.endsWith("-verification-code")
-          ? "รหัส OTP ไม่ถูกต้อง"
-          : err.code.replace("auth/", "")
-        : (err as Error).message;
+      let error = (err as Error).message;
+      if (isFirebaseError(err)) {
+        if (err.code.endsWith("-verification-code")) {
+          error = "รหัส OTP ไม่ถูกต้อง";
+        } else if (err.code === "code-expired") {
+          error = "รหัส OTP หมดอายุหรือถูกใช้ไปแล้ว";
+        }
+      }
 
       toast(
         <>
