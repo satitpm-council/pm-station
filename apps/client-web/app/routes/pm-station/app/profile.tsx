@@ -22,7 +22,7 @@ const typeRadio: Record<UserClaims["type"], string> = {
 
 export const action: ActionFunction = async ({ request }) => {
   try {
-    const user = await verifySession(request.headers);
+    const user = await verifySession(request);
     const { displayName, type, role } = await getFormData<User>(request);
     if (!user || !displayName || !type)
       throw new Error("Missing required parameters.");

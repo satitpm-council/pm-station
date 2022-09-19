@@ -31,15 +31,23 @@ export const action: ActionFunction = async ({ request }) => {
       console.error(err);
     }
   }
-  return redirect("/pm-station", {
-    headers: {
-      "Set-Cookie": await logoutSession(request),
-    },
-  });
+  return redirect("/pm-station");
 };
 
-export const loader: LoaderFunction = async ({ request: { headers } }) => {
-  if (await verifySession(headers)) return redirect("/pm-station/app");
+export const loader: LoaderFunction = async ({ request }) => {
+  const session = await verifySession(request);
+  if (session) {
+    return redirect("/pm-station/app");
+  } else {
+    if (session === null) {
+      // session was declared, but cannot proceed the request. log out
+      return redirect("/pm-station", {
+        headers: {
+          "Set-Cookie": await logoutSession(request),
+        },
+      });
+    }
+  }
   return json({});
 };
 

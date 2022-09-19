@@ -37,9 +37,9 @@ export const createSession = async (
   return await commitSession(session);
 };
 
-export const verifySession = async (
-  headers: Response["headers"]
-): Promise<User | undefined> => {
+export const verifySession = async ({
+  headers,
+}: Request): Promise<User | null | undefined> => {
   const cookie = await getSession(headers.get("Cookie"));
   if (cookie.has("fb:token")) {
     try {
@@ -53,6 +53,7 @@ export const verifySession = async (
       captureException(err);
       console.error(err);
     }
+    return null;
   }
   return undefined;
 };
@@ -68,7 +69,7 @@ export const createCSRFToken = async (headers: Request["headers"]) => {
 };
 
 export const verifyCSRFToken = async (request: Request) => {
-  const user = await verifySession(request.headers);
+  const user = await verifySession(request);
   if (!user) throw new Error("No user!");
   const session = await getSession(request.headers.get("Cookie"));
   await verifyAuthenticityToken(request, session, "sessionToken");

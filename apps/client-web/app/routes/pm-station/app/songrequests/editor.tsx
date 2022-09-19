@@ -5,8 +5,8 @@ import { json } from "remix-utils";
 import { verifySession } from "~/utils/pm-station/auth.server";
 import { UserRole } from "~/utils/pm-station/client";
 
-export const loader: LoaderFunction = async ({ request: { headers } }) => {
-  const user = await verifySession(headers);
+export const loader: LoaderFunction = async ({ request }) => {
+  const user = await verifySession(request);
   if (user?.role && user?.role >= UserRole.EDITOR && user?.type) {
     return json({});
   }

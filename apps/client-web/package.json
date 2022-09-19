@@ -18,7 +18,7 @@
     "@remix-run/node": "^1.6.8",
     "@remix-run/react": "^1.6.8",
     "@remix-run/serve": "^1.7.0",
-    "@sentry/remix": "^7.12.1",
+    "@sentry/remix": "^7.13.0",
     "@types/spotify-api": "^0.0.17",
     "@upstash/redis": "^1.12.0",
     "axios": "^0.27.2",

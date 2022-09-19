@@ -28,10 +28,10 @@ type UserStore = {
 
 export const unstable_shouldReload = () => true;
 
-export const loader: LoaderFunction = async ({ request: { url, headers } }) => {
-  const user = await verifySession(headers);
+export const loader: LoaderFunction = async ({ request }) => {
+  const user = await verifySession(request);
 
-  const { pathname } = new URL(url);
+  const { pathname } = new URL(request.url);
   if (!user) {
     return redirect(`/pm-station/?continueUrl=${pathname}`);
   }
