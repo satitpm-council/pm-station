@@ -7,7 +7,11 @@ import type { LoginRequest } from "~/components/LoginStep";
 import { EnterCode, EnterPhone } from "~/components/LoginStep";
 
 import { withTitle } from "~/utils/pm-station/client";
-import { createSession, verifySession } from "~/utils/pm-station/auth.server";
+import {
+  createSession,
+  logoutSession,
+  verifySession,
+} from "~/utils/pm-station/auth.server";
 import type { LoginAction } from "~/utils/pm-station/api-types";
 import { getFormData } from "~/utils/api";
 
@@ -27,7 +31,11 @@ export const action: ActionFunction = async ({ request }) => {
       console.error(err);
     }
   }
-  return redirect("/pm-station");
+  return redirect("/pm-station", {
+    headers: {
+      "Set-Cookie": await logoutSession(request),
+    },
+  });
 };
 
 export const loader: LoaderFunction = async ({ request: { headers } }) => {
