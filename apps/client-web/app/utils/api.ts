@@ -2,7 +2,7 @@ type ObjectAsString<T extends Record<string, unknown>> = {
   [K in keyof T]: T[K] extends string ? T[K] : never;
 };
 
-export const getFormData = async <T extends Record<string, unknown>>(
+export const getFormData = async <T extends Record<any, any>>(
   request: Request
 ) =>
   Object.fromEntries(await request.clone().formData()) as Partial<

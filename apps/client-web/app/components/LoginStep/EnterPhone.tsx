@@ -11,7 +11,7 @@ import { toast } from "react-toastify";
 
 export function EnterPhone({ setLoginRequest }: PhoneLoginStepProps) {
   const [loading, setLoading] = useState(false);
-  const { auth } = useFirebase("pm-station");
+  const { auth } = useFirebase();
   const recaptchaVerifier = useRef<RecaptchaVerifier>();
   const recaptchaSubmit = useRef<HTMLButtonElement>(null);
   const phoneInput = useRef<HTMLInputElement>(null);

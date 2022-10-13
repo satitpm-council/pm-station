@@ -40,7 +40,7 @@ export function EnterCode({
   };
 
   const [loading, setLoading] = useState(false);
-  const { auth } = useFirebase("pm-station");
+  const { auth } = useFirebase();
   const codeInput = useRef<HTMLInputElement>(null);
   const submitForm: FormEventHandler = async (e) => {
     e.preventDefault();

@@ -62,7 +62,7 @@ export default function PMStationApp() {
     ENV: { firebaseConfig, csrf },
   } = useLoaderData<PUBLIC_ENV>();
 
-  useFirebase("pm-station", firebaseConfig);
+  useFirebase(firebaseConfig);
 
   return (
     <>

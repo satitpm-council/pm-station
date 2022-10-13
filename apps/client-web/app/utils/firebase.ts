@@ -1,34 +1,43 @@
 import type { FirebaseApp, FirebaseError, FirebaseOptions } from "firebase/app";
 import { initializeApp } from "firebase/app";
-import type { Auth } from "firebase/auth";
+import type { Auth, User } from "firebase/auth";
+import { onIdTokenChanged } from "firebase/auth";
 import { getAuth } from "firebase/auth";
+import type { Firestore } from "firebase/firestore";
+import { getFirestore } from "firebase/firestore";
+import { useEffect, useState } from "react";
 
 type FirebaseStore = {
   app: FirebaseApp;
   auth: Auth;
+  db: Firestore;
 };
 
-type FirebaseAppName = "pm-station";
-let firebaseStore: Map<FirebaseAppName, FirebaseStore> = new Map();
+let firebaseStore: FirebaseStore;
 
-export const useFirebase = (
-  appName: FirebaseAppName,
-  initialConfig?: FirebaseOptions
-): FirebaseStore => {
-  if (firebaseStore && firebaseStore.has(appName)) {
-    return firebaseStore.get(appName) as FirebaseStore;
+export const useFirebase = (initialConfig?: FirebaseOptions): FirebaseStore => {
+  if (firebaseStore) {
+    return firebaseStore;
   }
   if (initialConfig) {
-    const app = initializeApp(initialConfig, appName);
+    const app = initializeApp(initialConfig);
     const auth = getAuth(app);
+    const db = getFirestore(app);
     auth.languageCode = "th";
-    const store: FirebaseStore = { app, auth };
-    firebaseStore.set(appName, store);
+    const store: FirebaseStore = { app, auth, db };
+    firebaseStore = store;
     return store;
   }
   throw new Error(
     "Attempt to access the firebase instance, but wasn't initialized properly."
   );
+};
+
+export const useFirebaseUser = () => {
+  const { auth } = useFirebase();
+  const [user, setUser] = useState<User | null | undefined>();
+  useEffect(() => onIdTokenChanged(auth, setUser), [auth]);
+  return user;
 };
 
 export const isFirebaseError = (err: unknown): err is FirebaseError => {
