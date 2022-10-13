@@ -1,7 +1,7 @@
 import type {
   SongRequestRecord,
   TrackResponse,
-} from "~/utils/pm-station/spotify/index.server";
+} from "~/schema/pm-station/songrequests/types";
 
 export type LoginAction = {
   token: string;

@@ -5,11 +5,11 @@ import { useLoaderData } from "@remix-run/react";
 import { isString } from "~/utils/guards";
 import type { TrackResponse } from "~/utils/pm-station/spotify/search";
 import { searchTrack } from "~/utils/pm-station/spotify/index.server";
-import dayjs from "~/utils/dayjs";
 import loadable from "@loadable/component";
 import { useState } from "react";
 import { captureException } from "@sentry/remix";
 import type { TrackModalProps } from "~/components/TrackModal";
+import { TrackMeta } from "~/components/SongRequest/base";
 
 const TrackModal = loadable<TrackModalProps>(() =>
   import("~/components/TrackModal").then((c) => c.SelectTrackModal)
@@ -37,9 +37,9 @@ export default function TrackResults() {
           <button
             onClick={() => viewTrack(track)}
             key={track.id}
-            className="md:flex items-center justify-center bg-white bg-opacity-10 rounded-lg hover:bg-opacity-20 min-w-0 min-h-0 transition-colors"
+            className="songrequest-item"
           >
-            <div className="items-center md:items-baseline px-4 py-3 md:p-6 flex flex-row md:flex-col gap-4 min-w-0 min-h-0 md:w-[200px] xl:w-[250px]">
+            <div className="songrequest-wrapper md:w-[200px] xl:w-[250px]">
               <div className="basis-1/4 min-w-[85px]">
                 <img
                   draggable={false}
@@ -50,22 +50,7 @@ export default function TrackResults() {
                 />
               </div>
               <div className="basis-3/4 text-gray-300 max-w-full text-sm flex flex-grow text-left flex-col items-start min-w-0 min-h-0 truncate">
-                <b className="text-white text-base truncate min-w-0 w-full mb-1">
-                  {track.explicit && (
-                    <span
-                      title="Explict"
-                      className="text-sm bg-gray-500 text-white py-1 px-2 inline mr-2"
-                    >
-                      E
-                    </span>
-                  )}
-                  {track.name}
-                </b>
-
-                <span className="truncate min-w-0 w-full">
-                  {track.artists.join("/")}
-                </span>
-                <span>{dayjs.duration(track.duration_ms).format("mm:ss")}</span>
+                <TrackMeta track={track} />
               </div>
             </div>
           </button>

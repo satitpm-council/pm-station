@@ -36,6 +36,7 @@ export const selectTrack = async (uid: string, response: TrackResponse) => {
         Omit<SongRequestRecord, "submissionCount" | "lastUpdatedAt">
       > = {
         ...response,
+        lastPlayedAt: null,
         version: 1,
       };
       transaction.set(trackDoc, record, {

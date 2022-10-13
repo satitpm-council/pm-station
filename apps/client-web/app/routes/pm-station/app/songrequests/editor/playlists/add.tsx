@@ -1,54 +1,66 @@
-import { captureException } from "@sentry/remix";
-import { useEffect, useRef, useState } from "react";
-import { useInViewport } from "react-in-viewport";
-import TrackThumbnail from "~/components/TrackThumbnail";
+import { PageHeader } from "~/components/Header";
+import { withTitle } from "~/utils/pm-station/client";
 import dayjs from "~/utils/dayjs";
-
-import { useSongRequests } from "~/utils/pm-station/songrequests";
-import type { ApproveTrackModalProps } from "~/components/TrackModal";
-
-import loadable from "@loadable/component";
+import RandomTrackSelector from "~/utils/pm-station/songrequests/random.client";
+import { useEffect, useRef, useState } from "react";
+import { useFirebase } from "~/utils/firebase";
 import type { SongRequestRecord } from "~/schema/pm-station/songrequests/types";
+import TrackThumbnail from "~/components/TrackThumbnail";
+import type { ChannelMessage } from "~/utils/pm-station/playlists/channel";
+import { ChannelName } from "~/utils/pm-station/playlists/channel";
 
-const TrackModal = loadable<ApproveTrackModalProps>(() =>
-  import("~/components/TrackModal").then((c) => c.ApproveTrackModal)
-);
+export const meta = withTitle("เพิ่มรายการเพลง");
 
-export default function ListSongRequestComponent() {
-  const [track, viewTrack] = useState<SongRequestRecord>();
-  const ref = useRef<HTMLDivElement | null>(null);
-  const { inViewport } = useInViewport(ref);
-
-  const { data, error, setSize, isReachingEnd, isRefreshing } =
-    useSongRequests();
+export default function AddPlaylists() {
+  const channel = useRef<BroadcastChannel>();
+  const [data, setData] = useState<SongRequestRecord[]>();
+  const { db } = useFirebase();
+  const random = useRef<RandomTrackSelector>();
+  useEffect(() => {
+    random.current = new RandomTrackSelector(db);
+  }, [db]);
 
   useEffect(() => {
-    if (error) {
-      console.error(error);
-      captureException(error);
-    }
-  }, [error]);
-
-  const isInitial = useRef<boolean>(false);
-  useEffect(() => {
-    if (isReachingEnd === undefined || isReachingEnd === undefined) return;
-    if (!isInitial.current) {
-      isInitial.current = true;
-      return;
-    }
-    if (inViewport && !isReachingEnd && !isRefreshing) {
-      setSize((size) => size + 1);
-    }
-  }, [inViewport, isRefreshing, isReachingEnd, setSize]);
-
+    channel.current = new BroadcastChannel(ChannelName);
+    const messageHandler = (event: MessageEvent) => {
+      const data: ChannelMessage = event.data;
+      console.log(data);
+      if (data.method === "add") {
+        setData((d) => [...(d ?? []), data.track]);
+      }
+    };
+    channel.current.addEventListener("message", messageHandler);
+    return () => {
+      channel.current?.removeEventListener("message", messageHandler);
+      channel.current?.close();
+    };
+  }, []);
   return (
     <>
-      <TrackModal track={track} onClose={() => viewTrack(undefined)} />
+      <PageHeader title={"เพิ่มรายการเพลง"}>
+        เลือกเพลงสำหรับเพิ่มลงในรายการ
+      </PageHeader>
+      <button
+        className="px-4 py-2 bg-blue-500 text-white rounded"
+        onClick={() => random.current?.getRandomTracks(8).then(setData)}
+      >
+        Random
+      </button>
+      <button
+        onClick={() =>
+          window.open(
+            "/pm-station/app/songrequests/editor/playlists/selectSong",
+            "SelectSongPopup",
+            "width=635,height=600"
+          )
+        }
+      >
+        Open
+      </button>
       {data && (
         <div className="flex flex-row flex-wrap gap-4">
           {data.map((track) => (
             <button
-              onClick={() => viewTrack(track)}
               key={track?.id}
               className="w-full md:w-[unset] md:flex items-center justify-center bg-white bg-opacity-10 rounded-lg hover:bg-opacity-20 min-w-0 min-h-0 transition-colors"
             >
@@ -87,18 +99,21 @@ export default function ListSongRequestComponent() {
                     {dayjs.duration(track.duration_ms).format("mm:ss")}
                   </span>
                   <span>
+                    ส่งคำขอล่าสุดเมื่อวันที่{" "}
                     {dayjs(track.lastUpdatedAt).format("LL HH:mm น.")}
                   </span>
+                  {track.lastPlayedAt && track.lastPlayedAt.valueOf() > 0 && (
+                    <span>
+                      เล่นล่าสุดเมื่อวันที่{" "}
+                      {dayjs(track.lastPlayedAt).format("LL")}
+                    </span>
+                  )}
                 </div>
               </div>
             </button>
           ))}
         </div>
       )}
-
-      <div ref={ref} className="w-full">
-        {isReachingEnd ? "ข้อมูลแสดงครบแล้ว" : "กำลังโหลด..."}
-      </div>
     </>
   );
 }

@@ -37,8 +37,11 @@ export default function Sidebar() {
             user?.role !== undefined &&
             user.role >= UserRole.MODERATOR && (
               <>
-                <MenuItem route="/pm-station/app/songrequests/editor/list">
+                <MenuItem route="/pm-station/app/songrequests/editor">
                   จัดการคำขอเพลง
+                </MenuItem>
+                <MenuItem route="/pm-station/app/songrequests/editor/playlists">
+                  จัดการรายการคำขอเพลง
                 </MenuItem>
               </>
             )}

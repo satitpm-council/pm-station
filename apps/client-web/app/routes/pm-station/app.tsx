@@ -9,8 +9,8 @@ import sidebarOverrides from "~/styles/sidebar.css";
 import { Header } from "~/components/Header";
 import type { User } from "~/utils/pm-station/client";
 import { verifySession } from "~/utils/pm-station/auth.server";
-import { Bars4Icon } from "@heroicons/react/20/solid";
-import { useEffect, useState } from "react";
+import { Bars4Icon, XMarkIcon } from "@heroicons/react/20/solid";
+import { useCallback, useEffect, useState } from "react";
 import Sidebar from "~/components/Sidebar";
 import { useFirebase } from "~/utils/firebase";
 import { useAuthenticityToken } from "remix-utils";
@@ -58,7 +58,7 @@ export default function Index() {
     setOpen(false);
   }, [matches]);
 
-  const { auth } = useFirebase("pm-station");
+  const { auth } = useFirebase();
   const sessionToken = useAuthenticityToken();
   useEffect(() => {
     if (!sessionToken) return;
@@ -82,19 +82,33 @@ export default function Index() {
     }
   }, [auth, sessionToken]);
 
+  const [isPopup, setIsPopup] = useState(false);
+
+  useEffect(() => {
+    setIsPopup(window.opener !== null);
+  }, []);
+
+  const openMenu = useCallback(() => setOpen(true), []);
+  const closePopup = useCallback(() => window.close(), []);
   return (
     <div className="overflow-hidden flex  items-stretch h-screen gap-4 bg-gradient-to-b from-[#151515] to-[#121212] text-white">
-      <ProSidebar toggled={open} onToggle={setOpen} breakPoint="md">
-        <Sidebar />
-      </ProSidebar>
+      {!isPopup && (
+        <ProSidebar toggled={open} onToggle={setOpen} breakPoint="md">
+          <Sidebar />
+        </ProSidebar>
+      )}
       <div className="flex flex-col overflow-auto h-full min-h-screen w-full">
         <nav className="flex flex-row gap-1 items-center px-4 py-2 md:hidden">
           <button
             title="เปิดแถบนำทาง"
-            onClick={() => setOpen(true)}
+            onClick={isPopup ? closePopup : openMenu}
             className="rounded-full bg-white bg-opacity-10 hover:bg-opacity-20 transition-colors p-2.5"
           >
-            <Bars4Icon className="h-5 w-5" />
+            {isPopup ? (
+              <XMarkIcon className="h-5 w-5" />
+            ) : (
+              <Bars4Icon className="h-5 w-5" />
+            )}
           </button>
           <Link to="/pm-station/app" title="PM Station" className="scale-90">
             <Header />

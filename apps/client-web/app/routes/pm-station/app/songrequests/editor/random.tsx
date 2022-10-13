@@ -4,7 +4,7 @@ import { useFirebase } from "~/utils/firebase";
 import RandomTrackSelector from "~/utils/pm-station/songrequests/random.client";
 
 export default function Random() {
-  const { app } = useFirebase("pm-station");
+  const { app } = useFirebase();
   const instance = useRef<RandomTrackSelector>();
   useEffect(() => {
     if (!instance.current) {
