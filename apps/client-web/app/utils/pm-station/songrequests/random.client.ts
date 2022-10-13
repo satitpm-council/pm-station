@@ -4,12 +4,14 @@ import type {
   QueryConstraint,
   WhereFilterOp,
 } from "firebase/firestore";
+import { documentId } from "firebase/firestore";
 import { limit } from "firebase/firestore";
 import { collection, getDocs, query } from "firebase/firestore";
 import { orderBy } from "firebase/firestore";
 import { where } from "firebase/firestore";
 import type { TypeOf } from "zod";
 import { SongRequestRecord } from "~/schema/pm-station/songrequests/schema";
+import { isString } from "~/utils/guards";
 import { trackId } from "../spotify/trackId";
 import { convertFirestoreData } from "./result";
 
@@ -21,6 +23,30 @@ enum RandomStrategy {
   "Lesser_DESC" = 3,
 }
 
+type RandomStrategyResult = {
+  op: ">=" | "<=";
+  order: OrderByDirection;
+};
+
+const AllowedOp: RandomStrategyResult["op"][] = ["<=", ">="];
+
+const __dangerouslyEvalMath = (
+  a: string,
+  op: RandomStrategyResult["op"],
+  b: string
+) => {
+  if (
+    !isString(a) ||
+    !isString(op) ||
+    !AllowedOp.includes(op) ||
+    !isString(b)
+  ) {
+    throw new Error("Invalid arguments");
+  }
+  // eslint-disable-next-line no-new-func
+  return Function(`'use strict'; return ("${a}" ${op} "${b}");`)();
+};
+
 const shuffleArray = <T>(input: T[]): T[] => {
   const array = input.slice();
   for (let i = array.length - 1; i > 0; i--) {
@@ -30,10 +56,7 @@ const shuffleArray = <T>(input: T[]): T[] => {
   return array;
 };
 
-const fromRandomStrategy = (
-  strategy: RandomStrategy,
-  random: string
-): QueryConstraint[] => {
+const fromRandomStrategy = (strategy: RandomStrategy): RandomStrategyResult => {
   let op: WhereFilterOp;
   let order: OrderByDirection;
   switch (strategy) {
@@ -54,13 +77,37 @@ const fromRandomStrategy = (
     case RandomStrategy.Lesser_DESC:
       order = "desc";
   }
-  return [where("id", op, random), orderBy("id", order)];
+  return {
+    op,
+    order,
+  };
 };
 
 export default class RandomTrackSelector {
   private db: Firestore;
+  private processedTrackIds: Set<string>;
   constructor(db: Firestore) {
     this.db = db;
+    this.processedTrackIds = new Set();
+  }
+
+  private setProcessedTrackId(trackId: string) {
+    const array = Array.from(this.processedTrackIds.values());
+    array.push(trackId);
+    this.processedTrackIds = new Set(array.sort());
+  }
+
+  private getNotInCaluse(
+    trackId: string,
+    op: RandomStrategyResult["op"]
+  ): QueryConstraint[] {
+    const array = Array.from(this.processedTrackIds.values());
+    const closestIndex = array.findIndex((id) =>
+      __dangerouslyEvalMath(id, op, trackId)
+    );
+    return closestIndex > -1
+      ? [where(documentId(), "not-in", array.slice(closestIndex).slice(0, 10))]
+      : [];
   }
 
   /**
@@ -69,15 +116,25 @@ export default class RandomTrackSelector {
    * @param strategy Random stretegy to be used.
    */
   async getRandomTrackByStrategy(trackId: string, strategy: RandomStrategy) {
+    const { op, order } = fromRandomStrategy(strategy);
+    const notIn = this.getNotInCaluse(trackId, op);
+    console.log("NOT IN ", notIn);
     const { docs } = await getDocs(
       query(
         collection(this.db, "/songrequests"),
-        ...fromRandomStrategy(strategy, trackId),
+        where("lastPlayedAt", "==", null),
+        where(documentId(), op, trackId),
+        ...notIn,
+        orderBy(documentId(), order),
         limit(1)
       )
     );
     if (docs.length !== 0) {
-      return convertFirestoreData(docs[0], SongRequestRecord);
+      const data = convertFirestoreData(docs[0], SongRequestRecord);
+      if (data && !this.processedTrackIds.has(data.id)) {
+        this.setProcessedTrackId(data.id);
+        return data;
+      }
     }
   }
 
@@ -112,6 +169,7 @@ export default class RandomTrackSelector {
             const value = await this.getRandomTrack();
             if (value && !selectedIds.has(value.id)) {
               selected.add(value);
+              this.setProcessedTrackId(value.id);
               selectedIds.add(value.id);
             }
           })

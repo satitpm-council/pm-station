@@ -9,8 +9,10 @@ import { ZodError } from "zod";
 import { captureException } from "@sentry/remix";
 
 export type Result<T extends Record<string, any>> = T & {
+  id: string;
   __snapshot: QueryDocumentSnapshot;
 };
+
 export const convertFirestoreData = <
   Schema extends ZodObject<Shape>,
   Shape extends ZodRawShape = ZodRawShape,
@@ -18,12 +20,14 @@ export const convertFirestoreData = <
 >(
   __snapshot: DocumentSnapshot,
   schema: Schema,
-  mutateDoc = true
+  options?: { mutateDoc?: boolean; withId?: boolean }
 ): Result<T> => {
+  const { mutateDoc, withId } = options ?? { mutateDoc: true, withId: false };
   try {
     const validated = schema.parse(__snapshot.data());
     const returns = {
       __snapshot,
+      ...(withId ? { id: __snapshot.id } : {}),
       ...validated,
     } as Result<T>;
     if (mutateDoc) {
