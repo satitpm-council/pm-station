@@ -8,7 +8,7 @@ import { SubmitButton } from "~/components/SubmitButton";
 import { options } from "~/utils/pm-station/songrequests/list";
 import { useSafeParams } from "~/utils/params";
 import { AdminSongRequest } from "~/components/SongRequest/admin";
-import { ApproveTrackModal } from "~/components/TrackModal";
+import { AdminTrackModal } from "~/components/TrackModal";
 import type { SongRequestRecord } from "~/schema/pm-station/songrequests/types";
 import {
   FilterOptions,
@@ -47,7 +47,11 @@ export default function ListSongRequest() {
           <SubmitButton>ค้นหา</SubmitButton>
         </fieldset>
       </form>
-      <ApproveTrackModal track={track} onClose={() => viewTrack(undefined)} />
+      <AdminTrackModal
+        type="addToPlaylist"
+        track={track}
+        onClose={() => viewTrack(undefined)}
+      />
       <AdminSongRequest onItemClick={viewTrack} {...settings} />
     </>
   );

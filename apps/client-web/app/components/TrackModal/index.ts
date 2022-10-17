@@ -1,3 +1,3 @@
 export * from "./select";
-export * from "./approve";
+export * from "./admin";
 export type { TrackModalProps } from "./base";

@@ -9,7 +9,7 @@ import { options, defaults } from "~/utils/pm-station/songrequests/list";
 import { useSongRequestSummary } from "~/utils/pm-station/songrequests";
 import { useSafeParams } from "~/utils/params";
 import { AdminSongRequest } from "~/components/SongRequest/admin";
-import { ApproveTrackModal } from "~/components/TrackModal";
+import { AdminTrackModal } from "~/components/TrackModal";
 import type { SongRequestRecord } from "~/schema/pm-station/songrequests/types";
 import {
   SortOptions,
@@ -44,7 +44,7 @@ export default function ListSongRequest() {
           มีผู้ส่งคำขอทั้งหมด {data.submissionCount} คน {data.trackCount} เพลง
         </div>
       )}
-      <ApproveTrackModal track={track} onClose={() => viewTrack(undefined)} />
+      <AdminTrackModal track={track} onClose={() => viewTrack(undefined)} />
       <AdminSongRequest onItemClick={viewTrack} {...settings} />
     </>
   );

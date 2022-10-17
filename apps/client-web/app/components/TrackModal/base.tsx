@@ -58,7 +58,7 @@ export default function TrackModal({
   }, [onClose]);
   return (
     <Transition appear show={isOpen} as={Fragment} afterLeave={afterLeave}>
-      <Dialog as="div" className="relative z-[9999]" onClose={closeModal}>
+      <Dialog as="div" className="relative z-[500]" onClose={closeModal}>
         <Transition.Child
           as={Fragment}
           enter="ease-out duration-300"
@@ -82,7 +82,7 @@ export default function TrackModal({
               leaveFrom="opacity-100 scale-100"
               leaveTo="opacity-0 scale-95"
             >
-              <Dialog.Panel className="flex flex-col md:flex-row items-center gap-8 w-full max-w-sm mr-5 sm:max-w-md md:max-w-2xl transform overflow-hidden rounded-xl bg-stone-800 px-6 py-10 md:py-8 shadow-xl transition-all text-white">
+              <Dialog.Panel className="flex flex-col md:flex-row items-center gap-8 w-full max-w-sm mr-5 sm:max-w-md md:max-w-2xl transform overflow-hidden rounded-xl bg-stone-800 px-6 py-10 shadow-xl transition-all text-white">
                 <button
                   onClick={closeModal}
                   className="absolute top-4 right-4 items-center justify-center md:items-start text-center md:text-left focus:outline-none opacity-80 hover:opacity-50 transition-opacity"
