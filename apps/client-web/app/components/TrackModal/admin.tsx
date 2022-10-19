@@ -46,7 +46,9 @@ export const AdminTrackModal = <T extends CommandAction | undefined>(
   const actionHandler = useCallback(() => {
     if (props.type) {
       if (track && props.type === "removeFromPlaylist") {
-        (props as CommandActionProps<"removeFromPlaylist">).onAction(track);
+        (props as unknown as CommandActionProps<"removeFromPlaylist">).onAction(
+          track
+        );
       }
       closeModal();
     }
@@ -55,17 +57,18 @@ export const AdminTrackModal = <T extends CommandAction | undefined>(
   return (
     <TrackModal
       className="text-sm flex flex-col gap-1"
-      {...props}
+      onClose={props.onClose}
       {...stableTrack}
     >
       <span>คนส่งคำขอทั้งหมด {track?.submissionCount} คน</span>
       <span>
         เปลี่ยนแปลงล่าสุดเมื่อ {dayjs(track?.lastUpdatedAt).format("LLL น.")}
       </span>
-      {track?.lastPlayedAt && track.lastPlayedAt.valueOf() > 0 ? (
+      {track?.lastPlayedAt && track.lastPlayedAt.valueOf() > 0 && (
         <span>เปิดล่าสุดเมื่อ {dayjs(track?.lastPlayedAt).format("LL")}</span>
-      ) : (
-        canShowCommands && <Commands track={track} onAction={actionHandler} />
+      )}
+      {canShowCommands && (
+        <Commands type={props.type} track={track} onAction={actionHandler} />
       )}
     </TrackModal>
   );

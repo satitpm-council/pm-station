@@ -4,7 +4,7 @@ import { Form, useActionData, useTransition } from "@remix-run/react";
 import { PageHeader } from "~/components/Header";
 import { SubmitButton } from "~/components/SubmitButton";
 import { getFormData } from "~/utils/api";
-import type { UpdateProfileActionResponse } from "~/utils/pm-station/api-types";
+import type { ActionResponse } from "~/utils/pm-station/api-types";
 import type { User, UserClaims } from "~/utils/pm-station/client";
 import { UserRole } from "~/utils/pm-station/client";
 import { verifySession, updateProfile } from "~/utils/pm-station/auth.server";
@@ -35,7 +35,7 @@ export const action: ActionFunction = async ({ request }) => {
     };
     if (user.role !== undefined && user.type) {
       // user already registered, display a success message
-      return json<UpdateProfileActionResponse>(
+      return json<ActionResponse>(
         { success: true },
         {
           headers,
@@ -45,15 +45,12 @@ export const action: ActionFunction = async ({ request }) => {
     return redirect("/pm-station/app", { headers });
   } catch (err) {
     console.error(err);
-    return json<UpdateProfileActionResponse>(
-      { success: false, error: "bad-request" },
-      400
-    );
+    return json<ActionResponse>({ success: false, error: "bad-request" }, 400);
   }
 };
 
 export default function Profile() {
-  const { success, error } = useActionData<UpdateProfileActionResponse>() ?? {};
+  const { success, error } = useActionData<ActionResponse>() ?? {};
   const transition = useTransition();
   const { user, isRegistered } = useUser();
   useEffect(() => {

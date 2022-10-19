@@ -24,18 +24,16 @@ export interface SelectTrackAction extends ActionWithSession {
   trackId: string;
 }
 
-export type SelectTrackActionResponse = {
-  success: boolean;
-  track?: TrackResponse;
-  code?: string;
-};
-
-export type UpdateProfileActionResponse = {
+export interface ActionResponse {
   success: boolean;
   error?: string;
-};
+}
 
-export type ListSongRequestsResponse = {
-  success: boolean;
+export interface SelectTrackActionResponse extends ActionResponse {
+  track?: TrackResponse;
+  code?: string;
+}
+
+export interface ListSongRequestsResponse extends ActionResponse {
   data: SongRequestRecord[];
-};
+}

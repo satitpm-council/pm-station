@@ -12,7 +12,7 @@ export const getLastPlayedAtFromFilter = (
   }
   if (filter === "played") {
     return [
-      where("lastPlayedAt", ">=", new Date(0)),
+      where("lastPlayedAt", ">", new Date(0)),
       orderBy("lastPlayedAt", "asc"),
     ];
   }

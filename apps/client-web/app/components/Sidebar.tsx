@@ -40,7 +40,7 @@ export default function Sidebar() {
                 <MenuItem route="/pm-station/app/songrequests/editor">
                   จัดการคำขอเพลง
                 </MenuItem>
-                <MenuItem route="/pm-station/app/songrequests/editor/playlists">
+                <MenuItem route="/pm-station/app/songrequests/playlists">
                   จัดการรายการคำขอเพลง
                 </MenuItem>
               </>

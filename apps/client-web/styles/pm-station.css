@@ -20,20 +20,24 @@
 
 .pm-station-btn,
 .pm-station-input {
-  @apply rounded-md transition-colors;
+  @apply rounded-md transition-colors disabled:cursor-not-allowed;
 }
 
 .pm-station-btn {
   @apply px-6 py-3 md:px-4;
 }
 
-.pm-station-input {
+.pm-station-input[type="number"] {
+  @apply text-lg pl-4 pr-2 py-2 text-center;
+}
+
+.pm-station-input:not([type="number"]) {
   @apply px-4 py-3;
 }
 
 .pm-station-input {
   @apply bg-stone-700 border-stone-500 pm-station-focus-ring focus:ring-gray-400
-   disabled:cursor-not-allowed border border-transparent focus:border-transparent sm:text-sm;
+  border border-transparent focus:border-transparent sm:text-sm;
 }
 
 form label {

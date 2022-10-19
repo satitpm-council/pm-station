@@ -5,6 +5,7 @@ import { ChannelName } from "~/utils/pm-station/playlists/channel";
 import { toast } from "react-toastify";
 import { captureException } from "@sentry/remix";
 
+const ToastId = "playlist-track-added";
 const AddTrackToPlaylist = ({
   track,
   onClose,
@@ -28,15 +29,13 @@ const AddTrackToPlaylist = ({
     try {
       channel.current?.postMessage(message);
       onClose();
-      setTimeout(
-        () =>
-          toast(<b>เพิ่มเพลงลงในรายการแล้ว</b>, {
-            type: "success",
-            pauseOnFocusLoss: false,
-            toastId: "playlist-track-added"
-          }),
-        200
-      );
+      setTimeout(() => {
+        toast(<b>เพิ่มเพลงลงในรายการแล้ว</b>, {
+          type: "success",
+          pauseOnFocusLoss: false,
+          toastId: ToastId,
+        });
+      }, 200);
     } catch (err) {
       console.error(err);
       captureException(err);

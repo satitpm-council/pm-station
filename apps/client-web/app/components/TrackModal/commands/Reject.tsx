@@ -6,9 +6,10 @@ import { updateDoc } from "@lemasc/swr-firestore";
 import { useSafeParams } from "~/utils/params";
 import { useSongRequestMutate } from "~/utils/pm-station/songrequests/hook";
 
+export type TrackStatus = ListParams["filter"];
 type TrackStatusState = {
-  trackStatus: ListParams["filter"];
-  setTrackStatus: (status: ListParams["filter"]) => void;
+  trackStatus: TrackStatus;
+  setTrackStatus: (status: TrackStatus) => void;
 };
 
 const RejectButton = ({
