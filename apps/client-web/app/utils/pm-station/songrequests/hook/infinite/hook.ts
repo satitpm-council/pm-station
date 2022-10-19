@@ -11,13 +11,14 @@ import { zodValidator } from "../../../zodValidator";
 import { getKey } from "./key";
 import type { TypeOf } from "zod";
 import { getLastPlayedAtFromFilter } from "./filter";
+import { useSWRConfig } from "swr";
 
 const FETCH_LIMIT = 6;
 type Record = TypeOf<typeof SongRequestRecord>;
 
 export const useSongRequests = (params: ListParams) => {
   const context: ListParams = useMemo(() => params, [params]);
-
+  const { mutate: mutator } = useSWRConfig();
   const user = useFirebaseUser();
   const {
     data: _data,
@@ -47,6 +48,7 @@ export const useSongRequests = (params: ListParams) => {
         {
           ignoreFirestoreDocumentSnapshotField: false,
           validator: zodValidator(SongRequestRecord),
+          mutate: mutator,
         }
       );
     },

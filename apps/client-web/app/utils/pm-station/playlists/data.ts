@@ -17,12 +17,12 @@ import { usePlaylistParam } from "./param";
 export const usePlaylistData = () => {
   const playlistId = usePlaylistParam();
   const { data: playlistData } = useDocument(
-    playlistId ? `/playlists/${playlistId}` : null,
+    playlistId ? `playlists/${playlistId}` : null,
     { validator: zodValidator(PlaylistRecord) }
   );
   const { db } = useFirebase();
   const { data } = useCollection<TypeOf<typeof SongRequestRecord>>(
-    playlistId ? "/songrequests" : null,
+    playlistId ? "songrequests" : null,
     {
       constraints: playlistId
         ? [

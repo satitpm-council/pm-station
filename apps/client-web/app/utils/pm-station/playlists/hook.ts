@@ -9,7 +9,7 @@ import { zodValidator } from "../zodValidator";
 export const usePlaylists = () => {
   const user = useFirebaseUser();
   return useCollection<TypeOf<typeof PlaylistRecord>>(
-    user ? "/playlists" : null,
+    user ? "playlists" : null,
     {
       constraints: [orderBy("queuedDate", "asc")],
     },

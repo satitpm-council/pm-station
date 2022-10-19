@@ -8,6 +8,6 @@ type Program = {
 export const usePrograms = () => {
   const { user } = useUser();
   return useCollection<Program>(
-    user && user.role && user.role > UserRole.USER ? "/programs" : null
+    user && user.role && user.role > UserRole.USER ? "programs" : null
   );
 };

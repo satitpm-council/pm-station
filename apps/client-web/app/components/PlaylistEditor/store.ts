@@ -3,11 +3,10 @@ import { subscribeWithSelector } from "zustand/middleware";
 import dayjs from "~/utils/dayjs";
 import type { SongRequestRecord } from "~/schema/pm-station/songrequests/types";
 import type { PlaylistRecord } from "~/schema/pm-station/playlists/types";
-import type { ValidatedDocument } from "@lemasc/swr-firestore";
 
 type PlaylistEditorVars = {
   /** The current playlist, undefined means create a new one. */
-  targetPlaylist?: ValidatedDocument<PlaylistRecord>;
+  targetPlaylist?: PlaylistRecord & { id: string };
   track?: SongRequestRecord;
   /** The target number of tracks to be in this playlist. */
   count: number;

@@ -1652,9 +1652,10 @@
     "@jridgewell/resolve-uri" "^3.0.3"
     "@jridgewell/sourcemap-codec" "^1.4.10"
 
-"@lemasc/swr-firestore@https://github.com/lemasc/swr-firestore.git":
-  version "2.0.0-beta.1"
-  resolved "https://github.com/lemasc/swr-firestore.git#41f027b98a49ff1916c149017fdf8b35c7191699"
+"@lemasc/swr-firestore@^2.0.0":
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/@lemasc/swr-firestore/-/swr-firestore-2.0.0.tgz#634f70925fd16e7f82b504c78d40c342e4f83fbb"
+  integrity sha512-027fC4R3rbh7VSHUVnA3sbSmscK4ES2IZekNDJ8GYSjoVOJ1EnHMEqq6uZeycTHB2KYGo/5JTaWJt3lZTpew4w==
   dependencies:
     lodash.get "^4.4.2"
     lodash.set "^4.3.2"
