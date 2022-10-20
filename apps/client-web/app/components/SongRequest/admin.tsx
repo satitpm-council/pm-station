@@ -4,15 +4,15 @@ import { useDocument, isDocumentValid } from "@lemasc/swr-firestore";
 import dayjs from "dayjs";
 import type { TypeOf } from "zod";
 
-import algoliasearch from "algoliasearch/lite";
 import { Configure, useInfiniteHits } from "react-instantsearch-hooks-web";
-import { InstantSearch, SearchBox } from "react-instantsearch-hooks-web";
+import { SearchBox } from "react-instantsearch-hooks-web";
 import { SongRequestSearchRecord } from "~/schema/pm-station/songrequests/schema";
 
 import InfiniteScroll from "../InfiniteScroll";
 import { SongRequestRecordList } from "./list";
 import type { ListProps } from "./list";
-import { SortOptions } from "./admin/sort";
+import { FilterOptions, SortOptions } from "./admin/sort";
+import RefinementsPanel from "./admin/RefinementsPanel";
 import type { CustomLabelComponent } from "./admin/RefinementList";
 import RefinementList from "./admin/RefinementList";
 
@@ -22,18 +22,6 @@ import { PlaylistRecord } from "~/schema/pm-station/playlists/schema";
 const Stats = loadable(() => import("./admin/Stats"), {
   ssr: false,
 });
-
-if (
-  !process.env.PM_STATION_ALGOLIA_APP_ID ||
-  !process.env.PM_STATION_ALGOLIA_API_KEY
-) {
-  throw new Error("Cannot initialize Algolia, env not found.");
-}
-
-const searchClient = algoliasearch(
-  process.env.PM_STATION_ALGOLIA_APP_ID,
-  process.env.PM_STATION_ALGOLIA_API_KEY
-);
 
 const CustomHits = (props: ListProps) => {
   const { hits, showMore, isLastPage, results } = useInfiniteHits();
@@ -74,10 +62,11 @@ const PlaylistCustomLabel: CustomLabelComponent = ({ value: path }) => {
 
 export function AdminSongRequest(props: ListProps) {
   return (
-    <InstantSearch searchClient={searchClient} indexName="station_songrequests">
+    <>
       <Configure hitsPerPage={10} />
       <div className="flex flex-row gap-4 flex-wrap text-sm max-w-6xl">
         <SortOptions />
+        <FilterOptions />
         <SearchBox
           classNames={{
             form: "flex flex-row gap-3",
@@ -86,22 +75,24 @@ export function AdminSongRequest(props: ListProps) {
           }}
           placeholder="ค้นหา..."
         />
-        <Stats />
       </div>
-      <div className="flex flex-row items-start gap-6">
-        <div className="flex flex-col w-full max-w-[15rem] divide-y divide-gray-400">
-          <RefinementList title="จำนวนคำขอเพลง" attribute="submissionCount" />
-          <RefinementList title="ศิลปิน" attribute="artists" searchable />{" "}
-          <RefinementList
-            title="รายการเพลง"
-            attribute="playlistId"
-            CustomLabel={PlaylistCustomLabel}
-          />
-        </div>
+      <div className="flex flex-col md:flex-row items-start gap-6">
+        <aside className="flex flex-row items-center justify-center gap-4 md:gap-0 md:flex-col">
+          <Stats />
+          <RefinementsPanel>
+            <RefinementList title="จำนวนคำขอเพลง" attribute="submissionCount" />
+            <RefinementList title="ศิลปิน" attribute="artists" searchable />
+            <RefinementList
+              title="รายการเพลง"
+              attribute="playlistId"
+              CustomLabel={PlaylistCustomLabel}
+            />
+          </RefinementsPanel>
+        </aside>
         <div className="flex-grow flex flex-col gap-4">
           <CustomHits {...props} />
         </div>
       </div>
-    </InstantSearch>
+    </>
   );
 }

@@ -15,6 +15,6 @@ export default function Stats() {
   const { nbHits } = useStats();
 
   return (
-    <p className="leading-6 self-center">แสดงผลลัพธ์ทั้งหมด {nbHits} รายการ</p>
+    <p className="leading-6 text-sm">แสดงผลลัพธ์ทั้งหมด {nbHits} รายการ</p>
   );
 }
