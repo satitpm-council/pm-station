@@ -13,6 +13,7 @@ import type { TypeOf } from "zod";
 import { SongRequestRecord } from "~/schema/pm-station/songrequests/schema";
 import { isString } from "~/utils/guards";
 import { trackId } from "../spotify/trackId";
+import { LastPlayedDate } from "./date";
 import { convertFirestoreData } from "./result";
 
 const STRATEGY_COUNT = 4;
@@ -121,7 +122,7 @@ export default class RandomTrackSelector {
     const { docs } = await getDocs(
       query(
         collection(this.db, "/songrequests"),
-        where("lastPlayedAt", "==", null),
+        where("lastPlayedAt", "==", LastPlayedDate.Idle),
         where(documentId(), op, trackId),
         ...notIn,
         orderBy(documentId(), order),

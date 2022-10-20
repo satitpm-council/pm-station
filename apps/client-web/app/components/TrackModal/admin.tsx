@@ -10,6 +10,7 @@ import { SongRequestRecord } from "~/schema/pm-station/songrequests/schema";
 import { useSafeParams } from "~/utils/params";
 import { UserRole, useUser } from "~/utils/pm-station/client";
 import { defaults, options } from "~/utils/pm-station/songrequests";
+import { getStatusFromLastPlayedDate } from "~/utils/pm-station/songrequests/date";
 import { zodValidator } from "~/utils/pm-station/zodValidator";
 
 import type { TrackModalProps } from "./base";
@@ -98,7 +99,7 @@ export const AdminTrackModal = <
       <span>
         เปลี่ยนแปลงล่าสุดเมื่อ {dayjs(track?.lastUpdatedAt).format("LLL น.")}
       </span>
-      {track?.lastPlayedAt && track.lastPlayedAt.valueOf() > 0 && (
+      {getStatusFromLastPlayedDate(track?.lastPlayedAt) === "played" && (
         <span>เปิดล่าสุดเมื่อ {dayjs(track?.lastPlayedAt).format("LL")}</span>
       )}
       {canShowCommands && (

@@ -7,6 +7,7 @@ import type {
 } from "~/schema/pm-station/playlists/types";
 import admin from "../firebase-admin.server";
 import dayjs from "dayjs";
+import { LastPlayedDate } from "../songrequests/date";
 
 const PlaylistIdField: keyof SongRequestRecord = "playlistId";
 
@@ -42,7 +43,7 @@ export const setPlaylist = async (
       tracksWithId.docs.forEach((doc) => {
         if (!tracksSet.has(doc.id)) {
           transaction.update(doc.ref, {
-            lastPlayedAt: null,
+            lastPlayedAt: LastPlayedDate.Idle,
             [PlaylistIdField]: FieldValue.arrayRemove(playlistDoc),
           });
         }
@@ -59,7 +60,8 @@ export const setPlaylist = async (
         .forEach((ref) => {
           transaction.update(ref, {
             // TODO: Use the last playlist lastPlayedAt if exists.
-            lastPlayedAt: status === "played" ? queuedDate.toDate() : null,
+            lastPlayedAt:
+              status === "played" ? queuedDate.toDate() : new Date(0),
             [PlaylistIdField]: FieldValue.arrayUnion(playlistDoc),
           });
         });

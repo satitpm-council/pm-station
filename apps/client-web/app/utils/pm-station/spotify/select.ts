@@ -11,6 +11,7 @@ import type {
   SongRequestRecord,
   SongRequestSubmission,
 } from "~/schema/pm-station/songrequests/types";
+import { LastPlayedDate } from "../songrequests/date";
 
 export type SongRequestRecord_V0 = {
   id: string;
@@ -36,7 +37,7 @@ export const selectTrack = async (uid: string, response: TrackResponse) => {
         Omit<SongRequestRecord, "submissionCount" | "lastUpdatedAt">
       > = {
         ...response,
-        lastPlayedAt: null,
+        lastPlayedAt: LastPlayedDate.Idle,
         version: 1,
       };
       transaction.set(trackDoc, record, {

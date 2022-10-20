@@ -1,6 +1,7 @@
 import loadable from "@loadable/component";
 import { useCallback, useEffect, useState } from "react";
 import type { ListParams } from "~/utils/pm-station/songrequests";
+import { getStatusFromLastPlayedDate } from "~/utils/pm-station/songrequests/date";
 import type { SongRequestRecord } from "~/schema/pm-station/songrequests/types";
 import type { CommandAction, CommandActionHandler } from "./types";
 
@@ -22,14 +23,7 @@ const AdminCommands = ({
   const [trackStatus, setTrackStatus] = useState<ListParams["filter"]>("idle");
 
   useEffect(
-    () =>
-      setTrackStatus(
-        track?.lastPlayedAt
-          ? track.lastPlayedAt.valueOf() === 0
-            ? "rejected"
-            : "played"
-          : "idle"
-      ),
+    () => setTrackStatus(getStatusFromLastPlayedDate(track?.lastPlayedAt)),
     [track?.lastPlayedAt]
   );
 
@@ -60,7 +54,7 @@ const AdminCommands = ({
           <RemoveTrackFromPlaylist track={track} onRemove={onAction} />
         ))}
       {/* If the track has already played, it can't be rejected. */}
-      {!track?.lastPlayedAt?.valueOf() && (
+      {getStatusFromLastPlayedDate(track?.lastPlayedAt) !== "played" && (
         <RejectButton
           track={track}
           trackStatus={trackStatus}

@@ -5,6 +5,7 @@ import { Item } from "./item";
 import type { ItemProps } from "./item";
 
 import type { SongRequestSearchRecord } from "~/schema/pm-station/songrequests/types";
+import { getStatusFromLastPlayedDate } from "~/utils/pm-station/songrequests/date";
 
 export type ListProps<
   T extends SongRequestSearchRecord = SongRequestSearchRecord
@@ -33,7 +34,7 @@ export const SongRequestRecordItem = <T extends SongRequestSearchRecord>({
       <div className="basis-3/4 text-gray-300 max-w-full text-sm flex flex-grow text-left flex-col items-start min-w-0 min-h-0 truncate">
         <TrackMeta track={track} />
         <span>{dayjs(track.lastUpdatedAt).format("ll HH:mm น.")}</span>
-        {track.lastPlayedAt?.valueOf?.() ? (
+        {getStatusFromLastPlayedDate(track.lastPlayedAt) === "played" ? (
           <span>เล่นล่าสุดเมื่อ {dayjs(track.lastPlayedAt).format("ll")}</span>
         ) : null}
       </div>

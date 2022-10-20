@@ -29,7 +29,7 @@ const SongRequestRecord = TrackResponse.extend({
   version: z.number().min(1),
   submissionCount: z.number(),
   lastUpdatedAt: z.preprocess(preprocessDate, z.date()),
-  lastPlayedAt: z.preprocess(preprocessDate, z.date()).nullable().default(null),
+  lastPlayedAt: z.preprocess(preprocessDate, z.date()),
   playlistId: z.array(z.preprocess(docRef, z.string())).optional(),
 });
 
