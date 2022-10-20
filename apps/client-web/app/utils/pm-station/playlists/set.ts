@@ -18,8 +18,8 @@ const PlaylistIdField: keyof SongRequestRecord = "playlistId";
  * @param targetPlaylistId (Optional) The playlist ID to updated.
  */
 export const setPlaylist = async (
-  data: Pick<SetPlaylistAction, "queuedDate" | "target">,
   tracks: string[],
+  data?: Pick<SetPlaylistAction, "queuedDate" | "target">,
   targetPlaylistId?: string
 ) => {
   const db = getFirestore(admin);
@@ -48,22 +48,23 @@ export const setPlaylist = async (
         }
       });
     }
-    // add, or update new tracks to include the playlistId
-    const queuedDate = dayjs(data.queuedDate).hour(7);
-    const status: PlaylistRecord["status"] = dayjs().isAfter(queuedDate)
-      ? "played"
-      : "queued";
-    tracks
-      .map((id) => songRequests.doc(id))
-      .forEach((ref) => {
-        transaction.update(ref, {
-          // TODO: Use the last playlist lastPlayedAt if exists.
-          lastPlayedAt: status === "played" ? queuedDate.toDate() : null,
-          [PlaylistIdField]: FieldValue.arrayUnion(playlistDoc),
+    if (data && tracks.length > 0) {
+      // add, or update new tracks to include the playlistId
+      const queuedDate = dayjs(data.queuedDate).hour(7);
+      const status: PlaylistRecord["status"] = dayjs().isAfter(queuedDate)
+        ? "played"
+        : "queued";
+      tracks
+        .map((id) => songRequests.doc(id))
+        .forEach((ref) => {
+          transaction.update(ref, {
+            // TODO: Use the last playlist lastPlayedAt if exists.
+            lastPlayedAt: status === "played" ? queuedDate.toDate() : null,
+            [PlaylistIdField]: FieldValue.arrayUnion(playlistDoc),
+          });
         });
-      });
-    // finally, update the playlist doc.
-    if (tracks.length > 0) {
+
+      // finally, update the playlist doc.
       const playlistData: PlaylistRecord = {
         queuedDate: queuedDate.toDate(),
         status,
@@ -71,8 +72,8 @@ export const setPlaylist = async (
         totalTracks: tracks.length,
       };
       transaction.set(playlistDoc, playlistData);
-    } else if (targetPlaylistId) {
-      // existing playlist and no tracks, delete it.
+    } else if (tracks.length === 0 && !data && targetPlaylistId) {
+      // existing playlist, no tracks, no data. delete it.
       transaction.delete(playlistDoc);
     }
   });

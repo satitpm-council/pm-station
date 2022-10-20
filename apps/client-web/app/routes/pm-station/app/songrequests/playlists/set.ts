@@ -11,7 +11,7 @@ export const action: ActionFunction = async ({ request }) => {
       await request.json()
     );
     try {
-      await setPlaylist({ queuedDate, target }, tracks, playlistId);
+      await setPlaylist(tracks, { queuedDate, target }, playlistId);
       return json<ActionResponse>({ success: true });
     } catch (err) {
       console.error(err);

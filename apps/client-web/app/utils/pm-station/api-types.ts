@@ -37,3 +37,7 @@ export interface SelectTrackActionResponse extends ActionResponse {
 export interface ListSongRequestsResponse extends ActionResponse {
   data: SongRequestRecord[];
 }
+
+export interface DeletePlaylistAction {
+  playlistId: string;
+}

@@ -68,13 +68,13 @@ const Button = memo<ButtonProps>(function Button(button) {
       key={button.text}
       title={button.text}
       className={classNames(
-        "pm-station-btn text-sm flex flex-row gap-1 items-center",
+        "pm-station-btn text-sm flex flex-row gap-2 items-center",
         button.className
       )}
       onClick={button.onClick}
       disabled={button.disabled}
     >
-      {button.icon && <button.icon className="h-5 w-5 -ml-1 -mt-0.5" />}
+      {button.icon && <button.icon className="h-5 w-5 -mt-0.5" />}
       {button.text}
     </button>
   );
