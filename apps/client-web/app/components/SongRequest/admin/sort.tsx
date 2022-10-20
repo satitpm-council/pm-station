@@ -1,7 +1,23 @@
-import type { ListParams } from "~/utils/pm-station/songrequests";
-import { options } from "~/utils/pm-station/songrequests";
+import type { ChangeEventHandler } from "react";
+import { useCallback } from "react";
+import { useSortBy } from "react-instantsearch-hooks-web";
 
-export function SortOptions({ settings }: { settings: ListParams }) {
+export function SortOptions() {
+  const { options, refine } = useSortBy({
+    items: [
+      { label: "ชื่อ", value: "station_songrequests" },
+      {
+        label: "วัน-เวลาส่ง",
+        value: "station_songrequests_lastUpdatedAt_desc",
+      },
+    ],
+  });
+  const onChange: ChangeEventHandler<HTMLSelectElement> = useCallback(
+    (e) => {
+      refine(e.currentTarget.value);
+    },
+    [refine]
+  );
   return (
     <>
       <div className="flex flex-row gap-4 items-center flex-grow w-full sm:w-[unset]">
@@ -11,48 +27,15 @@ export function SortOptions({ settings }: { settings: ListParams }) {
         <select
           name="sortBy"
           className="pm-station-input w-full flex-grow text-sm"
-          defaultValue={settings.sortBy}
+          onChange={onChange}
         >
-          {Object.entries(options["sortBy"]).map(([value, text]) => (
+          {options.map(({ value, label }) => (
             <option key={value} value={value}>
-              {text}
+              {label}
             </option>
           ))}
         </select>
       </div>
-      {Object.entries(options["order"]).map(([value, text]) => (
-        <div key={value} className="flex flex-row gap-2 items-center">
-          <input
-            defaultChecked={settings.order === value}
-            type="radio"
-            id={value}
-            name="order"
-            value={value}
-          />
-          <label htmlFor={value}>{text}</label>
-        </div>
-      ))}
     </>
-  );
-}
-
-export function FilterOptions({ settings }: { settings: ListParams }) {
-  return (
-    <div className="flex flex-row gap-4 items-center flex-grow">
-      <label htmlFor="filter" className="flex-shrink-0">
-        แสดงข้อมูล
-      </label>
-      <select
-        name="filter"
-        className="pm-station-input w-full flex-grow text-sm"
-        defaultValue={settings.filter}
-      >
-        {Object.entries(options["filter"]).map(([value, text]) => (
-          <option key={value} value={value}>
-            {text}
-          </option>
-        ))}
-      </select>
-    </div>
   );
 }

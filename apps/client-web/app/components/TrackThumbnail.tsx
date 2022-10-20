@@ -1,6 +1,6 @@
 import React, { useMemo } from "react";
 import { classNames } from "~/utils/client";
-import type { TrackResponse } from "~/utils/pm-station/spotify/search";
+import type { SongRequestSearchRecord } from "~/schema/pm-station/songrequests/types";
 
 type BadgeComponentProps = Pick<
   React.HTMLAttributes<HTMLElement>,
@@ -19,7 +19,7 @@ export default function TrackThumbnail({
     onClick?: () => void;
   };
   children: React.ReactNode;
-  track: TrackResponse;
+  track: SongRequestSearchRecord;
 }) {
   const Badge = useMemo(
     () =>

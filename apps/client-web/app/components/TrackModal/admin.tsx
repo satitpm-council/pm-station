@@ -1,29 +1,63 @@
+import { useCallback, useEffect, useMemo, useState } from "react";
+import loadable from "@loadable/component";
+import { useSWRConfig } from "swr";
+import { getDocument, isDocumentValid } from "@lemasc/swr-firestore";
+import type { TypeOf } from "zod";
+import dayjs from "~/utils/dayjs";
+
+import type { SongRequestSearchRecord } from "~/schema/pm-station/songrequests/types";
+import { SongRequestRecord } from "~/schema/pm-station/songrequests/schema";
+import { useSafeParams } from "~/utils/params";
+import { UserRole, useUser } from "~/utils/pm-station/client";
+import { defaults, options } from "~/utils/pm-station/songrequests";
+import { zodValidator } from "~/utils/pm-station/zodValidator";
+
 import type { TrackModalProps } from "./base";
 import TrackModal, { useStableTrack } from "./base";
-import dayjs from "~/utils/dayjs";
-import type { SongRequestRecord } from "~/schema/pm-station/songrequests/types";
-import { useCallback, useEffect, useMemo } from "react";
-import { defaults, options } from "~/utils/pm-station/songrequests";
-import { useSafeParams } from "~/utils/params";
-import loadable from "@loadable/component";
-import { UserRole, useUser } from "~/utils/pm-station/client";
 import type { CommandAction, CommandActionProps } from "./commands/types";
 
-export type AdminTrackModalProps<T extends CommandAction | undefined> = Omit<
-  TrackModalProps,
-  "track"
-> & {
-  track?: SongRequestRecord;
-  type?: T;
-} & CommandActionProps<T>;
+export type AdminTrackModalProps<
+  A extends CommandAction | undefined,
+  T extends SongRequestSearchRecord
+> = Omit<TrackModalProps, "track"> & {
+  track?: T;
+  type?: A;
+} & CommandActionProps<A>;
 
 const Commands = loadable(() => import("./commands"));
 
-export const AdminTrackModal = <T extends CommandAction | undefined>(
-  props: AdminTrackModalProps<T>
+export const AdminTrackModal = <
+  A extends CommandAction | undefined,
+  T extends SongRequestSearchRecord
+>(
+  props: AdminTrackModalProps<A, T>
 ) => {
   const { user } = useUser();
-  const stableTrack = useStableTrack(props.track);
+  const [record, setRecord] = useState<TypeOf<typeof SongRequestRecord>>();
+  const stableTrack = useStableTrack(record);
+  const { mutate } = useSWRConfig();
+
+  useEffect(() => {
+    if (props.track) {
+      try {
+        setRecord(SongRequestRecord.parse(props.track));
+      } catch {
+        // This is not a full SongRequestRecord.
+        // Fetch a new one before continue.
+        getDocument(`songrequests/${props.track.id}`, {
+          validator: zodValidator(SongRequestRecord),
+          mutate,
+        }).then((doc) => {
+          if (doc && isDocumentValid(doc)) {
+            setRecord(doc);
+          }
+        });
+      }
+    } else {
+      setRecord(undefined);
+    }
+  }, [props.track, mutate]);
+
   const [params] = useSafeParams(defaults, options);
 
   const { track, closeModal } = stableTrack;

@@ -13,11 +13,13 @@ const isTimestamp = (arg: unknown): arg is Timestamp => {
 
 const preprocessDate = (arg: unknown): Date | undefined => {
   if (isTimestamp(arg)) return arg.toDate();
-  if (typeof arg == "string" || arg instanceof Date) return new Date(arg);
+  if (typeof arg == "string" || typeof arg === "number" || arg instanceof Date)
+    return new Date(arg);
 };
 
 const docRef = (arg: unknown) => {
   if (arg instanceof DocumentReference) return arg.path;
+  if (typeof arg === "string" && arg.split("/").length % 2 === 0) return arg;
 };
 
 export { docRef, preprocessDate, isTimestamp };

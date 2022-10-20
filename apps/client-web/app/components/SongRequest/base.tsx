@@ -1,7 +1,16 @@
-import type { TrackResponse } from "~/schema/pm-station/songrequests/types";
+import { useMemo } from "react";
 import dayjs from "~/utils/dayjs";
+import { TrackResponse } from "~/schema/pm-station/songrequests/schema";
+import type { SongRequestSearchRecord } from "~/schema/pm-station/songrequests/types";
 
-export function TrackMeta({ track }: { track: TrackResponse }) {
+export function TrackMeta({ track }: { track: SongRequestSearchRecord }) {
+  const trackResponse = useMemo(() => {
+    try {
+      return TrackResponse.parse(track);
+    } catch {
+      return undefined;
+    }
+  }, [track]);
   return (
     <>
       <b className="text-white text-base truncate min-w-0 w-full mb-1">
@@ -17,7 +26,10 @@ export function TrackMeta({ track }: { track: TrackResponse }) {
       </b>
 
       <span className="truncate min-w-0 w-full">{track.artists.join("/")}</span>
-      <span>{dayjs.duration(track.duration_ms).format("mm:ss")}</span>
+      <span>
+        {trackResponse &&
+          dayjs.duration(trackResponse.duration_ms).format("mm:ss")}
+      </span>
     </>
   );
 }

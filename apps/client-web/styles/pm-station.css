@@ -49,20 +49,32 @@ form input[type="tel"] {
   @apply pm-station-focus-ring pm-station-input 
   border-transparent focus:border-transparent disabled:bg-gray-500 disabled:border-gray-500;
 }
+
+form input[type="checkbox"] {
+  @apply rounded;
+}
+
 form input[type="radio"] {
-  @apply -mt-1 p-1.5 mr-0.5 rounded-full
+  @apply rounded-full;
+}
+form input[type="radio"],
+form input[type="checkbox"] {
+  @apply -mt-1 p-1.5 mr-0.5
   bg-gray-200
   border-transparent
-  focus:border-transparent focus:bg-gray-200 focus:ring-gray-500 active:ring-gray-500
-  text-gray-500 pm-station-focus-ring;
+  focus:border-transparent focus:bg-gray-200 focus:ring-gray-500 active:ring-green-500
+  text-green-500 pm-station-focus-ring;
 }
 
-form input[type="radio"]:checked {
-  @apply bg-gray-500;
+form input[type="radio"]:checked,
+form input[type="checkbox"]:checked {
+  @apply bg-green-500 focus:ring-green-500;
 }
 
-form input[type="radio"]:disabled {
-  @apply bg-gray-300 cursor-not-allowed;
+form input[type="radio"]:disabled,
+,
+form input[type="checkbox"]:disabled {
+  @apply bg-green-300 cursor-not-allowed;
 }
 
 .line-clamp {
@@ -73,9 +85,13 @@ form input[type="radio"]:disabled {
 }
 
 .songrequest-item {
-  @apply md:flex items-center justify-center bg-white bg-opacity-10 rounded-lg hover:bg-opacity-20 min-w-0 min-h-0 transition-colors;
+  @apply md:flex justify-center bg-white bg-opacity-10 rounded-lg hover:bg-opacity-20 min-w-0 min-h-0 transition-colors;
 }
 
 .songrequest-wrapper {
   @apply items-center md:items-baseline px-4 py-3 md:p-6 flex flex-row md:flex-col gap-4 min-w-0 min-h-0;
+}
+
+.ais-SearchBox-submit {
+  zoom: 1.5;
 }

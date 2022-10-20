@@ -24,7 +24,7 @@ export default function InfiniteScroll({
       return;
     }
     if (inViewport && !isReachingEnd && !isRefreshing) {
-      onFetch();
+      onFetch && onFetch();
     }
   }, [inViewport, isRefreshing, isReachingEnd, onFetch]);
   return (

@@ -1,8 +1,7 @@
 import type { LinksFunction, LoaderFunction } from "@remix-run/node";
 import { redirect } from "@remix-run/node";
 import { json } from "@remix-run/node";
-import { Link, Outlet, useMatches } from "@remix-run/react";
-import { ProSidebar } from "react-pro-sidebar";
+import { Link, Outlet } from "@remix-run/react";
 
 import sidebar from "react-pro-sidebar/dist/css/styles.css";
 import sidebarOverrides from "~/styles/sidebar.css";
@@ -53,11 +52,6 @@ export const links: LinksFunction = () => [
 
 export default function Index() {
   const [open, setOpen] = useState(false);
-  const matches = useMatches();
-  useEffect(() => {
-    setOpen(false);
-  }, [matches]);
-
   const { auth } = useFirebase();
   const sessionToken = useAuthenticityToken();
   useEffect(() => {
@@ -92,15 +86,11 @@ export default function Index() {
   const closePopup = useCallback(() => window.close(), []);
   return (
     <div className="overflow-hidden flex  items-stretch h-screen gap-4 bg-gradient-to-b from-[#151515] to-[#121212] text-white">
-      {!isPopup && (
-        <ProSidebar toggled={open} onToggle={setOpen} breakPoint="md">
-          <Sidebar />
-        </ProSidebar>
-      )}
+      {!isPopup && <Sidebar open={open} setOpen={setOpen} />}
       <div className="flex flex-col overflow-auto h-full min-h-screen w-full">
         <nav className="flex flex-row gap-1 items-center px-4 py-2 md:hidden">
           <button
-            title="เปิดแถบนำทาง"
+            title={isPopup ? "ปิดหน้าต่าง" : "เปิดแถบนำทาง"}
             onClick={isPopup ? closePopup : openMenu}
             className="rounded-full bg-white bg-opacity-10 hover:bg-opacity-20 transition-colors p-2.5"
           >
