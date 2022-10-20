@@ -118,7 +118,6 @@ export default class RandomTrackSelector {
   async getRandomTrackByStrategy(trackId: string, strategy: RandomStrategy) {
     const { op, order } = fromRandomStrategy(strategy);
     const notIn = this.getNotInCaluse(trackId, op);
-    console.log("NOT IN ", notIn);
     const { docs } = await getDocs(
       query(
         collection(this.db, "/songrequests"),
@@ -148,7 +147,6 @@ export default class RandomTrackSelector {
     const id = await trackId();
     const strategies = shuffleArray(Array.from(Array(STRATEGY_COUNT).keys()));
     for (let i = 0; i < 4; i++) {
-      console.log(id, i, strategies[i]);
       const random = await this.getRandomTrackByStrategy(id, strategies[i]);
       if (random) return random;
     }
@@ -161,7 +159,6 @@ export default class RandomTrackSelector {
     const selected = new Set<TypeOf<typeof SongRequestRecord>>();
     while (selected.size !== size) {
       const pendingSize = size - selected.size;
-      console.log(pendingSize, selected.size, size);
       await Promise.all(
         Array(pendingSize)
           .fill(undefined)

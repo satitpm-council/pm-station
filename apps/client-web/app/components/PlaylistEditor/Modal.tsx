@@ -60,7 +60,6 @@ export default function ConfirmPlaylistModal() {
       ({ targetPlaylist, showModal }) => ({ targetPlaylist, showModal }),
       ({ showModal, targetPlaylist }) => {
         if (!showModal) return;
-        console.log(targetPlaylist);
         if (targetPlaylist) {
           const { target, queuedDate } = targetPlaylist;
           reset({

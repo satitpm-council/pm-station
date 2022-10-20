@@ -10,7 +10,6 @@ export default function SelectTrackButton() {
     channel.current = new BroadcastChannel(ChannelName);
     const messageHandler = (event: MessageEvent) => {
       const data: ChannelMessage = event.data;
-      console.log(data);
       const { addedIds, addId, pushData } = playlistEditorStore.getState();
       if (data.method === "add" && !addedIds.has(data.track.id)) {
         addId(data.track.id);
