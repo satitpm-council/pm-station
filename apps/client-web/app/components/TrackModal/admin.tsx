@@ -10,7 +10,7 @@ import { SongRequestRecord } from "~/schema/pm-station/songrequests/schema";
 import { useSafeParams } from "~/utils/params";
 import { UserRole, useUser } from "~/utils/pm-station/client";
 import { defaults, options } from "~/utils/pm-station/songrequests";
-import { getStatusFromLastPlayedDate } from "~/utils/pm-station/songrequests/date";
+import { getStatusFromDate } from "~/utils/pm-station/songrequests/date";
 import { zodValidator } from "~/utils/pm-station/zodValidator";
 
 import type { TrackModalProps } from "./base";
@@ -78,16 +78,19 @@ export const AdminTrackModal = <
     }
   }, [canShowCommands]);
 
-  const actionHandler = useCallback(() => {
-    if (props.type) {
-      if (track && props.type === "removeFromPlaylist") {
-        (props as unknown as CommandActionProps<"removeFromPlaylist">).onAction(
-          track
-        );
+  const actionHandler = useCallback(
+    (track: TypeOf<typeof SongRequestRecord>) => {
+      if (props.type) {
+        if (track && props.type === "removeFromPlaylist") {
+          (
+            props as unknown as CommandActionProps<"removeFromPlaylist">
+          ).onAction(track);
+        }
+        closeModal();
       }
-      closeModal();
-    }
-  }, [props, track, closeModal]);
+    },
+    [props, closeModal]
+  );
 
   return (
     <TrackModal
@@ -99,7 +102,7 @@ export const AdminTrackModal = <
       <span>
         เปลี่ยนแปลงล่าสุดเมื่อ {dayjs(track?.lastUpdatedAt).format("LLL น.")}
       </span>
-      {getStatusFromLastPlayedDate(track?.lastPlayedAt) === "played" && (
+      {getStatusFromDate(track?.lastPlayedAt) === "played" && (
         <span>เปิดล่าสุดเมื่อ {dayjs(track?.lastPlayedAt).format("LL")}</span>
       )}
       {canShowCommands && (

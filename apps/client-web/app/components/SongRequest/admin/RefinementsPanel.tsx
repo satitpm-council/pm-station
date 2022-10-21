@@ -11,16 +11,16 @@ export default function RefinementsPanel({
   const [isOpen, setIsOpen] = useState(false);
   return (
     <>
-      <div>
+      <div className="flex-shrink-0">
         <button
-          className="md:hidden px-3 py-1.5 text-sm pm-station-btn bg-blue-500 hover:bg-blue-600"
+          className="lg:hidden px-3 py-1.5 text-sm pm-station-btn bg-blue-500 hover:bg-blue-600"
           onClick={() => setIsOpen(true)}
         >
           <FunnelIcon className="h-5 w-5 inline -ml-1 -mt-0.5 mr-1" />
           ตั้งค่าตัวกรอง
         </button>
       </div>
-      <div className="hidden md:flex flex-col w-full max-w-[15rem] divide-y divide-gray-400">
+      <div className="hidden lg:flex flex-col w-full max-w-[15rem] divide-y divide-gray-400">
         {children}
       </div>
       <Modal isOpen={isOpen} closeModal={() => setIsOpen(false)}>

@@ -1,7 +1,7 @@
 import loadable from "@loadable/component";
 import { useCallback, useEffect, useState } from "react";
 import type { ListParams } from "~/utils/pm-station/songrequests";
-import { getStatusFromLastPlayedDate } from "~/utils/pm-station/songrequests/date";
+import { getStatusFromDate } from "~/utils/pm-station/songrequests/date";
 import type { SongRequestRecord } from "~/schema/pm-station/songrequests/types";
 import type { CommandAction, CommandActionHandler } from "./types";
 
@@ -23,7 +23,7 @@ const AdminCommands = ({
   const [trackStatus, setTrackStatus] = useState<ListParams["filter"]>("idle");
 
   useEffect(
-    () => setTrackStatus(getStatusFromLastPlayedDate(track?.lastPlayedAt)),
+    () => setTrackStatus(getStatusFromDate(track?.lastPlayedAt)),
     [track?.lastPlayedAt]
   );
 
@@ -35,30 +35,30 @@ const AdminCommands = ({
     }
   }, [type]);
 
-  const onSetTrackStatus = useCallback(
-    (status: TrackStatus) => {
-      setTrackStatus(status);
-      if (type === "removeFromPlaylist" && track) {
-        onAction(track);
-      }
-    },
-    [onAction, track, type]
-  );
+  const onSetTrackStatus = useCallback((status: TrackStatus) => {
+    setTrackStatus(status);
+  }, []);
 
   return (
     <div className="flex flex-row gap-4 justify-center md:justify-start pt-4 text-sm">
       {type &&
         (type === "addToPlaylist" ? (
-          <AddTrackToPlaylist track={track} onClose={onAction as () => void} />
+          trackStatus !== "rejected" && (
+            <AddTrackToPlaylist
+              track={track}
+              onClose={onAction as () => void}
+            />
+          )
         ) : (
           <RemoveTrackFromPlaylist track={track} onRemove={onAction} />
         ))}
       {/* If the track has already played, it can't be rejected. */}
-      {getStatusFromLastPlayedDate(track?.lastPlayedAt) !== "played" && (
+      {trackStatus !== "played" && (
         <RejectButton
           track={track}
           trackStatus={trackStatus}
           setTrackStatus={onSetTrackStatus}
+          onReject={onAction}
         />
       )}
     </div>

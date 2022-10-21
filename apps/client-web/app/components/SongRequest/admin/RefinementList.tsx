@@ -124,7 +124,7 @@ export default function RefinementList({
                 className="w-full flex flex-row gap-2 items-center select-none"
               >
                 <span
-                  className={`font-light flex-grow w-full pr-4 max-w-[70%] ${
+                  className={`font-light flex-grow w-full pr-2 max-w-[70%] ${
                     isRefined ? "text-green-400 font-medium" : "text-gray-200"
                   }`}
                 >

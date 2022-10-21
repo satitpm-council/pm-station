@@ -8,26 +8,34 @@ import SelectTrackButton from "./SelectTrack";
 import RandomTrackButton from "./Random";
 import { toast } from "react-toastify";
 import ConfirmPlaylistModal from "./Modal";
+import { getStatusFromDate } from "~/utils/pm-station/songrequests/date";
 
 const ViewTrackModal = memo(function ViewTrackModal() {
   const track = playlistEditorStore((state) => state.track);
   const onRemove = useCallback((track: SongRequestRecord) => {
     playlistEditorStore.getState().remove(track.id);
+    const status = getStatusFromDate(track.lastPlayedAt);
     toast(
       <>
-        <b>ลบเพลง {track.name} ออกจากรายการเพลงแล้ว</b>
-        <button
-          className="underline text-sm text-gray-300 self-start"
-          onClick={() => {
-            playlistEditorStore.getState().addId(track.id);
-            playlistEditorStore.getState().pushData([track]);
-          }}
-        >
-          ยกเลิก
-        </button>
+        <b>
+          {status === "rejected" ? "ปฎิเสธและ" : ""}ลบเพลง {track.name}{" "}
+          ออกจากรายการเพลงแล้ว
+        </b>
+        {status !== "rejected" && (
+          <button
+            className="underline text-sm text-gray-300 self-start"
+            onClick={() => {
+              playlistEditorStore.getState().addId(track.id);
+              playlistEditorStore.getState().pushData([track]);
+            }}
+          >
+            ยกเลิก
+          </button>
+        )}
       </>,
       {
         type: "info",
+        pauseOnFocusLoss: false,
       }
     );
   }, []);

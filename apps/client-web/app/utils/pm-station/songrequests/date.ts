@@ -12,7 +12,7 @@ export const LastPlayedDate = {
 
 type TrackStatus = ListParams["filter"];
 
-export const getStatusFromLastPlayedDate = (date?: Date): TrackStatus => {
+export const getStatusFromDate = (date?: Date): TrackStatus => {
   // undefined, 0 means idle
   return date?.valueOf()
     ? date.valueOf() > 0

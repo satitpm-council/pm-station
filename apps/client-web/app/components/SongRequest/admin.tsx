@@ -4,7 +4,11 @@ import { useDocument, isDocumentValid } from "@lemasc/swr-firestore";
 import dayjs from "dayjs";
 import type { TypeOf } from "zod";
 
-import { Configure, useInfiniteHits } from "react-instantsearch-hooks-web";
+import {
+  Configure,
+  useInfiniteHits,
+  useInstantSearch,
+} from "react-instantsearch-hooks-web";
 import { SearchBox } from "react-instantsearch-hooks-web";
 import { SongRequestSearchRecord } from "~/schema/pm-station/songrequests/schema";
 
@@ -24,6 +28,7 @@ const Stats = loadable(() => import("./admin/Stats"), {
 });
 
 const CustomHits = (props: ListProps) => {
+  const { status } = useInstantSearch();
   const { hits, showMore, isLastPage, results } = useInfiniteHits();
   const data = useMemo(
     () =>
@@ -40,11 +45,14 @@ const CustomHits = (props: ListProps) => {
   );
   return (
     <>
-      <SongRequestRecordList data={data} {...props} />
+      {data && data.length > 0 && (
+        <SongRequestRecordList data={data} {...props} />
+      )}
       <InfiniteScroll
         onFetch={showMore}
         isReachingEnd={!results?.__isArtificial && isLastPage}
-        isRefreshing={results === undefined}
+        isRefreshing={status === "loading"}
+        isEmpty={results?.nbHits === 0}
       />
     </>
   );
@@ -76,8 +84,8 @@ export function AdminSongRequest(props: ListProps) {
           placeholder="ค้นหา..."
         />
       </div>
-      <div className="flex flex-col md:flex-row items-start gap-6">
-        <aside className="flex flex-row items-center justify-center gap-4 md:gap-0 md:flex-col">
+      <div className="flex flex-col lg:flex-row items-start gap-4 sm:gap-8">
+        <aside className="flex flex-row items-center justify-center lg:items-start gap-4 lg:gap-0 lg:flex-col">
           <Stats />
           <RefinementsPanel>
             <RefinementList title="จำนวนคำขอเพลง" attribute="submissionCount" />
@@ -89,7 +97,7 @@ export function AdminSongRequest(props: ListProps) {
             />
           </RefinementsPanel>
         </aside>
-        <div className="flex-grow flex flex-col gap-4">
+        <div className="flex-grow flex flex-col gap-4 max-w-[85vw] sm:max-w-[unset]">
           <CustomHits {...props} />
         </div>
       </div>

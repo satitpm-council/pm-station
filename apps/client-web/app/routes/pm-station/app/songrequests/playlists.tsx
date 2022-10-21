@@ -1,1 +1,1 @@
-export { default } from "./editor";
+export { loader, default } from "./editor";
