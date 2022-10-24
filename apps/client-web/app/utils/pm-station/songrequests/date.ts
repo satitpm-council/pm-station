@@ -1,4 +1,4 @@
-import type { ListParams } from "./types";
+import type { ListParams } from "./sort";
 
 /**
  * LastPlayedDate constraints set on the database records.

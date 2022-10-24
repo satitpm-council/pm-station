@@ -5,7 +5,7 @@ import { Item } from "./item";
 import type { ItemProps } from "./item";
 
 import type { SongRequestSearchRecord } from "~/schema/pm-station/songrequests/types";
-import { getStatusFromDate } from "~/utils/pm-station/songrequests/date";
+import { getStatusFromDate } from "~/utils/pm-station/songrequests";
 
 export type ListProps<
   T extends SongRequestSearchRecord = SongRequestSearchRecord

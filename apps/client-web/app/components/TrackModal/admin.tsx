@@ -7,15 +7,14 @@ import dayjs from "~/utils/dayjs";
 
 import type { SongRequestSearchRecord } from "~/schema/pm-station/songrequests/types";
 import { SongRequestRecord } from "~/schema/pm-station/songrequests/schema";
-import { useSafeParams } from "~/utils/params";
 import { UserRole, useUser } from "~/utils/pm-station/client";
-import { defaults, options } from "~/utils/pm-station/songrequests";
-import { getStatusFromDate } from "~/utils/pm-station/songrequests/date";
+import { getStatusFromDate } from "~/utils/pm-station/songrequests";
 import { zodValidator } from "~/utils/pm-station/zodValidator";
 
 import type { TrackModalProps } from "./base";
 import TrackModal, { useStableTrack } from "./base";
 import type { CommandAction, CommandActionProps } from "./commands/types";
+import { SongRequestListStore } from "../SongRequest/admin/store";
 
 export type AdminTrackModalProps<
   A extends CommandAction | undefined,
@@ -45,11 +44,18 @@ export const AdminTrackModal = <
       } catch {
         // This is not a full SongRequestRecord.
         // Fetch a new one before continue.
-        getDocument(`songrequests/${props.track.id}`, {
+        const key = `songrequests/${props.track.id}`;
+        getDocument(key, {
           validator: zodValidator(SongRequestRecord),
           mutate,
         }).then((doc) => {
+          // mutate locally so that we can reference it later
+          mutate(key, doc, false);
           if (doc && isDocumentValid(doc)) {
+            SongRequestListStore.setState((state) => ({
+              ...state,
+              firestoreRecords: new Set(state.firestoreRecords).add(doc.id),
+            }));
             setRecord(doc);
           }
         });
@@ -59,13 +65,7 @@ export const AdminTrackModal = <
     }
   }, [props.track, mutate]);
 
-  const [params] = useSafeParams(defaults, options);
-
   const { track, closeModal } = stableTrack;
-
-  useEffect(() => {
-    closeModal();
-  }, [params.filter, closeModal]);
 
   const canShowCommands = useMemo(
     () => user && user.role && user.role >= UserRole.EDITOR,

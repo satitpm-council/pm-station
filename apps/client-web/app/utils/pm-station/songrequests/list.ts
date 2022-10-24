@@ -1,5 +1,5 @@
 import type { VisibleOptions } from "~/utils/params";
-import type { ListParams } from "./types";
+import type { ListParams } from "./sort";
 
 export const defaults: ListParams = {
   order: "asc",

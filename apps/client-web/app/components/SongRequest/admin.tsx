@@ -1,5 +1,6 @@
-import { useMemo } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import loadable from "@loadable/component";
+import { useSWRConfig } from "swr";
 import { useDocument, isDocumentValid } from "@lemasc/swr-firestore";
 import dayjs from "dayjs";
 import type { TypeOf } from "zod";
@@ -15,34 +16,89 @@ import { SongRequestSearchRecord } from "~/schema/pm-station/songrequests/schema
 import InfiniteScroll from "../InfiniteScroll";
 import { SongRequestRecordList } from "./list";
 import type { ListProps } from "./list";
+import { SongRequestListStore } from "./admin/store";
 import { FilterOptions, SortOptions } from "./admin/sort";
 import RefinementsPanel from "./admin/RefinementsPanel";
 import type { CustomLabelComponent } from "./admin/RefinementList";
 import RefinementList from "./admin/RefinementList";
 
 import { zodValidator } from "~/utils/pm-station/zodValidator";
+import { getStatusFromDate } from "~/utils/pm-station/songrequests";
 import { PlaylistRecord } from "~/schema/pm-station/playlists/schema";
+import RefreshButton from "./admin/Refresh";
 
 const Stats = loadable(() => import("./admin/Stats"), {
   ssr: false,
 });
 
 const CustomHits = (props: ListProps) => {
+  const { cache } = useSWRConfig();
   const { status } = useInstantSearch();
   const { hits, showMore, isLastPage, results } = useInfiniteHits();
-  const data = useMemo(
-    () =>
-      hits
-        .map((item) => {
-          const parsed = SongRequestSearchRecord.safeParse(item);
-          if (parsed.success) return parsed.data;
-          return undefined;
-        })
-        .filter(
-          (p): p is TypeOf<typeof SongRequestSearchRecord> => p !== undefined
-        ),
-    [hits]
+
+  const cachedRecords = useRef<
+    Map<string, TypeOf<typeof SongRequestSearchRecord>>
+  >(new Map());
+
+  const isRefreshing = useRef(false);
+  const [data, setData] = useState<TypeOf<typeof SongRequestSearchRecord>[]>(
+    []
   );
+
+  const processData = useCallback(() => {
+    isRefreshing.current = true;
+    const { firestoreRecords, filterStatus } = SongRequestListStore.getState();
+    let data = hits
+      .map((item) => {
+        if (firestoreRecords.has(item.objectID)) {
+          // Firestore record found. Load from SWR cache.
+          const swrRecord = cache.get(`songrequests/${item.objectID}`);
+          if (swrRecord) {
+            return swrRecord;
+          }
+        }
+        // Get the cached parsed record.
+        const record = cachedRecords.current.get(item.objectID);
+        if (record) return record;
+        // Parse Algolia hit into search record, and save it to cache.
+        const parsed = SongRequestSearchRecord.safeParse(item);
+        if (parsed.success) {
+          cachedRecords.current.set(item.objectID, parsed.data);
+          return parsed.data;
+        }
+        return undefined;
+      })
+      .filter(
+        (p): p is TypeOf<typeof SongRequestSearchRecord> => p !== undefined
+      );
+
+    if (filterStatus !== "all") {
+      // filter dates cause sometimes Algolia returns staled data.
+      data = data.filter(
+        (v) => getStatusFromDate(v.lastPlayedAt) === filterStatus
+      );
+    }
+    setData(data);
+  }, [cache, hits]);
+
+  useEffect(() => {
+    isRefreshing.current = false;
+    SongRequestListStore.setState({ refresh: undefined });
+  }, [data]);
+
+  useEffect(() => {
+    processData();
+    return SongRequestListStore.subscribe((state, prev) => {
+      if (
+        (state.firestoreRecords.size !== prev.firestoreRecords.size ||
+          state.refresh) &&
+        !isRefreshing.current
+      ) {
+        processData();
+      }
+    });
+  }, [processData]);
+
   return (
     <>
       {data && data.length > 0 && (
@@ -50,9 +106,9 @@ const CustomHits = (props: ListProps) => {
       )}
       <InfiniteScroll
         onFetch={showMore}
-        isReachingEnd={!results?.__isArtificial && isLastPage}
+        isReachingEnd={isLastPage}
         isRefreshing={status === "loading"}
-        isEmpty={results?.nbHits === 0}
+        isEmpty={!results?.__isArtificial && results?.nbHits === 0}
       />
     </>
   );
@@ -75,6 +131,7 @@ export function AdminSongRequest(props: ListProps) {
       <div className="flex flex-row gap-4 flex-wrap text-sm max-w-6xl">
         <SortOptions />
         <FilterOptions />
+        <RefreshButton />
         <SearchBox
           classNames={{
             form: "flex flex-row gap-3",

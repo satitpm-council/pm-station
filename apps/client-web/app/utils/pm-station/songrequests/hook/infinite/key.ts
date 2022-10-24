@@ -1,7 +1,7 @@
 import type { Document } from "@lemasc/swr-firestore";
 import type { User } from "firebase/auth";
 import type { SongRequestRecord } from "~/schema/pm-station/songrequests/types";
-import type { ListParams } from "../../types";
+import type { ListParams } from "../../sort";
 
 type GetKeyParams = {
   user: User | null | undefined;

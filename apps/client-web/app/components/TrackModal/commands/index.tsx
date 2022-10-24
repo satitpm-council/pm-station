@@ -1,7 +1,7 @@
 import loadable from "@loadable/component";
 import { useCallback, useEffect, useState } from "react";
 import type { ListParams } from "~/utils/pm-station/songrequests";
-import { getStatusFromDate } from "~/utils/pm-station/songrequests/date";
+import { getStatusFromDate } from "~/utils/pm-station/songrequests";
 import type { SongRequestRecord } from "~/schema/pm-station/songrequests/types";
 import type { CommandAction, CommandActionHandler } from "./types";
 

@@ -2,8 +2,8 @@ import { useCallback } from "react";
 import { updateDoc } from "@lemasc/swr-firestore";
 import type { SongRequestRecord } from "~/schema/pm-station/songrequests/types";
 import type { ListParams } from "~/utils/pm-station/songrequests";
-import { LastPlayedDate } from "~/utils/pm-station/songrequests/date";
-import { useInstantSearch } from "react-instantsearch-hooks-web";
+import { LastPlayedDate } from "~/utils/pm-station/songrequests";
+import { SongRequestListStore } from "~/components/SongRequest/admin/store";
 
 export type TrackStatus = ListParams["filter"];
 type TrackStatusState = {
@@ -18,7 +18,6 @@ const RejectButton = ({
   setTrackStatus,
   onReject,
 }: { track?: SongRequestRecord } & TrackStatusState) => {
-  const { refresh } = useInstantSearch();
   const toggleReject = useCallback(
     async (wasRejected: boolean) => {
       try {
@@ -32,9 +31,9 @@ const RejectButton = ({
           updatedDoc
         );
         setTrackStatus(wasRejected ? "idle" : "rejected");
-        setTimeout(() => {
-          refresh();
-        }, 1000);
+        SongRequestListStore.setState({
+          refresh: true,
+        });
         if (track && !wasRejected) {
           onReject({
             ...track,
@@ -45,7 +44,7 @@ const RejectButton = ({
         console.error(err);
       }
     },
-    [track, setTrackStatus, refresh, onReject]
+    [track, setTrackStatus, onReject]
   );
   return (
     <button

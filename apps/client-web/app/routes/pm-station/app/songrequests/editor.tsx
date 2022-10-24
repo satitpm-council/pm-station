@@ -44,7 +44,6 @@ export default function Editor() {
     <InstantSearch
       searchClient={searchClient.current}
       indexName="station_songrequests"
-      routing
     >
       <Outlet />
     </InstantSearch>

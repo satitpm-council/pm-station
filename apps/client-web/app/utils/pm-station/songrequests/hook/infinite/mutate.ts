@@ -3,7 +3,7 @@ import { unstable_serialize as serialize } from "swr";
 import { getKey } from "./key";
 import { useCallback } from "react";
 import { useSWRConfig } from "swr";
-import type { ListParams } from "../../types";
+import type { ListParams } from "../../sort";
 import { useFirebaseUser } from "~/utils/firebase";
 
 const INFINITE_PREFIX = "$inf$";

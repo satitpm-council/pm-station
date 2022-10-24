@@ -6,7 +6,7 @@ import type { QueryConstraint, Document } from "@lemasc/swr-firestore";
 import { orderBy, startAfter, limit } from "@lemasc/swr-firestore/constraints";
 
 import { SongRequestRecord } from "~/schema/pm-station/songrequests/schema";
-import type { ListParams } from "../../types";
+import type { ListParams } from "../../sort";
 import { zodValidator } from "../../../zodValidator";
 import { getKey } from "./key";
 import type { TypeOf } from "zod";

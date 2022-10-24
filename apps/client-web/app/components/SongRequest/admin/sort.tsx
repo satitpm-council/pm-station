@@ -1,7 +1,8 @@
 import type { ChangeEventHandler } from "react";
-import { useCallback } from "react";
+import { useCallback, useEffect, useRef } from "react";
 import { useNumericMenu, useSortBy } from "react-instantsearch-hooks-web";
-import { LastPlayedDate } from "~/utils/pm-station/songrequests/date";
+import { SortItems } from "~/utils/pm-station/songrequests";
+import { SongRequestListStore } from "./store";
 
 export function SortOptions() {
   const { options, refine } = useSortBy({
@@ -44,25 +45,28 @@ export function SortOptions() {
 export function FilterOptions() {
   const { items, refine } = useNumericMenu({
     attribute: "lastPlayedAt",
-    items: [
-      {
-        label: "ทั้งหมด",
-      },
-      {
-        label: "ยังไม่ถูกเล่น",
-        start: LastPlayedDate.Idle.valueOf(),
-        end: LastPlayedDate.Idle.valueOf(),
-      },
-      {
-        label: "เล่นไปแล้ว",
-        start: LastPlayedDate.Idle.valueOf() + 1,
-      },
-      {
-        label: "ถูกปฏิเสธ",
-        end: LastPlayedDate.Rejected.valueOf(),
-      },
-    ],
+    items: SortItems,
   });
+
+  const onChange: ChangeEventHandler<HTMLSelectElement> = useCallback(
+    (e) => {
+      refine(e.target.value);
+    },
+    [refine]
+  );
+
+  const SortItemsMap = useRef(new Map(SortItems.map((v) => [v.label, v])));
+
+  useEffect(() => {
+    const isRefinedItem = items.find(({ isRefined }) => isRefined);
+    if (!isRefinedItem) return;
+    const SortItem = SortItemsMap.current.get(isRefinedItem.label);
+    if (!SortItem) return;
+
+    SongRequestListStore.setState({
+      filterStatus: SortItem.name,
+    });
+  }, [items]);
 
   return (
     <div className="flex flex-row gap-4 items-center flex-grow sm:max-w-[20rem]">
@@ -72,7 +76,7 @@ export function FilterOptions() {
       <select
         name="filter"
         className="pm-station-input w-full flex-grow text-sm"
-        onChange={(e) => refine(e.target.value)}
+        onChange={onChange}
       >
         {items.map(({ label, value, isRefined }) => (
           <option selected={isRefined} key={value} value={value}>
