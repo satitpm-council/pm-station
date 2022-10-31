@@ -1,7 +1,7 @@
 import { ArrowPathIcon } from "@heroicons/react/20/solid";
 import { useInstantSearch } from "react-instantsearch-hooks-web";
 
-export default function RefreshButton() {
+export function RefreshButton() {
   const { refresh } = useInstantSearch();
   return (
     <button

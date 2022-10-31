@@ -17,7 +17,7 @@ export function Item<T extends SongRequestSearchRecord>({
       key={track?.id}
       className="w-full md:w-[unset] songrequest-item"
     >
-      <div className="songrequest-wrapper md:w-[250px]">{children}</div>
+      <div className="songrequest-wrapper md:w-[240px]">{children}</div>
     </button>
   );
 }

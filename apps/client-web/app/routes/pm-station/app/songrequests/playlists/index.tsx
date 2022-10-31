@@ -29,13 +29,13 @@ export default function ListSongRequest() {
       >
         จัดการรายการเพลง PM Music Request
       </PageHeader>
-      <div className="flex flex-col gap-4">
+      <div className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
         {data?.filter(isDocumentValid).map((p) => (
           <Link
             to={`/pm-station/app/songrequests/playlists/${p.id}`}
             key={p.id}
           >
-            <div className="flex flex-col text-sm gap-2 bg-white bg-opacity-10 hover:bg-opacity-20 rounded-lg px-6 py-4">
+            <div className=" flex flex-col text-sm gap-2 bg-white bg-opacity-10 hover:bg-opacity-20 rounded-lg px-6 py-4">
               <b className="text-lg font-bold">
                 {dayjs(p.queuedDate).format("ll")}
               </b>

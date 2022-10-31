@@ -18,7 +18,7 @@ type Props = {
   CustomLabel?: CustomLabelComponent;
 };
 
-export default function RefinementList({
+export function RefinementList({
   title,
   attribute,
   searchable,

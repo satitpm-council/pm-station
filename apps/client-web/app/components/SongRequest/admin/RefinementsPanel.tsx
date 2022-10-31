@@ -3,7 +3,7 @@ import type { ReactNode } from "react";
 import { useState } from "react";
 import Modal from "~/components/Modal";
 
-export default function RefinementsPanel({
+export function RefinementsPanel({
   children,
 }: {
   children: ReactNode | ReactNode[];
