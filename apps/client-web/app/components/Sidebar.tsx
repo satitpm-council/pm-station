@@ -24,14 +24,25 @@ export default function Sidebar({
   open: boolean;
   setOpen: (value: boolean) => void;
 }) {
-  const [collapsed, setCollapsed] = useState(true);
+  const [collapsed, setCollapsed] = useState(false);
   const { user, isRegistered } = useUser();
 
   const matches = useMatches();
   useEffect(() => {
     setOpen(false);
-    setCollapsed(true);
+    if (window.matchMedia("(min-width: 1024px)").matches) {
+      setCollapsed(true);
+    }
   }, [matches, setOpen, setCollapsed]);
+
+  useEffect(() => {
+    const listener = () => {
+      setCollapsed(window.matchMedia("(min-width: 1024px)").matches);
+    };
+    const mql = window.matchMedia("(min-width: 1024px)");
+    mql.addEventListener("change", listener);
+    return () => mql.removeEventListener("change", listener);
+  }, []);
 
   return (
     <ProSidebar
@@ -39,7 +50,7 @@ export default function Sidebar({
       collapsedWidth={83}
       toggled={open}
       onToggle={setOpen}
-      breakPoint="md"
+      breakPoint="lg"
     >
       <SidebarHeader>
         <Link to="/pm-station/app" title="PM Station">

@@ -88,7 +88,7 @@ export default function Index() {
     <div className="overflow-hidden flex  items-stretch h-screen gap-4 bg-gradient-to-b from-[#151515] to-[#121212] text-white">
       {!isPopup && <Sidebar open={open} setOpen={setOpen} />}
       <div className="flex flex-col overflow-auto h-full min-h-screen w-full">
-        <nav className="flex flex-row gap-1 items-center px-4 py-2 md:hidden">
+        <nav className="flex flex-row gap-1 items-center px-4 py-2 lg:hidden">
           <button
             title={isPopup ? "ปิดหน้าต่าง" : "เปิดแถบนำทาง"}
             onClick={isPopup ? closePopup : openMenu}
@@ -104,7 +104,7 @@ export default function Index() {
             <Header />
           </Link>
         </nav>
-        <main className="px-6 md:px-8 py-4 md:pt-12 pb-12 flex-1 flex flex-col gap-6">
+        <main className="px-6 lg:px-8 py-4 lg:pt-12 pb-12 flex-1 flex flex-col gap-6">
           <Outlet />
         </main>
       </div>

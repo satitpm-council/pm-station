@@ -7,7 +7,10 @@ import type {
 } from "~/schema/pm-station/playlists/types";
 import admin from "../firebase-admin.server";
 import dayjs from "dayjs";
+import utc from "dayjs/plugin/utc";
 import { LastPlayedDate } from "../songrequests/date";
+
+dayjs.extend(utc);
 
 const PlaylistIdField: keyof SongRequestRecord = "playlistId";
 
@@ -51,7 +54,9 @@ export const setPlaylist = async (
     }
     if (data && tracks.length > 0) {
       // add, or update new tracks to include the playlistId
-      const queuedDate = dayjs(data.queuedDate).hour(7);
+
+      // formating the date as UTC also set hours to 7.
+      const queuedDate = dayjs.utc(data.queuedDate);
       const status: PlaylistRecord["status"] = dayjs().isAfter(queuedDate)
         ? "played"
         : "queued";
