@@ -41,3 +41,8 @@ export interface ListSongRequestsResponse extends ActionResponse {
 export interface DeletePlaylistAction {
   playlistId: string;
 }
+
+export type PlaylistSyncParam = {
+  folderId: string;
+  date: string;
+};

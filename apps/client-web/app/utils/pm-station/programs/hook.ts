@@ -1,13 +1,15 @@
 import { useCollection } from "@lemasc/swr-firestore";
+import { Program } from "~/schema/pm-station/programs/schema";
 import { UserRole, useUser } from "../client";
-
-type Program = {
-  name: string;
-};
+import { zodValidator } from "../zodValidator";
 
 export const usePrograms = () => {
   const { user } = useUser();
-  return useCollection<Program>(
-    user && user.role && user.role > UserRole.USER ? "programs" : null
+  return useCollection(
+    user && user.role && user.role > UserRole.USER ? "programs" : null,
+    {},
+    {
+      validator: zodValidator(Program),
+    }
   );
 };
