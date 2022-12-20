@@ -5,3 +5,5 @@ node_modules
 /build
 .env
 sentry.client.json
+
+/*/__pycache__

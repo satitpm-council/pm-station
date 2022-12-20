@@ -2,8 +2,13 @@ import { useMemo } from "react";
 import dayjs from "~/utils/dayjs";
 import { TrackResponse } from "~/schema/pm-station/songrequests/schema";
 import type { SongRequestSearchRecord } from "~/schema/pm-station/songrequests/types";
+import type { TypeOf } from "zod";
 
-export function TrackMeta({ track }: { track: SongRequestSearchRecord }) {
+export function TrackMeta({
+  track,
+}: {
+  track: SongRequestSearchRecord | TypeOf<typeof TrackResponse>;
+}) {
   const trackResponse = useMemo(() => {
     try {
       return TrackResponse.parse(track);

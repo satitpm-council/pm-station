@@ -3,6 +3,10 @@ FROM node:16-bullseye-slim as base
 
 # Install openssl for Prisma
 RUN apt-get update && apt-get install -y openssl
+# Necessary for running Python
+RUN apt-get install -y curl python3 python3-dev make g++
+RUN npm install -g node-gyp
+RUN pip install -r requirements.txt
 
 # Install all node_modules, including dev dependencies
 FROM base as deps

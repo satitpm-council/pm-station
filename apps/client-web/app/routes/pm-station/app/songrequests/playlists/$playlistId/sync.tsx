@@ -47,7 +47,7 @@ export default function ViewPlaylist() {
                 </thead>
                 <tbody>
                   {tracks?.map((v, i) => (
-                    <tr className="border-b" key={v.id}>
+                    <tr className="border-b border-gray-400" key={v.id}>
                       <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
                         <div className="flex flex-row gap-4">
                           <div className="flex-shrink-0 hidden sm:block">
