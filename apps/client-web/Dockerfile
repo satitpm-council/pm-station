@@ -7,6 +7,7 @@ RUN apt-get update && apt-get install -y openssl
 RUN apt-get install -y curl python3-pip python3-dev make g++
 RUN npm install -g node-gyp
 ## Install pip
+ADD requirements.txt ./
 RUN pip install -r requirements.txt
 
 # Install all node_modules, including dev dependencies
