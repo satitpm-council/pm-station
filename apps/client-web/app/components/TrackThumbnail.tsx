@@ -10,20 +10,22 @@ type BadgeComponentProps = Pick<
   "onClick" | "title" | "className" | "children"
 >;
 
-export default function TrackThumbnail({
-  className,
-  track,
-  children,
-  badge,
-}: {
+export type TrackThumbnailProps = {
   className: { wrapper: string; badge?: string; image?: string };
   badge?: {
     title: string;
     onClick?: () => void;
   };
-  children: React.ReactNode;
-  track: SongRequestSearchRecord | TrackResponse;
-}) {
+  children?: React.ReactNode;
+  track: Pick<TrackResponse, "albumImage" | "name" | "artists">;
+};
+
+export default function TrackThumbnail({
+  className,
+  track,
+  children,
+  badge,
+}: TrackThumbnailProps) {
   const Badge = useMemo(
     () =>
       function Badge(props: BadgeComponentProps) {

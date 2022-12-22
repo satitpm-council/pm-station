@@ -31,6 +31,7 @@ const SongRequestRecord = TrackResponse.extend({
   lastUpdatedAt: z.preprocess(preprocessDate, z.date()),
   lastPlayedAt: z.preprocess(preprocessDate, z.date()),
   playlistId: z.array(z.preprocess(docRef, z.string())).optional(),
+  youtubeId: z.string().optional(),
 });
 
 const SongRequestSubmission = z.object({

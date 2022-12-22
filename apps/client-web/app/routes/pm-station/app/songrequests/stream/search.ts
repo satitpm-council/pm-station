@@ -1,12 +1,11 @@
-import type { LoaderFunction } from "@remix-run/node";
+import type { ActionFunction } from "@remix-run/node";
 import { json } from "@remix-run/node";
 import YTMusic from "~/utils/pm-station/ytmusic";
 import { headers, withEditorAuth } from ".";
 
-const getMusicInfo: LoaderFunction = async ({ request }) => {
-  const params = new URL(request.url).searchParams;
-  const q = params.getAll("q");
-  if (q.length === 0) {
+const searchMusic: ActionFunction = async ({ request }) => {
+  const { q } = await request.json();
+  if (!Array.isArray(q) || q.length === 0) {
     return json({ success: false }, { headers, status: 400 });
   }
   try {
@@ -21,4 +20,4 @@ const getMusicInfo: LoaderFunction = async ({ request }) => {
   }
 };
 
-export const loader = withEditorAuth(getMusicInfo);
+export const action = withEditorAuth(searchMusic);

@@ -2,6 +2,7 @@ import type {
   SongRequestRecord,
   TrackResponse,
 } from "~/schema/pm-station/songrequests/types";
+import type { MusicInfo } from "./ytmusic";
 
 export type LoginAction = {
   token: string;
@@ -46,3 +47,7 @@ export type PlaylistSyncParam = {
   folderId: string;
   date: string;
 };
+
+export interface SearchActionResponse extends ActionResponse {
+  data?: MusicInfo[];
+}

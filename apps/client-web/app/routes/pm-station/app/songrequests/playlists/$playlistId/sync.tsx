@@ -1,95 +1,99 @@
-import { PencilIcon, TrashIcon } from "@heroicons/react/20/solid";
-import { useNavigate } from "@remix-run/react";
-import { useCallback, useState } from "react";
+import { ArrowPathIcon } from "@heroicons/react/20/solid";
+import { useMemo, useState } from "react";
 import { PageHeader } from "~/components/Header";
-import { ViewTrackModal } from "~/components/TrackModal";
-import axios from "~/utils/axios";
+import { SyncMusicModal, ViewTrackModal } from "~/components/TrackModal";
 import type { SongRequestRecord } from "~/schema/pm-station/songrequests/types";
 import { withTitle } from "~/utils/pm-station/client";
-import type { DeletePlaylistAction } from "~/utils/pm-station/api-types";
-import { usePlaylistWithDriveSync } from "~/utils/pm-station/drive/sync";
-import { TrackMeta } from "~/components/SongRequest/base";
+import { usePlaylistData } from "~/utils/pm-station/playlists/data";
+import { usePlaylistParam } from "~/utils/pm-station/playlists/param";
+import { isDocumentValid } from "@lemasc/swr-firestore";
+import { SongRequestRecordList } from "~/components/SongRequest/list";
 
-export const meta = withTitle("ดูรายการเพลง");
+export const meta = withTitle("ซิงก์รายการเพลง");
 
+type CategorizedTracks = {
+  unsynced: SongRequestRecord[];
+  synced: SongRequestRecord[];
+};
 export default function ViewPlaylist() {
-  const { playlist, tracks, uncategorized } = usePlaylistWithDriveSync();
-  const navigate = useNavigate();
+  const playlistId = usePlaylistParam();
+  const { tracks } = usePlaylistData(playlistId);
   const [selectedTrack, setSelectedTrack] = useState<SongRequestRecord>();
+
+  const [isOpen, setOpen] = useState(false);
+
+  const categorizedTracks = useMemo(
+    () =>
+      tracks
+        ?.filter((v) => isDocumentValid(v))
+        .reduce(
+          (prev, cur) => {
+            if (cur.youtubeId) {
+              prev.synced.push(cur);
+            } else {
+              prev.unsynced.push(cur);
+            }
+            return prev;
+          },
+          {
+            synced: [],
+            unsynced: [],
+          } as CategorizedTracks
+        ),
+    [tracks]
+  );
+
   return (
     <>
+      <SyncMusicModal
+        tracks={categorizedTracks?.unsynced ?? []}
+        closeModal={() => setOpen(false)}
+        isOpen={isOpen}
+      />
       <ViewTrackModal
         track={selectedTrack}
         onClose={() => setSelectedTrack(undefined)}
       />
-      <PageHeader title={`ดูข้อมูลรายการเพลง`}></PageHeader>
-      <h1>Sync</h1>
-      <div className="flex flex-col">
-        <div className="overflow-x-auto sm:-mx-6 lg:-mx-8">
-          <div className="inline-block min-w-full sm:px-6 lg:px-8">
-            <div className="overflow-hidden">
-              <table className="min-w-full">
-                <thead className="border-b border-gray-500">
-                  <tr>
-                    <th
-                      scope="col"
-                      className="text-sm font-medium px-6 py-4 text-left"
-                    >
-                      เพลง
-                    </th>
-                    <th
-                      scope="col"
-                      className="text-sm font-medium px-6 py-4 text-left"
-                    >
-                      เชื่อมต่อกับไฟล์
-                    </th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {tracks?.map((v, i) => (
-                    <tr className="border-b border-gray-400" key={v.id}>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                        <div className="flex flex-row gap-4">
-                          <div className="flex-shrink-0 hidden sm:block">
-                            <img
-                              src={v.albumImage.url}
-                              width={60}
-                              height={60}
-                              draggable={false}
-                              className="rounded"
-                              alt={v.name}
-                            />
-                          </div>
-                          <div className="flex flex-col max-w-[250px] lg:max-w-[40vw]">
-                            <TrackMeta track={v} />
-                          </div>
-                        </div>
-                      </td>
-                      <td className="text-sm font-light px-6 py-4 whitespace-nowrap">
-                        {uncategorized ? (
-                          <div className="flex flex-col gap-2 max-w-[250px] lg:max-w-[40vw]">
-                            <b className="truncate font-medium">
-                              {uncategorized?.[i].name}
-                            </b>
-                            <span>
-                              {uncategorized?.[i].ownedByMe
-                                ? "อัพโหลดโดยระบบ"
-                                : "อัพโหลดโดยผู้ใช้"}
-                            </span>
-                          </div>
-                        ) : (
-                          "Unsynced"
-                        )}
-                      </td>
-                      <td>แก้ไข</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </div>
-      </div>
+      <PageHeader
+        title={`ซิงก์รายการเพลง`}
+        button={
+          categorizedTracks?.unsynced
+            ? [
+                {
+                  onClick: () => setOpen(true),
+                  text: "ซิงก์รายการ",
+                  icon: ArrowPathIcon,
+                  className: "bg-green-500 hover:bg-green-600",
+                },
+              ]
+            : undefined
+        }
+      ></PageHeader>
+      {categorizedTracks && (
+        <>
+          {categorizedTracks.unsynced.length > 0 && (
+            <>
+              <h2 className="font-medium text-lg">
+                รายการเพลงที่ยังไม่ได้ซิงก์
+              </h2>
+
+              <SongRequestRecordList
+                data={categorizedTracks.unsynced}
+                onItemClick={setSelectedTrack}
+              />
+            </>
+          )}
+          {categorizedTracks.synced.length > 0 && (
+            <>
+              <h2 className="font-medium text-lg">รายการเพลงที่ซิงก์แล้ว</h2>
+              <SongRequestRecordList
+                data={categorizedTracks.synced}
+                onItemClick={setSelectedTrack}
+              />
+            </>
+          )}
+        </>
+      )}
     </>
   );
 }
