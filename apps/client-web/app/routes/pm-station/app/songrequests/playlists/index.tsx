@@ -1,16 +1,23 @@
-import { Link, useNavigate } from "@remix-run/react";
+import { useNavigate } from "@remix-run/react";
 import { useCallback } from "react";
 import { PlusIcon } from "@heroicons/react/20/solid";
-import { isDocumentValid } from "@lemasc/swr-firestore";
 import { PageHeader } from "~/components/Header";
 import { withTitle } from "~/utils/pm-station/client";
-import { usePlaylists } from "~/utils/pm-station/playlists/hook";
-import dayjs from "~/utils/dayjs";
+
+import type { LinksFunction } from "@remix-run/node";
+
+import reactCalendarCss from "react-calendar/dist/Calendar.css";
+import customCalendarCss from "~/styles/calendar.css";
+import CalendarView from "~/components/PlaylistEditor/CalendarView";
 
 export const meta = withTitle("จัดการคำขอเพลง");
 
+export const links: LinksFunction = () => [
+  { href: reactCalendarCss, rel: "stylesheet" },
+  { href: customCalendarCss, rel: "stylesheet" },
+];
+
 export default function ListSongRequest() {
-  const { data } = usePlaylists();
   const navigate = useNavigate();
 
   return (
@@ -29,21 +36,7 @@ export default function ListSongRequest() {
       >
         จัดการรายการเพลง PM Music Request
       </PageHeader>
-      <div className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-        {data?.filter(isDocumentValid).map((p) => (
-          <Link
-            to={`/pm-station/app/songrequests/playlists/${p.id}`}
-            key={p.id}
-          >
-            <div className=" flex flex-col text-sm gap-2 bg-white bg-opacity-10 hover:bg-opacity-20 rounded-lg px-6 py-4">
-              <b className="text-lg font-bold">
-                {dayjs(p.queuedDate).format("ll")}
-              </b>
-              <span>จำนวนเพลงในรายการ: {p.totalTracks}</span>
-            </div>
-          </Link>
-        ))}
-      </div>
+      <CalendarView />
     </>
   );
 }

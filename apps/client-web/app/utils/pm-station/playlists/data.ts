@@ -12,10 +12,8 @@ import type { TypeOf } from "zod";
 import { zodValidator } from "~/utils/pm-station/zodValidator";
 import { PlaylistRecord } from "~/schema/pm-station/playlists/schema";
 import { SongRequestRecord } from "~/schema/pm-station/songrequests/schema";
-import { usePlaylistParam } from "./param";
 
-export const usePlaylistData = () => {
-  const playlistId = usePlaylistParam();
+export const usePlaylistData = (playlistId?: string) => {
   const { data: playlistData } = useDocument(
     playlistId ? `playlists/${playlistId}` : null,
     { validator: zodValidator(PlaylistRecord) }

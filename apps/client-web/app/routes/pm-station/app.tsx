@@ -87,7 +87,10 @@ export default function Index() {
   return (
     <div className="overflow-hidden flex  items-stretch h-screen gap-4 bg-gradient-to-b from-[#151515] to-[#121212] text-white">
       {!isPopup && <Sidebar open={open} setOpen={setOpen} />}
-      <div className="flex flex-col overflow-auto h-full min-h-screen w-full">
+      <div
+        id="app"
+        className="flex flex-col overflow-auto h-full min-h-screen w-full"
+      >
         <nav className="flex flex-row gap-1 items-center px-4 py-2 lg:hidden">
           <button
             title={isPopup ? "ปิดหน้าต่าง" : "เปิดแถบนำทาง"}

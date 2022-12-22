@@ -48,7 +48,7 @@ export const SongRequestRecordList = <T extends SongRequestSearchRecord>({
   data?: T[];
 } & ListProps<T>) => {
   return (
-    <div className="flex flex-col md:flex-row md:flex-wrap gap-4 md:gap-8">
+    <div className="flex flex-col gap-4 md:flex-row md:flex-wrap md:gap-8">
       {data && (
         <div className="flex flex-row flex-wrap gap-4">
           {data.map((track) => (

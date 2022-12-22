@@ -42,12 +42,11 @@ export default class YTMusic {
   async searchMusic(
     ...query: string[]
   ): Promise<SearchMusicResult | SearchMusicResult[]> {
-    const results = await Promise.all(
-      query.map(
-        async (q) =>
-          py.call(this.entry, "searchMusic", q) as Promise<SearchMusicResult>
-      )
-    );
+    const results = (await py.call(
+      this.entry,
+      "searchMusic",
+      query
+    )) as SearchMusicResult[];
     if (query.length === 1) return results[0];
     return results;
   }

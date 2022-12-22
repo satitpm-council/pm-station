@@ -79,7 +79,7 @@ const Button = memo<ButtonProps>(function Button(button) {
     </button>
   );
 });
-const ButtonRenderer = ({ buttons }: { buttons: ButtonProps[] }) => {
+export const ButtonRenderer = ({ buttons }: { buttons: ButtonProps[] }) => {
   return (
     <div className="flex flex-col sm:flex-row sm:items-start gap-3 sm:gap-4">
       {buttons.map((button) => (

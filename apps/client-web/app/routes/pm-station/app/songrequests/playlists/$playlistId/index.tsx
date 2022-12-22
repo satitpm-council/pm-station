@@ -9,12 +9,14 @@ import type { SongRequestRecord } from "~/schema/pm-station/songrequests/types";
 import dayjs from "~/utils/dayjs";
 import { withTitle } from "~/utils/pm-station/client";
 import { usePlaylistData } from "~/utils/pm-station/playlists/data";
+import { usePlaylistParam } from "~/utils/pm-station/playlists/param";
 import type { DeletePlaylistAction } from "~/utils/pm-station/api-types";
 
 export const meta = withTitle("ดูรายการเพลง");
 
 export default function ViewPlaylist() {
-  const { playlist, tracks } = usePlaylistData();
+  const playlistId = usePlaylistParam();
+  const { playlist, tracks } = usePlaylistData(playlistId);
   const navigate = useNavigate();
   const [selectedTrack, setSelectedTrack] = useState<SongRequestRecord>();
   const goToEdit = useCallback(
