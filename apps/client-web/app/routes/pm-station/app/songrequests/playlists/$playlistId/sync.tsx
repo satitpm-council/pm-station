@@ -7,7 +7,9 @@ import { withTitle } from "~/utils/pm-station/client";
 import { usePlaylistData } from "~/utils/pm-station/playlists/data";
 import { usePlaylistParam } from "~/utils/pm-station/playlists/param";
 import { isDocumentValid } from "@lemasc/swr-firestore";
+import type { ListProps } from "~/components/SongRequest/list";
 import { SongRequestRecordList } from "~/components/SongRequest/list";
+import dayjs from "dayjs";
 
 export const meta = withTitle("ซิงก์รายการเพลง");
 
@@ -15,9 +17,29 @@ type CategorizedTracks = {
   unsynced: SongRequestRecord[];
   synced: SongRequestRecord[];
 };
+
+function TrackList({
+  data,
+  onItemClick,
+  children,
+}: { data: SongRequestRecord[] } & ListProps<SongRequestRecord>) {
+  return (
+    <>
+      {data.length > 0 && (
+        <>
+          <h2 className="font-medium text-lg">
+            {children} ({data.length} รายการ)
+          </h2>
+
+          <SongRequestRecordList data={data} onItemClick={onItemClick} />
+        </>
+      )}
+    </>
+  );
+}
 export default function ViewPlaylist() {
   const playlistId = usePlaylistParam();
-  const { tracks } = usePlaylistData(playlistId);
+  const { tracks, playlist } = usePlaylistData(playlistId, true);
   const [selectedTrack, setSelectedTrack] = useState<SongRequestRecord>();
 
   const [isOpen, setOpen] = useState(false);
@@ -57,7 +79,7 @@ export default function ViewPlaylist() {
       <PageHeader
         title={`ซิงก์รายการเพลง`}
         button={
-          categorizedTracks?.unsynced
+          categorizedTracks && categorizedTracks.unsynced.length > 0
             ? [
                 {
                   onClick: () => setOpen(true),
@@ -68,30 +90,27 @@ export default function ViewPlaylist() {
               ]
             : undefined
         }
-      ></PageHeader>
+      >
+        {playlist
+          ? `วันที่ ${dayjs(playlist.queuedDate).format("LL")} (จำนวน ${
+              playlist.totalTracks
+            } รายการ)`
+          : ``}
+      </PageHeader>
       {categorizedTracks && (
         <>
-          {categorizedTracks.unsynced.length > 0 && (
-            <>
-              <h2 className="font-medium text-lg">
-                รายการเพลงที่ยังไม่ได้ซิงก์
-              </h2>
-
-              <SongRequestRecordList
-                data={categorizedTracks.unsynced}
-                onItemClick={setSelectedTrack}
-              />
-            </>
-          )}
-          {categorizedTracks.synced.length > 0 && (
-            <>
-              <h2 className="font-medium text-lg">รายการเพลงที่ซิงก์แล้ว</h2>
-              <SongRequestRecordList
-                data={categorizedTracks.synced}
-                onItemClick={setSelectedTrack}
-              />
-            </>
-          )}
+          <TrackList
+            data={categorizedTracks.unsynced}
+            onItemClick={setSelectedTrack}
+          >
+            รายการเพลงที่ยังไม่ได้ซิงก์
+          </TrackList>
+          <TrackList
+            data={categorizedTracks.synced}
+            onItemClick={setSelectedTrack}
+          >
+            รายการเพลงที่ซิงก์แล้ว
+          </TrackList>
         </>
       )}
     </>

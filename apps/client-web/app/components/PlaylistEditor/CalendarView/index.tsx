@@ -42,9 +42,7 @@ export default function CalendarView() {
   const PlaylistMetaWithDate = useCallback(
     (props: PlaylistMetadataProps) => (
       <PlaylistMetadata {...props}>
-        <h3 className="font-bold text-2xl">
-          วันที่ {dayjs(date).format("LL")}
-        </h3>
+        วันที่ {dayjs(date).format("LL")}
       </PlaylistMetadata>
     ),
     [date]
@@ -57,6 +55,7 @@ export default function CalendarView() {
           tileContent={getTileContent}
           value={date}
           onChange={setDate}
+          calendarType="US"
         />
         <PlaylistMetaWithDate side animate={!top} playlist={currentData} />
       </div>

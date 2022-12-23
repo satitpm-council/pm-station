@@ -1,23 +1,19 @@
 import type { ActionFunction } from "@remix-run/node";
 import { json } from "@remix-run/node";
-import YTMusic from "~/utils/pm-station/ytmusic";
+import { searchMusic } from "~/utils/pm-station/ytmusic";
 import { headers, withEditorAuth } from ".";
 
-const searchMusic: ActionFunction = async ({ request }) => {
+const search: ActionFunction = async ({ request }) => {
   const { q } = await request.json();
   if (!Array.isArray(q) || q.length === 0) {
     return json({ success: false }, { headers, status: 400 });
   }
   try {
-    const ytmusic = new YTMusic();
-    return json(
-      { success: true, data: await ytmusic.searchMusic(...q) },
-      { headers }
-    );
+    return json({ success: true, data: await searchMusic(...q) }, { headers });
   } catch (err) {
     console.error(err);
     return json({ success: false }, { headers, status: 500 });
   }
 };
 
-export const action = withEditorAuth(searchMusic);
+export const action = withEditorAuth(search);

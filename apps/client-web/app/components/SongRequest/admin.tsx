@@ -67,6 +67,12 @@ const CustomHits = (props: ListProps) => {
         if (parsed.success) {
           cachedRecords.current.set(item.objectID, parsed.data);
           return parsed.data;
+        } else if (process.env.NODE_ENV === "development") {
+          console.warn(
+            `Warning: Document ID ${item.id} from Algolia not passing the defined schema`,
+            item,
+            parsed.error
+          );
         }
         return undefined;
       })

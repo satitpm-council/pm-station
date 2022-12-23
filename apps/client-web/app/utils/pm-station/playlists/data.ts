@@ -13,7 +13,7 @@ import { zodValidator } from "~/utils/pm-station/zodValidator";
 import { PlaylistRecord } from "~/schema/pm-station/playlists/schema";
 import { SongRequestRecord } from "~/schema/pm-station/songrequests/schema";
 
-export const usePlaylistData = (playlistId?: string) => {
+export const usePlaylistData = (playlistId?: string, listen = false) => {
   const { data: playlistData } = useDocument(
     playlistId ? `playlists/${playlistId}` : null,
     { validator: zodValidator(PlaylistRecord) }
@@ -34,6 +34,7 @@ export const usePlaylistData = (playlistId?: string) => {
     },
     {
       validator: zodValidator(SongRequestRecord),
+      listen,
     }
   );
 

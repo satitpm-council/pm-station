@@ -3,6 +3,13 @@ import { useMatches } from "@remix-run/react";
 import type { UserRecord } from "firebase-admin/auth";
 import { useMemo } from "react";
 
+/**
+ * Use to get the DOM element of the app container.
+ * Useful for manage scrolling, since the document was set to `overflow: hidden`
+ */
+export const getAppContainer = () =>
+  document.querySelector<HTMLDivElement>("#app");
+
 export const withTitle: (title: string) => MetaFunction =
   (title: string) => () => ({
     title: `${title} - PM Station`,

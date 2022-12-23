@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { getAppContainer } from "~/utils/pm-station/client";
 
 export const useScrollAnimation = () => {
   const [top, setTop] = useState(true);
@@ -6,7 +7,7 @@ export const useScrollAnimation = () => {
   const timeout = useRef<NodeJS.Timeout>();
 
   useEffect(() => {
-    const target = document.querySelector<HTMLDivElement>("#app");
+    const target = getAppContainer();
     if (timeout.current) clearTimeout(timeout.current);
     if (!target) return;
     const scrollHandler = (): void => {

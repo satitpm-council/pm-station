@@ -1,7 +1,11 @@
 import { useCallback, useRef } from "react";
 import { useNavigate } from "@remix-run/react";
 import { Transition } from "@headlessui/react";
-import { PencilIcon, TrashIcon } from "@heroicons/react/20/solid";
+import {
+  ArrowPathIcon,
+  PencilIcon,
+  TrashIcon,
+} from "@heroicons/react/20/solid";
 import type { ValidatedDocument } from "@lemasc/swr-firestore";
 import { isDocumentValid } from "@lemasc/swr-firestore";
 
@@ -12,6 +16,7 @@ import { usePrograms } from "~/utils/pm-station/programs";
 import type { PlaylistRecord } from "~/schema/pm-station/playlists/types";
 import type { Program } from "~/schema/pm-station/programs/types";
 import type { DeletePlaylistAction } from "~/utils/pm-station/api-types";
+import { getAppContainer } from "~/utils/pm-station/client";
 
 export type PlaylistMetadataProps = {
   children?: React.ReactNode | React.ReactNode[];
@@ -30,9 +35,13 @@ export const PlaylistMetadata = ({
   const { data: programs } = usePrograms();
 
   const navigate = useNavigate();
-  const goToEdit = useCallback(
-    () =>
-      navigate(`/pm-station/app/songrequests/playlists/${playlist?.id}/edit`),
+  const goToSubPage = useCallback(
+    (page: "edit" | "sync") => {
+      navigate(
+        `/pm-station/app/songrequests/playlists/${playlist?.id}/${page}`
+      );
+      getAppContainer()?.scrollTo(0, 0);
+    },
     [navigate, playlist]
   );
   const remove = useCallback(async () => {
@@ -61,7 +70,9 @@ export const PlaylistMetadata = ({
       leaveTo="transform opacity-0"
     >
       <div className="flex flex-col flex-grow gap-2">
-        {children}
+        <h3 className="font-bold text-2xl">
+          {children} {playlist && `(${playlist.totalTracks} รายการ)`}
+        </h3>
         <span className="text-gray-200 leading-7">
           {playlist ? (
             <>
@@ -75,7 +86,7 @@ export const PlaylistMetadata = ({
               }
               <br />
               สถานะ:{" "}
-              {playlist.status !== "played" ? "เล่นไปแล้ว" : "ยังไม่ถูกเล่น"}
+              {playlist.status === "played" ? "เล่นไปแล้ว" : "ยังไม่ถูกเล่น"}
             </>
           ) : (
             "ไม่มีรายการเพลง"
@@ -87,14 +98,20 @@ export const PlaylistMetadata = ({
           buttons={[
             {
               className: "bg-blue-500 hover:bg-blue-600",
-              onClick: goToEdit,
+              onClick: () => goToSubPage("edit"),
               icon: PencilIcon,
-              text: "แก้ไขรายการ",
+              text: "แก้ไข",
+            },
+            {
+              className: "bg-green-500 hover:bg-green-600",
+              onClick: () => goToSubPage("sync"),
+              icon: ArrowPathIcon,
+              text: "ซิงก์",
             },
             {
               className: "bg-red-500 hover:bg-red-600",
               onClick: remove,
-              text: "ลบรายการ",
+              text: "ลบ",
               icon: TrashIcon,
             },
           ]}

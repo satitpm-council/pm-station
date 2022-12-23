@@ -7,15 +7,13 @@ import Modal from "~/components/Modal";
 import { SyncMusicItem } from "./item";
 import type { SearchActionResponse } from "~/utils/pm-station/api-types";
 import { SubmitButton } from "~/components/SubmitButton";
+import { getFirestore, doc, writeBatch } from "firebase/firestore";
 
 export const SyncMusicModal = ({
   tracks,
-  ...props
+  isOpen,
+  closeModal,
 }: ModalState & { tracks: SongRequestRecord[] }) => {
-  const closeModal = useCallback(() => {
-    props.closeModal();
-  }, [props]);
-
   const [isLoading, setIsLoading] = useState(false);
   const [results, setResults] = useState<SearchActionResponse["data"]>();
   const searchMusic = useCallback(async () => {
@@ -35,23 +33,48 @@ export const SyncMusicModal = ({
       }
     }
   }, [tracks]);
+
+  const saveResults = useCallback(async () => {
+    const firestore = getFirestore();
+
+    const batch = writeBatch(firestore);
+    if (!results || results.length !== tracks.length) return;
+    tracks.forEach((track, i) => {
+      const updateData: Partial<SongRequestRecord> = {
+        youtubeId: results[i].videoId,
+      };
+      batch.update(doc(firestore, "songrequests", track.id), updateData);
+    });
+    await batch.commit();
+    closeModal();
+  }, [tracks, results, closeModal]);
+
+  const onClose = useCallback(() => {
+    setResults(undefined);
+  }, []);
+
   return (
-    <Modal canClose={!isLoading} isOpen={props.isOpen} closeModal={closeModal}>
-      <div className="flex flex-col gap-2 w-full">
-        <h1 className="font-bold text-2xl">Auto Sync</h1>
-        <p className="text-sm text-gray-200">
-          ค้นหารายการใน YouTube Music เพื่อซิงก์รายการเพลงจาก Spotify
-          สำหรับเปิดในระบบโดยอัตโนมัติ
-        </p>
-        <div className="flex flex-col justify-center py-4">
-          <SubmitButton
-            disabled={results !== undefined}
-            onClick={searchMusic}
-            loading={isLoading}
-          >
-            ค้นหารายการ
-          </SubmitButton>
+    <Modal
+      onClose={onClose}
+      canClose={!isLoading}
+      isOpen={isOpen}
+      closeModal={closeModal}
+    >
+      <div className="flex flex-col gap-4 w-full">
+        <div className="space-y-2">
+          <h1 className="font-bold text-2xl">Auto Sync</h1>
+          <p className="text-sm text-gray-200">
+            ค้นหารายการใน YouTube Music เพื่อซิงก์รายการเพลงจาก Spotify
+            สำหรับเปิดในระบบโดยอัตโนมัติ
+          </p>
         </div>
+        <SubmitButton
+          disabled={results !== undefined}
+          onClick={searchMusic}
+          loading={results === undefined && isLoading}
+        >
+          ค้นหารายการ
+        </SubmitButton>
         <div className="flex flex-wrap flex-col text-left gap-4">
           {tracks?.map((track, i) => (
             <SyncMusicItem
@@ -61,6 +84,13 @@ export const SyncMusicModal = ({
             />
           ))}
         </div>
+        <SubmitButton
+          disabled={results === undefined}
+          onClick={saveResults}
+          loading={results !== undefined && isLoading}
+        >
+          บันทึกข้อมูล
+        </SubmitButton>
       </div>
     </Modal>
   );

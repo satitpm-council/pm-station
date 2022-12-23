@@ -5,7 +5,7 @@ export const HitResult = z.object({
   objectID: z.string(),
   /** The path of this firestore document. */
   path: z.string(),
-  lastmodified: z.number(),
+  lastmodified: z.number().optional(),
 });
 
 export const mapObjectIdToId = <T extends z.infer<typeof HitResult>>({

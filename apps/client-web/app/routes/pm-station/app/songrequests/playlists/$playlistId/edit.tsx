@@ -5,11 +5,13 @@ import { usePlaylistData } from "~/utils/pm-station/playlists/data";
 import dayjs from "dayjs";
 import { useEffect } from "react";
 import { playlistEditorStore } from "~/components/PlaylistEditor/store";
+import { usePlaylistParam } from "~/utils/pm-station/playlists/param";
 
 export const meta = withTitle("แก้ไขรายการเพลง");
 
 export default function EditPlaylistPage() {
-  const { playlist, tracks } = usePlaylistData();
+  const playlistId = usePlaylistParam();
+  const { playlist, tracks } = usePlaylistData(playlistId);
 
   useEffect(() => {
     if (playlist) {
