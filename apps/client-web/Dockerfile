@@ -20,18 +20,19 @@ COPY .gitignore .gitignore
 COPY --from=pruner /app/out/json/ .
 COPY --from=pruner /app/out/yarn.lock ./yarn.lock
 COPY --from=pruner /app/out/full/apps/client-web/requirements.txt /app/apps/client-web/requirements.txt
-COPY /patches /patches
 
 
 FROM project as deps
 WORKDIR /app
 RUN corepack enable
+COPY /patches /patches
 RUN yarn install
 
 # Setup production node_modules
 FROM project as production-deps
 WORKDIR /app
 RUN corepack enable
+COPY /patches /patches
 RUN yarn install --production
 
 # Build the app
