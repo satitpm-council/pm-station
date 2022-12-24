@@ -27,4 +27,4 @@ jobs:
         - name: Install dependencies
           run: yarn
         - name: Deploy
-          run: yarn deploy
+          run: yarn deploy:ci
