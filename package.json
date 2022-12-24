@@ -12,6 +12,10 @@
     },
     "dependencies": {
         "dotenv": "^16.0.3",
+        "patch-package": "^6.5.0",
         "turbo": "^1.6.3"
+    },
+    "devDependencies": {
+        "eslint": "^8.30.0"
     }
 }

@@ -26,7 +26,7 @@ FROM project as deps
 WORKDIR /app
 RUN corepack enable
 COPY /patches /patches
-RUN yarn install
+RUN yarn install --frozen-lockfile
 
 # Setup production node_modules
 FROM project as production-deps
