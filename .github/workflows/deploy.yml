@@ -23,8 +23,8 @@ jobs:
         - name: Installing flyctl
           uses: superfly/flyctl-actions/setup-flyctl@master
         - name: Installing Turborepo
-          uses: yarn global add turbo
+          run: yarn global add turbo
         - name: Setting up necessary environment variables.
-          uses: echo 'SENTRY_DSN=${{ secrets.SENTRY_DSN }}' >> .env
+          run: echo 'SENTRY_DSN=${{ secrets.SENTRY_DSN }}' >> .env
         - name: Deploy
-          uses: turbo run deploy
+          run: turbo run deploy
