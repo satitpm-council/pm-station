@@ -49,6 +49,8 @@ COPY turbo.json turbo.json
 # RUN npx prisma generate
 
 # Build the project
+# Remote caching is disabled in docker context.
+# However before start building Docker image we must check it already!
 RUN turbo run build --filter=client-web...
 
 # Finally, build the production image with minimal footprint
