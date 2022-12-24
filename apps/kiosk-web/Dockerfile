@@ -22,14 +22,14 @@ COPY --from=pruner /app/out/yarn.lock ./yarn.lock
 FROM project as deps
 WORKDIR /app
 RUN corepack enable
-COPY /patches /patches
+COPY /patches ./patches
 RUN yarn install --frozen-lockfile
 
 # Setup production node_modules
 FROM project as production-deps
 WORKDIR /app
 RUN corepack enable
-COPY /patches /patches
+COPY /patches ./patches
 RUN yarn install --production
 
 # Build the project
