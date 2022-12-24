@@ -20,7 +20,7 @@ COPY .gitignore .gitignore
 COPY --from=pruner /app/out/json/ .
 COPY --from=pruner /app/out/yarn.lock ./yarn.lock
 COPY --from=pruner /app/out/full/apps/client-web/requirements.txt /app/apps/client-web/requirements.txt
-COPY /patches /patches
+COPY --from=pruner /patches /patches
 
 
 FROM project as deps
