@@ -1,7 +1,7 @@
 const fs = require("fs");
 const path = require("path");
 
-require("dotenv").config();
+require("dotenv-mono").config();
 if (!process.env.SENTRY_DSN) {
   throw new Error("SENTRY_DSN environment varriable not found.");
 }

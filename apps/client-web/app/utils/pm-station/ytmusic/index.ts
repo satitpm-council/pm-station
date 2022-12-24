@@ -2,7 +2,7 @@ import { interpreter as py } from "node-calls-python";
 import path from "path";
 import type { MusicInfo } from "./types";
 
-const entryPath = path.join(process.cwd(), "python", "ytmusic.py");
+const entryPath = path.resolve(process.cwd(), "python", "ytmusic.py");
 const entry = py.importSync(entryPath);
 
 /**

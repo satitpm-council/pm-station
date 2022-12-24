@@ -4,6 +4,7 @@ import { RemixServer } from "@remix-run/react";
 import { renderToString } from "react-dom/server";
 
 require("dotenv").config();
+require("dotenv").config({ path: "../../.env" });
 
 Sentry.init({
   dsn:

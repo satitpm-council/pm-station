@@ -1,66 +1,70 @@
 # base node image
 FROM node:16-bullseye-slim as base
-
 # Install openssl for Prisma
 RUN apt-get update && apt-get install -y openssl
 # Necessary for running Python
 RUN apt-get install -y curl python3-pip python3-dev make g++
-RUN npm install -g node-gyp
-## Install pip
-ADD requirements.txt ./
-RUN pip install -r requirements.txt
+RUN npm install -g node-gyp turbo
 
-# Install all node_modules, including dev dependencies
-FROM base as deps
 
-RUN mkdir /app
+FROM base as pruner
 WORKDIR /app
+COPY . .
+RUN turbo prune --scope=client-web --docker
+RUN find . -name "node_modules" -type d -prune -exec rm -rf '{}' +
 
-ADD package.json yarn.lock ./
+# Base strategy to have layer caching
+FROM base AS project
+WORKDIR /app
+COPY .gitignore .gitignore
+COPY --from=pruner /app/out/json/ .
+COPY --from=pruner /app/out/yarn.lock ./yarn.lock
+COPY --from=pruner /app/out/full/apps/client-web/requirements.txt /app/apps/client-web/requirements.txt
+COPY /patches /patches
+
+
+FROM project as deps
+WORKDIR /app
+RUN corepack enable
 RUN yarn install
 
 # Setup production node_modules
-FROM base as production-deps
-
-RUN mkdir /app
+FROM project as production-deps
 WORKDIR /app
-
-COPY --from=deps /app/node_modules /app/node_modules
-ADD package.json yarn.lock ./
+RUN corepack enable
 RUN yarn install --production
 
 # Build the app
-FROM base as build
+FROM project as builder
 
 ENV NODE_ENV=production
-
-RUN mkdir /app
 WORKDIR /app
 
+COPY --from=pruner /app/out/full/ /app
 COPY --from=deps /app/node_modules /app/node_modules
+COPY turbo.json turbo.json
 
 # If we're using Prisma, uncomment to cache the prisma schema
 # ADD prisma .
 # RUN npx prisma generate
 
-ADD . .
-RUN yarn run build
+# Build the project
+RUN turbo run build --filter=client-web...
 
 # Finally, build the production image with minimal footprint
-FROM base
-
-ENV NODE_ENV=production
-
-RUN mkdir /app
+FROM base as runner
 WORKDIR /app
+ENV NODE_ENV=production
+RUN addgroup --system --gid 1001 nodejs
+RUN adduser --system --uid 1001 remixjs
+RUN chown -R remixjs:nodejs /app
+USER remixjs
 
-COPY --from=production-deps /app/node_modules /app/node_modules
+COPY --from=pruner --chown=remixjs:nodejs /app/out/full/ .
+COPY --from=production-deps --chown=remixjs:nodejs /app .
+COPY --from=builder --chown=remixjs:nodejs /app/apps/client-web/build ./apps/client-web/build
+COPY --from=builder --chown=remixjs:nodejs /app/apps/client-web/public ./apps/client-web/public
 
-# Uncomment if using Prisma
-# COPY --from=build /app/node_modules/.prisma /app/node_modules/.prisma
+RUN yarn workspace client-web run bootstrap
 
-COPY --from=build /app/build /app/build
-COPY --from=build /app/public /app/public
-ADD . .
-
-CMD ["yarn", "run", "start"]
+CMD ["yarn", "workspace", "client-web", "run", "start"]
