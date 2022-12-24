@@ -7,8 +7,7 @@
     ],
     "scripts": {
         "bootstrap": "turbo run bootstrap --no-cache",
-        "deploy": "turbo run build deploy",
-        "deploy:ci": "turbo run deploy",
+        "deploy": "turbo run deploy",
         "postinstall": "patch-package"
     },
     "dependencies": {
