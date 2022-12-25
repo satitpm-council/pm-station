@@ -1,10 +1,9 @@
 # base node image
-FROM node:16-alpine as base
-RUN apk add --no-cache libc6-compat
+FROM node:16-bullseye-slim as base
 # Install openssl for Prisma
-RUN apk update && apk add openssl
+RUN apt-get update && apt-get -qq install -y openssl
 # Necessary for running Python
-RUN apk add curl py3-pip python3-dev make g++
+RUN apt-get -qq install -y curl python3-pip python3-dev make g++
 RUN npm install -g node-gyp turbo
 
 

@@ -10,13 +10,23 @@
         "build": {
             "dependsOn": [
                 "^build"
+            ]
+        },
+        "kiosk-web#build": {
+            "dependsOn": [
+                "^build"
             ],
             "outputs": [
-                "dist/**",
-                ".next/**",
+                ".next/**"
+            ]
+        },
+        "client-web#build": {
+            "dependsOn": [
+                "^build"
+            ],
+            "outputs": [
                 "public/build/**",
-                "build/**",
-                ".cache"
+                "build/**"
             ]
         },
         "deploy": {

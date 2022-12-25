@@ -16,6 +16,8 @@ jobs:
           package: ["kiosk-web", "client-web"]
       runs-on: ubuntu-latest
       steps:
+        - name: Cancel Previous Runs
+          uses: styfle/cancel-workflow-action@0.9.1
         - name: Check out code
           uses: actions/checkout@v3
         - name: Setup Node.js environment
