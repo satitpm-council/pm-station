@@ -1,12 +1,10 @@
 import { ServerSocket } from ".";
 import { AuthParam } from "../types";
 import type { ExtendedError } from "socket.io/dist/namespace";
-import { verifyIdToken } from "./firebase";
+import { getTodayPlaylist, verifyIdToken } from "./firebase";
 
 type Middleware = Parameters<ServerSocket["use"]>["0"];
 type MiddlewareParams = Parameters<Middleware>;
-
-const getTodayPlaylist = () => {};
 
 export const authMiddleware = async (
   io: ServerSocket,
@@ -20,5 +18,6 @@ export const authMiddleware = async (
     socket.data.type = auth.type;
   }
   // Get the current playlist
+  await getTodayPlaylist();
   return null;
 };
