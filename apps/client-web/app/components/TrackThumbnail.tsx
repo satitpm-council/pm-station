@@ -1,9 +1,6 @@
 import React, { useMemo } from "react";
 import { classNames } from "~/utils/client";
-import type {
-  SongRequestSearchRecord,
-  TrackResponse,
-} from "~/schema/pm-station/songrequests/types";
+import type { TrackResponse } from "@station/shared/schema/types";
 
 type BadgeComponentProps = Pick<
   React.HTMLAttributes<HTMLElement>,
@@ -38,6 +35,7 @@ export default function TrackThumbnail({
       className={classNames(className.wrapper, children && badge && "relative")}
     >
       <img
+        referrerPolicy="no-referrer"
         draggable={false}
         src={track?.albumImage?.url}
         className={className.image}

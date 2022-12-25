@@ -1,6 +1,6 @@
 import type { QueryConstraint } from "@lemasc/swr-firestore";
 import { orderBy, where } from "@lemasc/swr-firestore/constraints";
-import type { SongRequestRecord } from "~/schema/pm-station/songrequests/types";
+import type { SongRequestRecord } from "@station/shared/schema/types";
 import { LastPlayedDate } from "../../date";
 import type { ListParams } from "../../sort";
 

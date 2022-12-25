@@ -1,6 +1,6 @@
 import { z } from "zod";
-import { preprocessDate } from "~/schema/utils";
-import { isString } from "~/utils/guards";
+import { preprocessDate } from "../utils";
+import { isString } from "shared/utils";
 
 const PlaylistRecord = z.object({
   queuedDate: z.preprocess(preprocessDate, z.date()),

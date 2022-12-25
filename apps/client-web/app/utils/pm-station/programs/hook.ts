@@ -1,7 +1,7 @@
 import { useCollection } from "@lemasc/swr-firestore";
-import { Program } from "~/schema/pm-station/programs/schema";
+import { Program } from "@station/shared/schema";
 import { UserRole, useUser } from "../client";
-import { zodValidator } from "../zodValidator";
+import { zodValidator } from "shared/utils";
 
 export const usePrograms = () => {
   const { user } = useUser();

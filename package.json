@@ -7,6 +7,7 @@
     ],
     "scripts": {
         "bootstrap": "turbo run bootstrap --no-cache",
+        "build": "turbo run build",
         "deploy": "turbo run deploy",
         "postinstall": "patch-package"
     },

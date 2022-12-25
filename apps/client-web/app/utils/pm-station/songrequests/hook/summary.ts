@@ -2,8 +2,8 @@ import { useFirebaseUser } from "~/utils/firebase";
 
 import { useDocument } from "@lemasc/swr-firestore";
 
-import { SongRequestSummary } from "~/schema/pm-station/songrequests/schema";
-import { zodValidator } from "../../zodValidator";
+import { SongRequestSummary } from "@station/shared/schema";
+import { zodValidator } from "shared/utils";
 
 export const useSongRequestSummary = () => {
   const user = useFirebaseUser();

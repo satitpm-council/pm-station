@@ -1,6 +1,10 @@
-import admin from "../../shared/firebase-admin";
+import { validateAndParseDate } from "@lemasc/swr-firestore";
+import admin from "@station/server/firebase-admin";
 import { getAuth } from "firebase-admin/auth";
 import { getFirestore } from "firebase-admin/firestore";
+import { zodValidator } from "shared/utils";
+import { PlaylistRecord } from "@station/shared/schema";
+
 import dayjs from "dayjs";
 import tz from "dayjs/plugin/timezone";
 dayjs.extend(tz);
@@ -24,5 +28,7 @@ export const getTodayPlaylist = async () => {
   if (docs.length !== 1) {
     throw new Error(`No playlist as of ${date.format("DD/MM/YYYY")}.`);
   }
-  return docs[0].data();
+  return validateAndParseDate(docs[0] as any, {
+    validator: zodValidator(PlaylistRecord),
+  });
 };

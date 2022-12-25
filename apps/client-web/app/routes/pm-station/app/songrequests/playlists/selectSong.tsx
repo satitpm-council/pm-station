@@ -3,7 +3,7 @@ import { useState } from "react";
 import { PageHeader } from "~/components/Header";
 import { AdminSongRequest } from "~/components/SongRequest/admin";
 import { AdminTrackModal } from "~/components/TrackModal";
-import type { SongRequestSearchRecord } from "~/schema/pm-station/songrequests/types";
+import type { SongRequestSearchRecord } from "@station/shared/schema/types";
 import type { MetaFunction } from "@remix-run/node";
 
 export const meta: MetaFunction = () => ({

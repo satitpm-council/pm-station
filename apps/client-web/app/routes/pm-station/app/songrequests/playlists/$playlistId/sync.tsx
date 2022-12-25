@@ -2,7 +2,7 @@ import { ArrowPathIcon } from "@heroicons/react/20/solid";
 import { useMemo, useState } from "react";
 import { PageHeader } from "~/components/Header";
 import { SyncMusicModal, ViewTrackModal } from "~/components/TrackModal";
-import type { SongRequestRecord } from "~/schema/pm-station/songrequests/types";
+import type { SongRequestRecord } from "@station/shared/schema/types";
 import { withTitle } from "~/utils/pm-station/client";
 import { usePlaylistData } from "~/utils/pm-station/playlists/data";
 import { usePlaylistParam } from "~/utils/pm-station/playlists/param";

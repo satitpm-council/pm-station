@@ -2,7 +2,7 @@ import type { ErrorBoundaryComponent, LoaderFunction } from "@remix-run/node";
 import { redirect } from "@remix-run/node";
 import { json } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
-import { isString } from "~/utils/guards";
+import { isString } from "shared/utils";
 import type { TrackResponse } from "~/utils/pm-station/spotify/search";
 import { searchTrack } from "~/utils/pm-station/spotify/index.server";
 import loadable from "@loadable/component";

@@ -1,10 +1,10 @@
 import { useFirebaseUser } from "~/utils/firebase";
 import type { TypeOf } from "zod";
-import { PlaylistRecord } from "~/schema/pm-station/playlists/schema";
+import { PlaylistRecord } from "@station/shared/schema";
 
 import { isDocumentValid, useCollection } from "@lemasc/swr-firestore";
 import { orderBy } from "@lemasc/swr-firestore/constraints";
-import { zodValidator } from "../zodValidator";
+import { zodValidator } from "shared/utils";
 import { useCallback, useMemo } from "react";
 
 export const usePlaylists = () => {

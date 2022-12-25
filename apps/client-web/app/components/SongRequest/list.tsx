@@ -4,7 +4,7 @@ import dayjs from "~/utils/dayjs";
 import { Item } from "./item";
 import type { ItemProps } from "./item";
 
-import type { SongRequestSearchRecord } from "~/schema/pm-station/songrequests/types";
+import type { SongRequestSearchRecord } from "@station/shared/schema/types";
 import { getStatusFromDate } from "~/utils/pm-station/songrequests";
 
 export type ListProps<

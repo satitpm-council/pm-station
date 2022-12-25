@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { SongRequestRecordList } from "~/components/SongRequest/list";
 import { ViewTrackModal } from "~/components/TrackModal";
-import type { SongRequestRecord } from "~/schema/pm-station/songrequests/types";
+import type { SongRequestRecord } from "@station/shared/schema/types";
 import { withTitle } from "~/utils/pm-station/client";
 import { usePlaylistData } from "~/utils/pm-station/playlists/data";
 

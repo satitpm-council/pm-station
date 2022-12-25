@@ -1,6 +1,6 @@
 import type { NumericMenuConnectorParamsItem } from "instantsearch.js/es/connectors/numeric-menu/connectNumericMenu";
 
-import type { SongRequestRecord } from "~/schema/pm-station/songrequests/types";
+import type { SongRequestRecord } from "@station/shared/schema/types";
 import type { OrderByDirection } from "firebase/firestore";
 import { LastPlayedDate } from "./date";
 

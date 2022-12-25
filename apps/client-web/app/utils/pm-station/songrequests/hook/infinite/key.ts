@@ -1,6 +1,6 @@
 import type { Document } from "@lemasc/swr-firestore";
 import type { User } from "firebase/auth";
-import type { SongRequestRecord } from "~/schema/pm-station/songrequests/types";
+import type { SongRequestRecord } from "@station/shared/schema/types";
 import type { ListParams } from "../../sort";
 
 type GetKeyParams = {

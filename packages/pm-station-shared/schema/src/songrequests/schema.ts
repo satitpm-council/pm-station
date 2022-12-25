@@ -1,6 +1,6 @@
 import { z } from "zod";
-import { HitResult, mapObjectIdToId } from "~/schema/algolia";
-import { docRef, preprocessDate } from "~/schema/utils";
+import { HitResult, mapObjectIdToId } from "../algolia";
+import { docRef, preprocessDate } from "../utils";
 
 const SongRequestSummary = z.object({
   lastUpdatedAt: z.preprocess(preprocessDate, z.date()),

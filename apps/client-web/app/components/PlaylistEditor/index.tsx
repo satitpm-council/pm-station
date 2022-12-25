@@ -1,6 +1,6 @@
 import { memo, useCallback, useEffect, useRef } from "react";
 import type { ChangeEventHandler } from "react";
-import type { SongRequestRecord } from "~/schema/pm-station/songrequests/types";
+import type { SongRequestRecord } from "@station/shared/schema/types";
 import { SongRequestRecordList } from "~/components/SongRequest/list";
 import { AdminTrackModal } from "~/components/TrackModal/admin";
 import { playlistEditorStore } from "~/components/PlaylistEditor/store";

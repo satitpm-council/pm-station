@@ -5,7 +5,7 @@ import { withTitle } from "~/utils/pm-station/client";
 
 import { AdminSongRequest } from "~/components/SongRequest/admin";
 import { AdminTrackModal } from "~/components/TrackModal";
-import type { SongRequestSearchRecord } from "~/schema/pm-station/songrequests/types";
+import type { SongRequestSearchRecord } from "@station/shared/schema/types";
 
 export const meta = withTitle("จัดการคำขอเพลง");
 

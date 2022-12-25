@@ -1,6 +1,6 @@
 import type { Timestamp } from "firebase/firestore";
 import { DocumentReference } from "firebase/firestore";
-import { isObject } from "~/utils/guards";
+import { isObject, isString } from "shared/utils";
 
 const isTimestamp = (arg: unknown): arg is Timestamp => {
   return (
@@ -17,8 +17,18 @@ const preprocessDate = (arg: unknown): Date | undefined => {
     return new Date(arg);
 };
 
+const isDocRef = (arg: unknown): arg is DocumentReference => {
+  return (
+    isObject(arg) &&
+    isObject(arg.firestore) &&
+    isString(arg.type) &&
+    arg.type === "document" &&
+    isString(arg.path)
+  );
+};
+
 const docRef = (arg: unknown) => {
-  if (arg instanceof DocumentReference) return arg.path;
+  if (isDocRef(arg)) return arg.path;
   if (typeof arg === "string" && arg.split("/").length % 2 === 0) return arg;
 };
 

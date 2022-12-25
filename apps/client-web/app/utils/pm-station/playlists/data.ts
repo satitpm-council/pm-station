@@ -9,9 +9,9 @@ import { doc } from "firebase/firestore";
 import { useFirebase } from "~/utils/firebase";
 
 import type { TypeOf } from "zod";
-import { zodValidator } from "~/utils/pm-station/zodValidator";
-import { PlaylistRecord } from "~/schema/pm-station/playlists/schema";
-import { SongRequestRecord } from "~/schema/pm-station/songrequests/schema";
+import { zodValidator } from "shared/utils";
+import { PlaylistRecord } from "@station/shared/schema";
+import { SongRequestRecord } from "@station/shared/schema";
 
 export const usePlaylistData = (playlistId?: string, listen = false) => {
   const { data: playlistData } = useDocument(

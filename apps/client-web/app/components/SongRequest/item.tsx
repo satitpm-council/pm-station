@@ -1,4 +1,4 @@
-import type { SongRequestSearchRecord } from "~/schema/pm-station/songrequests/types";
+import type { SongRequestSearchRecord } from "@station/shared/schema/types";
 
 export type ItemProps<T extends SongRequestSearchRecord> = {
   track: T;

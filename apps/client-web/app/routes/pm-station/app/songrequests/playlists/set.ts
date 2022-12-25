@@ -1,7 +1,7 @@
 import type { ActionFunction } from "@remix-run/node";
 import { json } from "@remix-run/node";
 import { captureException } from "@sentry/remix";
-import { SetPlaylistAction } from "~/schema/pm-station/playlists/schema";
+import { SetPlaylistAction } from "@station/shared/schema";
 import type { ActionResponse } from "~/utils/pm-station/api-types";
 import { setPlaylist } from "~/utils/pm-station/playlists/set";
 

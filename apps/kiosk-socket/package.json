@@ -1,0 +1,16 @@
+{
+    "name": "kiosk-socket",
+    "version": "1.0.0",
+    "dependencies": {
+        "@lemasc/swr-firestore": "*",
+        "@station/server": "*",
+        "@station/shared": "*",
+        "dayjs": "*",
+        "firebase-admin": "*",
+        "shared": "*",
+        "socket.io": "^4.5.4"
+    },
+    "devDependencies": {
+        "typescript": "*"
+    }
+}

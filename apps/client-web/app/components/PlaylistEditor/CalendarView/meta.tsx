@@ -13,8 +13,7 @@ import { ButtonRenderer } from "~/components/Header";
 
 import axios from "~/utils/axios";
 import { usePrograms } from "~/utils/pm-station/programs";
-import type { PlaylistRecord } from "~/schema/pm-station/playlists/types";
-import type { Program } from "~/schema/pm-station/programs/types";
+import type { PlaylistRecord, Program } from "@station/shared/schema/types";
 import type { DeletePlaylistAction } from "~/utils/pm-station/api-types";
 import { getAppContainer } from "~/utils/pm-station/client";
 

@@ -1,4 +1,4 @@
-import admin from "../firebase-admin.server";
+import admin from "@station/server/firebase-admin";
 import type {
   DocumentReference,
   WithFieldValue,
@@ -10,7 +10,7 @@ import { getTrack } from "./search";
 import type {
   SongRequestRecord,
   SongRequestSubmission,
-} from "~/schema/pm-station/songrequests/types";
+} from "@station/shared/schema/types";
 import { LastPlayedDate } from "../songrequests/date";
 
 export type SongRequestRecord_V0 = {

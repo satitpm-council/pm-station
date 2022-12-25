@@ -1,4 +1,4 @@
-import admin from "~/utils/pm-station/firebase-admin.server";
+import admin from "@station/server/firebase-admin";
 
 import { getAuth } from "firebase-admin/auth";
 

@@ -1,6 +1,6 @@
 import { useCallback, useState } from "react";
 import axios from "~/utils/axios";
-import type { SongRequestRecord } from "~/schema/pm-station/songrequests/types";
+import type { SongRequestRecord } from "@station/shared/schema/types";
 import type { ModalState } from "~/components/Modal";
 import Modal from "~/components/Modal";
 

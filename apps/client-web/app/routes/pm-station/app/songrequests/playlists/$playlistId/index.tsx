@@ -5,7 +5,7 @@ import { PageHeader } from "~/components/Header";
 import { SongRequestRecordList } from "~/components/SongRequest/list";
 import { ViewTrackModal } from "~/components/TrackModal";
 import axios from "~/utils/axios";
-import type { SongRequestRecord } from "~/schema/pm-station/songrequests/types";
+import type { SongRequestRecord } from "@station/shared/schema/types";
 import dayjs from "~/utils/dayjs";
 import { withTitle } from "~/utils/pm-station/client";
 import { usePlaylistData } from "~/utils/pm-station/playlists/data";

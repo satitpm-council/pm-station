@@ -11,7 +11,7 @@ import {
   useInstantSearch,
 } from "react-instantsearch-hooks-web";
 import { SearchBox } from "react-instantsearch-hooks-web";
-import { SongRequestSearchRecord } from "~/schema/pm-station/songrequests/schema";
+import { SongRequestSearchRecord } from "@station/shared/schema";
 
 import InfiniteScroll from "../InfiniteScroll";
 import { SongRequestRecordList } from "./list";
@@ -25,9 +25,9 @@ import {
   RefreshButton,
 } from "./admin/components";
 
-import { zodValidator } from "~/utils/pm-station/zodValidator";
+import { zodValidator } from "shared/utils";
 import { getStatusFromDate } from "~/utils/pm-station/songrequests";
-import { PlaylistRecord } from "~/schema/pm-station/playlists/schema";
+import { PlaylistRecord } from "@station/shared/schema";
 
 const Stats = loadable(() => import("./admin/Stats"), {
   ssr: false,

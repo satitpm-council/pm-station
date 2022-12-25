@@ -5,9 +5,9 @@ import { getCollection, isDocumentValid } from "@lemasc/swr-firestore";
 import type { QueryConstraint, Document } from "@lemasc/swr-firestore";
 import { orderBy, startAfter, limit } from "@lemasc/swr-firestore/constraints";
 
-import { SongRequestRecord } from "~/schema/pm-station/songrequests/schema";
+import { SongRequestRecord } from "@station/shared/schema";
 import type { ListParams } from "../../sort";
-import { zodValidator } from "../../../zodValidator";
+import { zodValidator } from "shared/utils";
 import { getKey } from "./key";
 import type { TypeOf } from "zod";
 import { getLastPlayedAtFromFilter } from "./filter";

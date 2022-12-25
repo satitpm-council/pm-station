@@ -5,7 +5,7 @@ import { useCallback, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import shallow from "zustand/shallow";
 import axios from "~/utils/axios";
-import type { SetPlaylistAction } from "~/schema/pm-station/playlists/types";
+import type { SetPlaylistAction } from "@station/shared/schema/types";
 import type { ActionResponse } from "~/utils/pm-station/api-types";
 import { usePrograms } from "~/utils/pm-station/programs";
 

@@ -1,4 +1,4 @@
-import type { SongRequestRecord } from "~/schema/pm-station/songrequests/types";
+import type { SongRequestRecord } from "@station/shared/schema/types";
 
 export type CommandAction = "addToPlaylist" | "removeFromPlaylist";
 

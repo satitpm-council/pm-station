@@ -3,7 +3,7 @@ import { CheckIcon, MinusIcon, XMarkIcon } from "@heroicons/react/20/solid";
 import { useEffect, useMemo, useState } from "react";
 import { TrackMeta } from "~/components/SongRequest/base";
 import TrackThumbnail from "~/components/TrackThumbnail";
-import type { SongRequestRecord } from "~/schema/pm-station/songrequests/types";
+import type { SongRequestRecord } from "@station/shared/schema/types";
 import { classNames } from "~/utils/client";
 import type { MusicInfo } from "~/utils/pm-station/ytmusic/types";
 import { MusicInfoComponent } from "./info";

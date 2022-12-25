@@ -5,11 +5,11 @@ import { getDocument, isDocumentValid } from "@lemasc/swr-firestore";
 import type { TypeOf } from "zod";
 import dayjs from "~/utils/dayjs";
 
-import type { SongRequestSearchRecord } from "~/schema/pm-station/songrequests/types";
-import { SongRequestRecord } from "~/schema/pm-station/songrequests/schema";
+import type { SongRequestSearchRecord } from "@station/shared/schema/types";
+import { SongRequestRecord } from "@station/shared/schema";
 import { UserRole, useUser } from "~/utils/pm-station/client";
 import { getStatusFromDate } from "~/utils/pm-station/songrequests";
-import { zodValidator } from "~/utils/pm-station/zodValidator";
+import { zodValidator } from "shared/utils";
 
 import type { TrackModalProps } from "./base";
 import TrackModal, { useStableTrack } from "./base";

@@ -1,0 +1,10 @@
+{
+    "name": "@station/server",
+    "version": "1.0.0",
+    "dependencies": {
+        "@station/shared": "*"
+    },
+    "devDependencies": {
+        "typescript": "*"
+    }
+}

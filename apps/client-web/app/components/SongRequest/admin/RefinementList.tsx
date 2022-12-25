@@ -2,7 +2,7 @@ import type { ChangeEvent, ChangeEventHandler } from "react";
 import { Fragment, useCallback, useEffect, useState, useRef } from "react";
 import { useRefinementList } from "react-instantsearch-hooks-web";
 import type { RefinementListItem } from "instantsearch.js/es/connectors/refinement-list/connectRefinementList";
-import type { SongRequestSearchRecord } from "~/schema/pm-station/songrequests/types";
+import type { SongRequestSearchRecord } from "@station/shared/schema/types";
 
 export type CustomLabelComponent = ({
   value,

@@ -1,10 +1,10 @@
 import { useCallback } from "react";
 
-import type { SongRequestRecord } from "~/schema/pm-station/songrequests/types";
+import type { SongRequestRecord } from "@station/shared/schema/types";
 
 const RemoveTrackFromPlaylist = ({
-    track,
-    onRemove,
+  track,
+  onRemove,
 }: {
   track?: SongRequestRecord;
   onRemove: (track: SongRequestRecord) => void;
@@ -12,7 +12,7 @@ const RemoveTrackFromPlaylist = ({
   const remove = useCallback(() => {
     if (!track) return;
     onRemove(track);
-  }, [onRemove,  track]);
+  }, [onRemove, track]);
   return (
     <button
       onClick={remove}
@@ -23,4 +23,4 @@ const RemoveTrackFromPlaylist = ({
   );
 };
 
-export default RemoveTrackFromPlaylist
+export default RemoveTrackFromPlaylist;

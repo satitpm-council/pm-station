@@ -1,8 +1,10 @@
 import create from "zustand";
 import { subscribeWithSelector } from "zustand/middleware";
 import dayjs from "~/utils/dayjs";
-import type { SongRequestRecord } from "~/schema/pm-station/songrequests/types";
-import type { PlaylistRecord } from "~/schema/pm-station/playlists/types";
+import type {
+  PlaylistRecord,
+  SongRequestRecord,
+} from "@station/shared/schema/types";
 
 type PlaylistEditorVars = {
   /** The current playlist, undefined means create a new one. */
