@@ -4,7 +4,7 @@
   "private": true,
   "sideEffects": false,
   "scripts": {
-    "postinstall": "remix-esbuild-override",
+    "postinstall": "node -e \"process.env.NODE_ENV == 'production' && process.exit(1)\" || remix-esbuild-override",
     "bootstrap": "pip install -r requirements.txt",
     "build": "node sentry.js && yarn run build:css && remix build",
     "build:css": "postcss styles --base styles --dir app/styles --env production",
