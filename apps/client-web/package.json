@@ -4,8 +4,10 @@
   "private": true,
   "sideEffects": false,
   "scripts": {
-    "postinstall": "node -e \"process.env.NODE_ENV == 'production' && process.exit(1)\" || remix-esbuild-override",
+    "patch-esbuild": "node -e \"try { require.resolve('remix-esbuild-override'); process.exit(1); } catch { process.exit(0); }\" || yarn run remix-esbuild-override",
+    "postinstall": "yarn run patch-esbuild",
     "bootstrap": "pip install -r requirements.txt",
+    "prebuild": "node sentry.js && yarn run patch-esbuild",
     "build": "node sentry.js && yarn run build:css && remix build",
     "build:css": "postcss styles --base styles --dir app/styles --env production",
     "dev": "concurrently \"yarn run dev:css\" \"remix dev\"",
