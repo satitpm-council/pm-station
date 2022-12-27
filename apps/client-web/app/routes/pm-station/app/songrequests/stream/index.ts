@@ -1,6 +1,6 @@
 import type { LoaderFunction } from "@remix-run/node";
 import { json } from "@remix-run/node";
-import { verifySession } from "~/utils/pm-station/auth.server";
+import { verifySession } from "@station/server/auth/remix";
 import { UserRole } from "~/utils/pm-station/client";
 import { DriveSync } from "~/utils/pm-station/drive";
 

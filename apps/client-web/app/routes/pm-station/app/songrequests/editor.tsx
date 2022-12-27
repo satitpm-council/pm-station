@@ -4,7 +4,7 @@ import { Outlet, useLoaderData } from "@remix-run/react";
 import algoliasearch from "algoliasearch/lite";
 import { useRef } from "react";
 import { InstantSearch } from "react-instantsearch-hooks-web";
-import { verifySession } from "~/utils/pm-station/auth.server";
+import { verifySession } from "@station/server/auth/remix";
 import { UserRole } from "~/utils/pm-station/client";
 
 type AlgoliaEnv = {

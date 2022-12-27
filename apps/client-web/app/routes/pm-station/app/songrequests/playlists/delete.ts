@@ -1,7 +1,7 @@
 import type { ActionFunction } from "@remix-run/node";
 import { json } from "@remix-run/node";
 import { captureException } from "@sentry/remix";
-import type { DeletePlaylistAction } from "~/utils/pm-station/api-types";
+import type { DeletePlaylistAction } from "@station/shared/api";
 import { setPlaylist } from "~/utils/pm-station/playlists/set";
 
 export const action: ActionFunction = async ({ request }) => {

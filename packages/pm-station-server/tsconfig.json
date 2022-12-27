@@ -1,5 +1,5 @@
 {
-  "extends": "tsconfig/base.json",
-  "include": ["**/*.ts", "**/*.tsx"],
+  "extends": "tsconfig/remix.json",
+  "include": ["**/*.ts", "**/*.tsx", "../pm-station-shared/user.ts"],
   "exclude": ["node_modules"]
 }

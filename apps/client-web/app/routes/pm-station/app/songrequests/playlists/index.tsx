@@ -1,7 +1,7 @@
 import { useNavigate } from "@remix-run/react";
 import { useCallback } from "react";
 import { PlusIcon } from "@heroicons/react/20/solid";
-import { PageHeader } from "~/components/Header";
+import { PageHeader } from "@station/client/layout";
 import { withTitle } from "~/utils/pm-station/client";
 
 import type { LinksFunction } from "@remix-run/node";

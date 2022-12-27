@@ -1,5 +1,5 @@
 import { useMemo } from "react";
-import dayjs from "~/utils/dayjs";
+import dayjs from "shared/dayjs";
 import { TrackResponse } from "@station/shared/schema";
 import type { SongRequestSearchRecord } from "@station/shared/schema/types";
 import type { TypeOf } from "zod";

@@ -1,9 +1,9 @@
 import { useSubmit, useTransition } from "@remix-run/react";
 import { useCallback } from "react";
 import { useAuthenticityToken } from "remix-utils";
-import { toFormData } from "~/utils/api";
-import type { SelectTrackAction } from "~/utils/pm-station/api-types";
-import { SubmitButton } from "../SubmitButton";
+import { toFormData } from "@station/shared/api";
+import type { SelectTrackAction } from "@station/shared/api";
+import { SubmitButton } from "@station/client/SubmitButton";
 import type { TrackModalProps } from "./base";
 import TrackModal, { useStableTrack } from "./base";
 

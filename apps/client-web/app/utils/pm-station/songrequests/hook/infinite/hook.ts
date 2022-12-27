@@ -1,6 +1,6 @@
 import { useEffect, useMemo } from "react";
 import useSWRInfinite from "swr/infinite";
-import { useFirebaseUser } from "~/utils/firebase";
+import { useFirebaseUser } from "@station/client/firebase";
 import { getCollection, isDocumentValid } from "@lemasc/swr-firestore";
 import type { QueryConstraint, Document } from "@lemasc/swr-firestore";
 import { orderBy, startAfter, limit } from "@lemasc/swr-firestore/constraints";

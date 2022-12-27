@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-import { PageHeader } from "~/components/Header";
+import { PageHeader } from "@station/client/layout";
 import { withTitle } from "~/utils/pm-station/client";
 
 import { AdminSongRequest } from "~/components/SongRequest/admin";

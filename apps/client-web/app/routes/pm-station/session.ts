@@ -4,7 +4,7 @@ import { captureException } from "@sentry/remix";
 import {
   createClientSignInToken,
   verifyCSRFToken,
-} from "~/utils/pm-station/auth.server";
+} from "@station/server/auth/remix";
 
 export const action: ActionFunction = async ({ request }) => {
   try {

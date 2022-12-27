@@ -3,7 +3,7 @@ import type { CalendarTileProperties } from "react-calendar";
 import Calendar from "react-calendar";
 import { SpeakerWaveIcon } from "@heroicons/react/20/solid";
 
-import dayjs from "~/utils/dayjs";
+import dayjs from "shared/dayjs";
 import { usePlaylists } from "~/utils/pm-station/playlists/hook";
 import PlaylistDetail from "./detail";
 import type { PlaylistMetadataProps } from "./meta";

@@ -4,7 +4,7 @@ import { getKey } from "./key";
 import { useCallback } from "react";
 import { useSWRConfig } from "swr";
 import type { ListParams } from "../../sort";
-import { useFirebaseUser } from "~/utils/firebase";
+import { useFirebaseUser } from "@station/client/firebase";
 
 const INFINITE_PREFIX = "$inf$";
 

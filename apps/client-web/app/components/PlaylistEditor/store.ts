@@ -1,6 +1,6 @@
 import create from "zustand";
 import { subscribeWithSelector } from "zustand/middleware";
-import dayjs from "~/utils/dayjs";
+import dayjs from "shared/dayjs";
 import type {
   PlaylistRecord,
   SongRequestRecord,

@@ -1,25 +1,6 @@
 const { getPackages, getPackagesPaths } = require("build-config");
 const { withEsbuildOverride } = require("remix-esbuild-override");
 
-function manualExternalsPlugin() {
-  return {
-    name: "manual-externals-overide",
-    setup(build) {
-      build.onResolve(
-        {
-          filter: /@YourNamespaceOrPackageName/,
-        },
-        (args) => {
-          return {
-            external: false,
-            namespace: args.path,
-          };
-        }
-      );
-    },
-  };
-}
-
 withEsbuildOverride((option) => {
   // update the option
   option.plugins = [

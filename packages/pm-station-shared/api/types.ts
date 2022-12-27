@@ -2,7 +2,7 @@ import type {
   SongRequestRecord,
   TrackResponse,
 } from "@station/shared/schema/types";
-import type { MusicInfo } from "./ytmusic/types";
+import type { MusicInfo } from "client-web/app/utils/pm-station/ytmusic/types";
 
 export type LoginAction = {
   token: string;

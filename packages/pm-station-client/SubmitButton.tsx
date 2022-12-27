@@ -10,6 +10,7 @@ type SubmitButtonProps = {
   onClick?: MouseEventHandler<HTMLButtonElement>;
   disabled?: boolean;
 };
+
 export const SubmitButton = forwardRef<HTMLButtonElement, SubmitButtonProps>(
   function SubmitButton(
     { children, loading, onClick, className, disabled },

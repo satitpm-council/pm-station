@@ -1,4 +1,4 @@
-import { useFirebaseUser } from "~/utils/firebase";
+import { useFirebaseUser } from "@station/client/firebase";
 import type { TypeOf } from "zod";
 import { PlaylistRecord } from "@station/shared/schema";
 

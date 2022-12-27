@@ -3,8 +3,8 @@ import { RecaptchaVerifier, signInWithPhoneNumber } from "firebase/auth";
 import { useCallback, useEffect, useState, useRef } from "react";
 import type { FormEventHandler } from "react";
 
-import { isFirebaseError, useFirebase } from "~/utils/firebase";
-import { SubmitButton } from "../SubmitButton";
+import { isFirebaseError, useFirebase } from "@station/client/firebase";
+import { SubmitButton } from "../../../SubmitButton";
 import type { PhoneLoginStepProps } from "./types";
 import { captureException } from "@sentry/remix";
 import { toast } from "react-toastify";

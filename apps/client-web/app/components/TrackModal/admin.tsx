@@ -3,7 +3,7 @@ import loadable from "@loadable/component";
 import { useSWRConfig } from "swr";
 import { getDocument, isDocumentValid } from "@lemasc/swr-firestore";
 import type { TypeOf } from "zod";
-import dayjs from "~/utils/dayjs";
+import dayjs from "shared/dayjs";
 
 import type { SongRequestSearchRecord } from "@station/shared/schema/types";
 import { SongRequestRecord } from "@station/shared/schema";

@@ -1,3 +1,7 @@
+// In Remix, FormData is a main type of transmitting data on HTTP requests.
+// useSubmit is prefered over normal HTTP fetch, so utility functions are created
+// to preserve JSON-like DX.
+
 type ObjectAsString<T extends Record<string, unknown>> = {
   [K in keyof T]: T[K] extends string ? T[K] : never;
 };

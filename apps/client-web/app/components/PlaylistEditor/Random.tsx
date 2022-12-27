@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useRef } from "react";
 import { toast } from "react-toastify";
-import { useFirebase } from "~/utils/firebase";
+import { useFirebase } from "@station/client/firebase";
 import RandomTrackSelector from "~/utils/pm-station/songrequests/random.client";
 import { playlistEditorStore } from "./store";
 

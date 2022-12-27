@@ -6,7 +6,7 @@ import {
 } from "@lemasc/swr-firestore";
 import { where } from "@lemasc/swr-firestore/constraints";
 import { doc } from "firebase/firestore";
-import { useFirebase } from "~/utils/firebase";
+import { useFirebase } from "@station/client/firebase";
 
 import type { TypeOf } from "zod";
 import { zodValidator } from "shared/utils";

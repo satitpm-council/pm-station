@@ -1,4 +1,4 @@
-import { useFirebaseUser } from "~/utils/firebase";
+import { useFirebaseUser } from "@station/client/firebase";
 
 import { useDocument } from "@lemasc/swr-firestore";
 

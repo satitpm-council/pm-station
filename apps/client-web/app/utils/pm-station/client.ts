@@ -1,7 +1,7 @@
 import type { MetaFunction } from "@remix-run/node";
 import { useMatches } from "@remix-run/react";
-import type { UserRecord } from "firebase-admin/auth";
 import { useMemo } from "react";
+import type { User } from "@station/shared/user";
 
 /**
  * Use to get the DOM element of the app container.
@@ -15,20 +15,6 @@ export const withTitle: (title: string) => MetaFunction =
     title: `${title} - PM Station`,
     "og:title": `${title} - PM Station`,
   });
-
-export enum UserRole {
-  "USER" = 0,
-  "EDITOR" = 1,
-  "MODERATOR" = 2,
-  "ADMIN" = 5,
-}
-
-export type UserClaims = {
-  type: "guest" | "student" | "teacher";
-  role: UserRole;
-};
-export type User = Pick<UserRecord, "displayName" | "phoneNumber" | "uid"> &
-  Partial<UserClaims>;
 
 type UseUserReturn = {
   user: User | undefined;
@@ -46,3 +32,5 @@ export const useUser = (): UseUserReturn => {
   );
   return { user, isRegistered };
 };
+
+export * from "@station/shared/user";

@@ -2,7 +2,7 @@ import type { ActionFunction } from "@remix-run/node";
 import { json } from "@remix-run/node";
 import { captureException } from "@sentry/remix";
 import { SetPlaylistAction } from "@station/shared/schema";
-import type { ActionResponse } from "~/utils/pm-station/api-types";
+import type { ActionResponse } from "@station/shared/api";
 import { setPlaylist } from "~/utils/pm-station/playlists/set";
 
 export const action: ActionFunction = async ({ request }) => {

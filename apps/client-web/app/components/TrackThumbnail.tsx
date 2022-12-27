@@ -1,5 +1,5 @@
 import React, { useMemo } from "react";
-import { classNames } from "~/utils/client";
+import { classNames } from "@station/client/utils";
 import type { TrackResponse } from "@station/shared/schema/types";
 
 type BadgeComponentProps = Pick<

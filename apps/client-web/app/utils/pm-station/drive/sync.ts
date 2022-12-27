@@ -2,10 +2,10 @@ import type { ValidatedDocument } from "@lemasc/swr-firestore";
 import axios from "axios";
 import { useMemo } from "react";
 import useSWR from "swr/immutable";
-import type { Program } from "@station/shared/schema/programs/types";
+import type { Program } from "@station/shared/schema/types";
 import type { SongRequestRecord } from "@station/shared/schema/types";
 import type { DriveFile } from ".";
-import type { PlaylistSyncParam } from "../api-types";
+import type { PlaylistSyncParam } from "@station/shared/api";
 import { usePlaylistData } from "../playlists/data";
 import { usePrograms } from "../programs";
 

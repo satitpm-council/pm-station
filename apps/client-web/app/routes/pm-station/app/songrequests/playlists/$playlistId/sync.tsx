@@ -1,6 +1,6 @@
 import { ArrowPathIcon } from "@heroicons/react/20/solid";
 import { useMemo, useState } from "react";
-import { PageHeader } from "~/components/Header";
+import { PageHeader } from "@station/client/layout";
 import { SyncMusicModal, ViewTrackModal } from "~/components/TrackModal";
 import type { SongRequestRecord } from "@station/shared/schema/types";
 import { withTitle } from "~/utils/pm-station/client";

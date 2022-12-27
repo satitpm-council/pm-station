@@ -1,16 +1,16 @@
 import { PencilIcon, TrashIcon } from "@heroicons/react/20/solid";
 import { useNavigate } from "@remix-run/react";
 import { useCallback, useState } from "react";
-import { PageHeader } from "~/components/Header";
+import { PageHeader } from "@station/client/layout";
 import { SongRequestRecordList } from "~/components/SongRequest/list";
 import { ViewTrackModal } from "~/components/TrackModal";
-import axios from "~/utils/axios";
+import axios from "shared/axios";
 import type { SongRequestRecord } from "@station/shared/schema/types";
-import dayjs from "~/utils/dayjs";
+import dayjs from "shared/dayjs";
 import { withTitle } from "~/utils/pm-station/client";
 import { usePlaylistData } from "~/utils/pm-station/playlists/data";
 import { usePlaylistParam } from "~/utils/pm-station/playlists/param";
-import type { DeletePlaylistAction } from "~/utils/pm-station/api-types";
+import type { DeletePlaylistAction } from "@station/shared/api";
 
 export const meta = withTitle("ดูรายการเพลง");
 

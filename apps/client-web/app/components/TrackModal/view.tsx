@@ -1,6 +1,6 @@
 import type { TrackModalProps } from "./base";
 import TrackModal, { useStableTrack } from "./base";
-import dayjs from "~/utils/dayjs";
+import dayjs from "shared/dayjs";
 import type { SongRequestRecord } from "@station/shared/schema/types";
 
 export const ViewTrackModal = (props: TrackModalProps) => {

@@ -1,16 +1,13 @@
-import type { User } from "firebase/auth";
 import { PhoneAuthProvider, signInWithCredential } from "firebase/auth";
 import { useState, useRef } from "react";
 import type { FormEventHandler } from "react";
 import { toast } from "react-toastify";
 
-import { isFirebaseError, useFirebase } from "~/utils/firebase";
-import { SubmitButton } from "../SubmitButton";
+import { isFirebaseError, useFirebase } from "@station/client/firebase";
+import { SubmitButton } from "@station/client/SubmitButton";
 import type { PhoneLoginStepProps } from "./types";
-import { useSearchParams, useSubmit } from "@remix-run/react";
-import { toFormData } from "~/utils/api";
-import type { LoginAction } from "~/utils/pm-station/api-types";
-import { captureException } from "@sentry/remix";
+import { captureException } from "@sentry/browser";
+import { useServerLogin } from "../../hooks/useServerLogin";
 
 const disclosePhoneNo = (phoneNo: string) => {
   const hideLength = phoneNo.length - 4;
@@ -21,23 +18,7 @@ export function EnterCode({
   setLoginRequest,
   loginRequest,
 }: PhoneLoginStepProps) {
-  const submit = useSubmit();
-
-  const [searchParams] = useSearchParams();
-  const serverLogin = async (user: User) => {
-    // grab the id token and pass it to the backend
-    const token = await user.getIdToken();
-    submit(
-      toFormData<LoginAction>({
-        token,
-        continueUrl: searchParams.get("continueUrl"),
-      }),
-      {
-        action: "/pm-station?index",
-        method: "post",
-      }
-    );
-  };
+  const serverLogin = useServerLogin();
 
   const [loading, setLoading] = useState(false);
   const { auth } = useFirebase();

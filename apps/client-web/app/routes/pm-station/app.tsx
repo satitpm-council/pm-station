@@ -5,20 +5,20 @@ import { Link, Outlet } from "@remix-run/react";
 
 import sidebar from "react-pro-sidebar/dist/css/styles.css";
 import sidebarOverrides from "~/styles/sidebar.css";
-import { Header } from "~/components/Header";
+import { Header } from "@station/client/layout";
 import type { User } from "~/utils/pm-station/client";
-import { verifySession } from "~/utils/pm-station/auth.server";
+import { verifySession } from "@station/server/auth/remix";
 import { Bars4Icon, XMarkIcon } from "@heroicons/react/20/solid";
 import { useCallback, useEffect, useState } from "react";
 import Sidebar from "~/components/Sidebar";
-import { useFirebase } from "~/utils/firebase";
+import { useFirebase } from "@station/client/firebase";
 import { useAuthenticityToken } from "remix-utils";
 import axios from "axios";
-import { toFormData } from "~/utils/api";
+import { toFormData } from "@station/shared/api";
 import type {
   ActionWithSession,
   SessionActionResponse,
-} from "~/utils/pm-station/api-types";
+} from "@station/shared/api";
 import { signInWithCustomToken } from "firebase/auth";
 
 type UserStore = {

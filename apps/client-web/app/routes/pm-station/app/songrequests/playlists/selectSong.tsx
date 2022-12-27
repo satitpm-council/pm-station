@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-import { PageHeader } from "~/components/Header";
+import { PageHeader } from "@station/client/layout";
 import { AdminSongRequest } from "~/components/SongRequest/admin";
 import { AdminTrackModal } from "~/components/TrackModal";
 import type { SongRequestSearchRecord } from "@station/shared/schema/types";

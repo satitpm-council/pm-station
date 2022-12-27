@@ -7,12 +7,12 @@ import { json } from "@remix-run/node";
 import { Outlet, useLoaderData } from "@remix-run/react";
 import { AuthenticityTokenProvider } from "remix-utils";
 import type { FirebaseOptions } from "firebase/app";
-import { useFirebase } from "../utils/firebase";
+import { useFirebase } from "@station/client/firebase";
 
 import pmStation from "~/styles/pm-station.css";
 import toastify from "react-toastify/dist/ReactToastify.min.css";
 import { ToastContainer } from "react-toastify";
-import { createCSRFToken } from "~/utils/pm-station/auth.server";
+import { createCSRFToken } from "@station/server/auth/remix";
 
 type PUBLIC_ENV = {
   ENV: {

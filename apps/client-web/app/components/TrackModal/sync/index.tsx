@@ -1,12 +1,12 @@
 import { useCallback, useState } from "react";
-import axios from "~/utils/axios";
+import axios from "shared/axios";
 import type { SongRequestRecord } from "@station/shared/schema/types";
 import type { ModalState } from "~/components/Modal";
 import Modal from "~/components/Modal";
 
 import { SyncMusicItem } from "./item";
-import type { SearchActionResponse } from "~/utils/pm-station/api-types";
-import { SubmitButton } from "~/components/SubmitButton";
+import type { SearchActionResponse } from "@station/shared/api";
+import { SubmitButton } from "@station/client/SubmitButton";
 import { getFirestore, doc, writeBatch } from "firebase/firestore";
 
 export const SyncMusicModal = ({

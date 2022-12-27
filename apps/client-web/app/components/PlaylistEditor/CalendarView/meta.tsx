@@ -9,12 +9,12 @@ import {
 import type { ValidatedDocument } from "@lemasc/swr-firestore";
 import { isDocumentValid } from "@lemasc/swr-firestore";
 
-import { ButtonRenderer } from "~/components/Header";
+import { ButtonRenderer } from "@station/client/layout";
 
-import axios from "~/utils/axios";
+import axios from "shared/axios";
 import { usePrograms } from "~/utils/pm-station/programs";
 import type { PlaylistRecord, Program } from "@station/shared/schema/types";
-import type { DeletePlaylistAction } from "~/utils/pm-station/api-types";
+import type { DeletePlaylistAction } from "@station/shared/api";
 import { getAppContainer } from "~/utils/pm-station/client";
 
 export type PlaylistMetadataProps = {

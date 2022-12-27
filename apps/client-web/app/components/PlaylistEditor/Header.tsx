@@ -1,8 +1,8 @@
 import { memo, useCallback } from "react";
 import { useNavigate } from "@remix-run/react";
 import { playlistEditorStore } from "~/components/PlaylistEditor/store";
-import type { PageHeaderInnerProps } from "../Header";
-import { PageHeader } from "../Header";
+import type { PageHeaderInnerProps } from "@station/client/layout";
+import { PageHeader } from "@station/client/layout";
 import { ArrowRightIcon, XMarkIcon } from "@heroicons/react/20/solid";
 import { usePlaylistParam } from "~/utils/pm-station/playlists/param";
 

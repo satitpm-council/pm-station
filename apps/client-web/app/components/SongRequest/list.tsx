@@ -1,6 +1,6 @@
 import TrackThumbnail from "../TrackThumbnail";
 import { TrackMeta } from "./base";
-import dayjs from "~/utils/dayjs";
+import dayjs from "shared/dayjs";
 import { Item } from "./item";
 import type { ItemProps } from "./item";
 

@@ -1,6 +1,6 @@
 import { Form, Outlet, useSearchParams, useTransition } from "@remix-run/react";
 import { Audio } from "react-loader-spinner";
-import { PageHeader } from "~/components/Header";
+import { PageHeader } from "@station/client/layout";
 import { withTitle } from "~/utils/pm-station/client";
 
 export const meta = withTitle("ส่งคำขอเพลง");
