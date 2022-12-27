@@ -1,0 +1,97 @@
+:root {
+  --toastify-color-dark: #2c2c2c;
+  --toastify-font-family: unset;
+}
+
+.Toastify__toast-body > div:last-child {
+  @apply flex flex-col gap-0.5 pl-2;
+}
+
+.Toastify__toast-body > div > b {
+  @apply text-base font-medium;
+}
+.Toastify__toast-body > div > span {
+  @apply text-sm text-gray-300;
+}
+
+.pm-station-focus-ring {
+  @apply focus:outline-none focus:ring-2 focus:ring-offset-4 focus:ring-offset-[#151515];
+}
+
+.pm-station-btn,
+.pm-station-input {
+  @apply rounded-md transition-colors disabled:cursor-not-allowed;
+}
+
+.pm-station-btn {
+  @apply px-6 py-3 md:px-4;
+}
+
+.pm-station-input[type="number"] {
+  @apply text-lg pl-4 pr-2 py-2 text-center;
+}
+
+.pm-station-input:not([type="number"]) {
+  @apply px-4 py-3;
+}
+
+.pm-station-input {
+  @apply bg-stone-700 border-stone-500 pm-station-focus-ring focus:ring-gray-400
+    border border-transparent focus:border-transparent sm:text-sm;
+}
+
+form label {
+  @apply font-medium;
+}
+
+form input[type="text"],
+form input[type="tel"] {
+  @apply pm-station-focus-ring pm-station-input 
+    border-transparent focus:border-transparent disabled:bg-gray-500 disabled:border-gray-500;
+}
+
+form input[type="checkbox"] {
+  @apply rounded;
+}
+
+form input[type="radio"] {
+  @apply rounded-full;
+}
+form input[type="radio"],
+form input[type="checkbox"] {
+  @apply -mt-1 p-1.5 mr-0.5
+    bg-gray-200
+    border-transparent
+    focus:border-transparent focus:bg-gray-200 focus:ring-gray-500 active:ring-green-500
+    text-green-500 pm-station-focus-ring;
+}
+
+form input[type="radio"]:checked,
+form input[type="checkbox"]:checked {
+  @apply bg-green-500 focus:ring-green-500;
+}
+
+form input[type="radio"]:disabled,
+,
+form input[type="checkbox"]:disabled {
+  @apply bg-green-300 cursor-not-allowed;
+}
+
+.line-clamp {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.songrequest-item {
+  @apply md:flex justify-center bg-white bg-opacity-10 rounded-lg hover:bg-opacity-20 min-w-0 min-h-0 transition-colors;
+}
+
+.songrequest-wrapper {
+  @apply items-center md:items-baseline px-4 py-3 md:p-6 flex flex-row md:flex-col gap-4 min-w-0 min-h-0;
+}
+
+.ais-SearchBox-submit {
+  zoom: 1.5;
+}

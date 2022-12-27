@@ -1,4 +1,4 @@
-import { validateAndParseDate } from "@lemasc/swr-firestore";
+import { isDocumentValid, validateAndParseDate } from "@lemasc/swr-firestore";
 import admin from "@station/server/firebase-admin";
 import { getAuth } from "firebase-admin/auth";
 import { getFirestore } from "firebase-admin/firestore";
@@ -28,7 +28,13 @@ export const getTodayPlaylist = async () => {
   if (docs.length !== 1) {
     throw new Error(`No playlist as of ${date.format("DD/MM/YYYY")}.`);
   }
-  return validateAndParseDate(docs[0] as any, {
+  const data = await validateAndParseDate(docs[0] as any, {
     validator: zodValidator(PlaylistRecord),
   });
+  if (!isDocumentValid(data)) {
+    throw new Error(
+      `Playlist was existed, but invalid for the current schema.`
+    );
+  }
+  return data;
 };

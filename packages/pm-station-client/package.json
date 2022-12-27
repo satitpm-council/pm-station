@@ -1,14 +1,13 @@
 {
-    "name": "@station/server",
-    "sideEffects": false,
+    "name": "@station/client",
     "version": "1.0.0",
     "dependencies": {
-        "@remix-run/express": "*",
         "@station/shared": "*",
-        "axios": "*"
+        "axios": "*",
+        "firebase": "*",
+        "react-toastify": "*"
     },
     "devDependencies": {
-        "next": "*",
         "typescript": "*"
     }
 }

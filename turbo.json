@@ -10,6 +10,12 @@
         "prebuild": {
             "cache": false
         },
+        "test": {
+            "cache": false
+        },
+        "lint": {
+            "cache": false
+        },
         "build": {
             "dependsOn": [
                 "prebuild",

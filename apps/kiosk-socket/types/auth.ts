@@ -6,6 +6,10 @@ type ControllerAuthParam = {
    * and save the current user data in memory.
    * */
   token: string;
+  /**
+   * Ackknowledge to force disconnect all socket clients and allow the current device only.
+   */
+  forceDisconnect?: boolean;
 };
 
 type DisplayAuthParam = {

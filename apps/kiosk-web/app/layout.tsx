@@ -1,5 +1,6 @@
 import { Prompt } from "@next/font/google";
 import "../styles/globals.css";
+import "../styles/pm-station.css";
 
 const promptFont = Prompt({
   variable: "--font-prompt",
@@ -14,11 +15,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="th" className={promptFont.variable}>
-      <body
-        className={`flex h-full min-h-screen bg-gradient-to-b from-zinc-800 to-black text-white`}
-      >
-        {children}
-      </body>
+      <body>{children}</body>
     </html>
   );
 }

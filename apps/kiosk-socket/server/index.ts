@@ -25,4 +25,13 @@ io.use((socket, next) => {
     .catch((err) => next(err));
 });
 
+io.on("connection", async (socket) => {
+  const data = socket.data as ServerSocketData;
+  if (!data.playlist) return;
+  if (data.type === "controller") {
+    io.in("controller").disconnectSockets(true);
+  }
+  socket.join(data.type);
+});
+
 export default io;

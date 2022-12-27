@@ -15,8 +15,21 @@ export const authMiddleware = async (
     const user = await verifyIdToken(auth.token, true);
     socket.data.user = user;
     socket.data.type = auth.type;
+
+    const controllerClients = (await io.fetchSockets()).filter(
+      (c) => c.data.type === "controller"
+    );
+    if (controllerClients.length > 0) {
+      if (!auth.forceDisconnect) {
+        throw new Error(
+          "More than 1 controller client are currenly connected. Requires force disconnect."
+        );
+      }
+      controllerClients.forEach((socket) => {
+        socket.disconnect(true);
+      });
+    }
+    socket.data.playlist = await getTodayPlaylist();
   }
-  // Get the current playlist
-  const playlist = await getTodayPlaylist();
   return null;
 };
