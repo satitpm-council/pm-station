@@ -39,6 +39,7 @@ WORKDIR /app
 COPY --from=pruner /app/out/full/ /app
 COPY --from=deps /app/node_modules /app/node_modules
 COPY turbo.json turbo.json
+COPY .env .env
 RUN turbo run build --filter=kiosk-web...
  
 FROM base AS runner
