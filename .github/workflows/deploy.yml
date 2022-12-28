@@ -8,7 +8,8 @@ env:
   FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
   TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
   TURBO_TEAM: ${{ secrets.TURBO_TEAM }}
-  VERCEL_JSON: ${{secrets.VERCEL_JSON }}
+  VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+  VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
 jobs:
   deploy:
       name: Deploy app
@@ -28,14 +29,8 @@ jobs:
             cache: 'yarn'
         - name: Installing flyctl
           uses: superfly/flyctl-actions/setup-flyctl@master
-        - name: Setting up environments
-          run: |
-              yarn global add vercel
-              mkdir .vercel
-              touch .vercel/project.json
-              echo ${{ secrets.VERCEL_JSON }} >> .vercel/project.json
         - name: Fetching environment variables
-          run: vercel env pull --token ${{ secrets.TURBO_TOKEN }}
+          run: vercel env pull --yes --token ${{ secrets.TURBO_TOKEN }}
         - name: Install dependencies
           run: yarn
         - name: Deploy
