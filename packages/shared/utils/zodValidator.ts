@@ -1,7 +1,7 @@
 import type { TypeOf, ZodTypeAny } from "zod";
 import { ZodError } from "zod";
 import type { ValidatorFn } from "@lemasc/swr-firestore";
-import { captureException } from "@sentry/remix";
+//import { captureException } from "@sentry/remix";
 
 export const zodValidator = <
   Schema extends ZodTypeAny,
@@ -13,11 +13,11 @@ export const zodValidator = <
     try {
       return schema.parse(data);
     } catch (err) {
-      if (err instanceof ZodError) {
+      /*if (err instanceof ZodError) {
         captureException(
           new Error(`Invalid schema for document ${snapshot.ref.path}.`)
         );
-      }
+      }*/
       if (process.env.NODE_ENV === "development") {
         console.error(err);
       }

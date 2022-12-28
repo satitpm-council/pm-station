@@ -18,7 +18,7 @@
     "@station/client": "*",
     "@station/server": "*",
     "@station/shared": "*",
-    "dayjs": "^1.11.7",
+    "dayjs": "*",
     "firebase-admin": "^11.4.1",
     "kiosk-socket": "*",
     "next": "^13.1.1",

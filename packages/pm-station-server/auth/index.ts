@@ -1,5 +1,3 @@
-import { captureException } from "@sentry/remix";
-import type { IncomingHttpHeaders } from "http";
 import axios from "shared/axios";
 import admin from "@station/server/firebase-admin";
 
@@ -40,7 +38,6 @@ export const verifySession = async ({
       const { role, type } = (customClaims ?? {}) as Partial<UserClaims>;
       return { uid, phoneNumber, displayName, role, type };
     } catch (err) {
-      captureException(err);
       console.error(err);
     }
     return null;
@@ -50,25 +47,20 @@ export const verifySession = async ({
 
 const customTokenToIdToken = async (token: string) => {
   const key = process.env.PM_STATION_FIREBASE_PUBLIC_API_KEY;
-  try {
-    const { data } = await axios.post<{ idToken: string }>(
-      "/accounts:signInWithCustomToken",
-      {
-        token,
-        returnSecureToken: true,
+  const { data } = await axios.post<{ idToken: string }>(
+    "/accounts:signInWithCustomToken",
+    {
+      token,
+      returnSecureToken: true,
+    },
+    {
+      baseURL: "https://identitytoolkit.googleapis.com/v1",
+      params: {
+        key,
       },
-      {
-        baseURL: "https://identitytoolkit.googleapis.com/v1",
-        params: {
-          key,
-        },
-      }
-    );
-    return data.idToken;
-  } catch (err) {
-    captureException(err);
-    throw err;
-  }
+    }
+  );
+  return data.idToken;
 };
 
 export const updateProfile = async (

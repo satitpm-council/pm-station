@@ -6,7 +6,7 @@ import { toast } from "react-toastify";
 import { isFirebaseError, useFirebase } from "@station/client/firebase";
 import { SubmitButton } from "@station/client/SubmitButton";
 import type { PhoneLoginStepProps } from "./types";
-import { captureException } from "@sentry/browser";
+//import { captureException } from "@sentry/browser";
 import { useServerLogin } from "../../hooks/useServerLogin";
 
 const disclosePhoneNo = (phoneNo: string) => {
@@ -36,7 +36,7 @@ export function EnterCode({
       await serverLogin(user);
     } catch (err) {
       console.error(err);
-      captureException(err);
+      //captureException(err);
       let error = (err as Error).message;
       if (isFirebaseError(err)) {
         if (err.code.endsWith("-verification-code")) {
