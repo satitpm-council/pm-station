@@ -60,4 +60,4 @@ jobs:
         - name: Installing flyctl
           uses: superfly/flyctl-actions/setup-flyctl@master
         - name: Deploy
-          uses: flyctl deploy --config ./apps/${{ matrix.package }}/fly.toml --image registry.fly.io/${{ steps.app_name.outputs.value }}:${{ github.ref_name }}-${{ github.sha }}"
+          run: flyctl deploy --config ./apps/${{ matrix.package }}/fly.toml --image registry.fly.io/${{ steps.app_name.outputs.value }}:${{ github.ref_name }}-${{ github.sha }}"
