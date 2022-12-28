@@ -6,7 +6,7 @@ import type { FormEventHandler } from "react";
 import { isFirebaseError, useFirebase } from "@station/client/firebase";
 import { SubmitButton } from "../../../SubmitButton";
 import type { PhoneLoginStepProps } from "./types";
-import { captureException } from "@sentry/remix";
+//import { captureException } from "@sentry/remix";
 import { toast } from "react-toastify";
 
 export function EnterPhone({ setLoginRequest }: PhoneLoginStepProps) {
@@ -36,7 +36,7 @@ export function EnterPhone({ setLoginRequest }: PhoneLoginStepProps) {
       });
     } catch (err) {
       console.error(err);
-      captureException(err);
+      //captureException(err);
       setLoginRequest(undefined);
       let error = (err as Error).message;
       if (isFirebaseError(err)) {
@@ -84,7 +84,7 @@ export function EnterPhone({ setLoginRequest }: PhoneLoginStepProps) {
       await recaptchaVerifier.current?.verify();
     } catch (err) {
       console.error(err);
-      captureException(err);
+      //captureException(err);
       setLoading(false);
     }
   };
