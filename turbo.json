@@ -39,11 +39,6 @@
                 "build/**"
             ]
         },
-        "deploy": {
-            "dependsOn": [
-                "build"
-            ],
-            "outputs": []
-        }
+        "deploy": {}
     }
 }
