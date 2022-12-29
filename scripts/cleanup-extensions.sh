@@ -41,6 +41,13 @@ for next_file in $files; do
         # If the current platform is Next.js
         # remove the file without .next extension
         rm "$non_next_file"
+        if echo "$next_file" | grep -Eq ".*(.tsx)"
+        then
+          mv "$next_file" "$path/$base_name.tsx"
+        else
+          mv "$next_file" "$path/$base_name.ts"
+        fi
+
     else
         rm "$next_file"
     fi
