@@ -46,6 +46,7 @@ WORKDIR /app
 COPY --from=pruner /app/out/full/ /app
 COPY --from=deps /app/node_modules /app/node_modules
 COPY turbo.json turbo.json
+COPY .env .env
 
 # If we're using Prisma, uncomment to cache the prisma schema
 # ADD prisma .
