@@ -9,8 +9,8 @@ WORKDIR /app
 COPY . .
 RUN turbo prune --scope=kiosk-web --docker
 RUN find . -name "node_modules" -type d -prune -exec rm -rf '{}' +
-RUN chmod +x ./scripts/cleanup-extensions.sh
-RUN ./scripts/cleanup-extensions.sh ./out --keep-next
+RUN chmod +x /app/scripts/cleanup-extensions.sh
+RUN /app/scripts/cleanup-extensions.sh /app/out --keep-next
  
 # Add lockfile and package.json's of isolated subworkspace
 FROM base AS project
