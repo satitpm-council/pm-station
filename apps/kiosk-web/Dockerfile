@@ -51,15 +51,11 @@ WORKDIR /app
 RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 nextjs
 USER nextjs
- 
-COPY --from=pruner /app/apps/kiosk-web/next.config.js .
-COPY --from=pruner /app/apps/kiosk-web/package.json .
-COPY --from=production-deps /app/node_modules ./node_modules
-COPY --from=builder /app/apps/kiosk-web/public ./public
 
 # Automatically leverage output traces to reduce image size
 # https://nextjs.org/docs/advanced-features/output-file-tracing
 COPY --from=builder --chown=nextjs:nodejs /app/apps/kiosk-web/.next/standalone ./
-COPY --from=builder --chown=nextjs:nodejs /app/apps/kiosk-web/.next/static ./.next/static
+COPY --from=builder --chown=nextjs:nodejs /app/apps/kiosk-web/.next/static ./apps/kiosk-web/.next/static
+COPY --from=builder /app/apps/kiosk-web/public ./apps/kiosk-web/public
  
-CMD node server.js
+CMD node ./apps/kiosk-web/server.js
