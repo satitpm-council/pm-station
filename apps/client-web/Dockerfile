@@ -12,6 +12,8 @@ WORKDIR /app
 COPY . .
 RUN turbo prune --scope=client-web --docker
 RUN find . -name "node_modules" -type d -prune -exec rm -rf '{}' +
+RUN chmod +x ./scripts/cleanup-extensions.sh
+RUN ./scripts/cleanup-extension.sh ./out
 
 # Base strategy to have layer caching
 FROM base AS project
