@@ -1,22 +1,23 @@
 {
-    "private": true,
-    "name": "coolkidssatit",
-    "workspaces": [
-        "apps/*",
-        "packages/*"
-    ],
-    "scripts": {
-        "bootstrap": "turbo run bootstrap --no-cache",
-        "build": "turbo run build",
-        "deploy": "turbo run deploy",
-        "postinstall": "patch-package"
-    },
-    "dependencies": {
-        "dotenv": "^16.0.3",
-        "patch-package": "^6.5.0",
-        "turbo": "^1.6.3"
-    },
-    "devDependencies": {
-        "eslint": "^8.30.0"
-    }
+  "private": true,
+  "name": "coolkidssatit",
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "bootstrap": "turbo run bootstrap --no-cache",
+    "build": "turbo run build",
+    "deploy": "turbo run deploy",
+    "postinstall": "patch-package"
+  },
+  "dependencies": {
+    "@lemasc/swr-firestore": "^2.1.1",
+    "dotenv": "^16.0.3",
+    "patch-package": "^6.5.0",
+    "turbo": "^1.6.3"
+  },
+  "devDependencies": {
+    "eslint": "^8.30.0"
+  }
 }
