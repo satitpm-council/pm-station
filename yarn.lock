@@ -2527,10 +2527,10 @@
     "@jridgewell/resolve-uri" "^3.0.3"
     "@jridgewell/sourcemap-codec" "^1.4.10"
 
-"@lemasc/firebase-wrapper@^1.0.1":
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/@lemasc/firebase-wrapper/-/firebase-wrapper-1.0.1.tgz#559afa9bb67f54dfd0ee1c8945a7ae027cdebd62"
-  integrity sha512-STajybyQjmzUXg8vqdzLWpHLy1GZU2wVo8kOhOye9bm2E8OV2EVRUrWGjYp3sMu5y2Uz2IqB2DW021KXYXFNbw==
+"@lemasc/firebase-wrapper@1.1.1", "@lemasc/firebase-wrapper@^1.0.1", "@lemasc/firebase-wrapper@^1.1.0":
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/@lemasc/firebase-wrapper/-/firebase-wrapper-1.1.1.tgz#ab2fca309b21393172e23e8c32aede07054032ed"
+  integrity sha512-mgnHF2cU7IhhsmNwOJOT/1SDLjmeRom0XLrJJspRp3tuUNK9xDBR0VdvBSYHPcZX+b5Xzi1YyhMfAqKeHs2Kzg==
 
 "@lemasc/swr-firestore@*":
   version "2.2.0"
@@ -2541,11 +2541,12 @@
     lodash "^4.17.21"
     swr "^1.1.0"
 
-"@lemasc/swr-firestore@^2.1.1":
-  version "2.1.1"
-  resolved "https://registry.yarnpkg.com/@lemasc/swr-firestore/-/swr-firestore-2.1.1.tgz#8dd663e90e3cbe2e9b73ab627fb11a9420ce1f1b"
-  integrity sha512-flEgKROOHkseOSFfKZH7C2+dFStzdwykdCZS/UZl7lmJ9UmmVZ84uxVrsvVoH26cKM5w/BSPjHU5UnKcsXjGwg==
+"@lemasc/swr-firestore@^2.2.1":
+  version "2.2.1"
+  resolved "https://registry.yarnpkg.com/@lemasc/swr-firestore/-/swr-firestore-2.2.1.tgz#abfacb130bc86d39c718d78e216a0babe2763cbe"
+  integrity sha512-VfOO3gYW3eAbIDK216TizFaUMVo7UdMRh8ms3hWYcQtD2/LkMyGpom/LMQlg6sR3EwEqhEAa+hHalUtpJFayXg==
   dependencies:
+    "@lemasc/firebase-wrapper" "^1.1.0"
     lodash "^4.17.21"
     swr "^1.1.0"
 
@@ -4057,16 +4058,7 @@ axios-retry@*, axios-retry@^3.3.1:
     "@babel/runtime" "^7.15.4"
     is-retry-allowed "^2.2.0"
 
-axios@*:
-  version "1.2.1"
-  resolved "https://registry.yarnpkg.com/axios/-/axios-1.2.1.tgz#44cf04a3c9f0c2252ebd85975361c026cb9f864a"
-  integrity sha512-I88cFiGu9ryt/tfVEi4kX2SITsvDddTajXTOFmt2uK1ZVA8LytjtdeyefdQWEf5PU8w+4SSJDoYnggflB5tW4A==
-  dependencies:
-    follow-redirects "^1.15.0"
-    form-data "^4.0.0"
-    proxy-from-env "^1.1.0"
-
-axios@^0.27.2:
+axios@*, axios@0.27.2, axios@^0.27.2:
   version "0.27.2"
   resolved "https://registry.yarnpkg.com/axios/-/axios-0.27.2.tgz#207658cc8621606e586c85db4b41a750e756d972"
   integrity sha512-t+yRIyySRTp/wua5xEr+z1q60QmLq8ABsS5O9Me1AsE5dfKqgnCFzwiCZZ/cGNd1lq4/7akDWMxdhVlucjmnOQ==
@@ -6046,11 +6038,6 @@ follow-redirects@^1.14.9:
   version "1.15.1"
   resolved "https://registry.yarnpkg.com/follow-redirects/-/follow-redirects-1.15.1.tgz#0ca6a452306c9b276e4d3127483e29575e207ad5"
   integrity sha512-yLAMQs+k0b2m7cVxpS1VKJVvoz7SS9Td1zss3XRwXj+ZDH00RJgnuLx7E44wx02kQLrdM3aOOy+FpzS7+8OizA==
-
-follow-redirects@^1.15.0:
-  version "1.15.2"
-  resolved "https://registry.yarnpkg.com/follow-redirects/-/follow-redirects-1.15.2.tgz#b460864144ba63f2681096f274c4e57026da2c13"
-  integrity sha512-VQLG33o04KaQ8uYi2tVNbdrWp1QWxNNea+nmIB4EVM28v0hmP17z7aG1+wAkNzVq4KeXTq3221ye5qTJP91JwA==
 
 for-each@^0.3.3:
   version "0.3.3"
