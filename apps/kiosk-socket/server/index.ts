@@ -7,31 +7,42 @@ import {
   ServerSocketData,
 } from "../types/socket-interfaces";
 
-import { AuthParam } from "../types";
 import { authMiddleware } from "./middleware";
 
-const io = new Server<
+export type ServerSocket = Server<
   ServerToClientEvents,
   ClientToServerEvents,
   DefaultEventsMap,
   ServerSocketData
->();
+>;
 
-export type ServerSocket = typeof io;
+const initializeSocket = (server: any): ServerSocket => {
+  const io: ServerSocket = new Server(server, {
+    ...(process.env.NODE_ENV !== "production"
+      ? {
+          cors: {
+            origin: "*",
+          },
+        }
+      : {}),
+  });
 
-io.use((socket, next) => {
-  authMiddleware(io, socket)
-    .then(() => next())
-    .catch((err) => next(err));
-});
+  io.use((socket, next) => {
+    authMiddleware(io, socket)
+      .then(() => next())
+      .catch((err) => {
+        console.error(err);
+        next(err);
+      });
+  });
 
-io.on("connection", async (socket) => {
-  const data = socket.data as ServerSocketData;
-  if (!data.playlist) return;
-  if (data.type === "controller") {
-    io.in("controller").disconnectSockets(true);
-  }
-  socket.join(data.type);
-});
+  io.on("connection", async (socket) => {
+    const data = socket.data as ServerSocketData;
+    if (!data.playlist) return;
+    console.log(data.user);
+    socket.join(data.type);
+  });
+  return io;
+};
 
-export default io;
+export default initializeSocket;

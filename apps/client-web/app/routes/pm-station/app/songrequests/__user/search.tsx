@@ -9,7 +9,7 @@ import loadable from "@loadable/component";
 import { useState } from "react";
 import { captureException } from "@sentry/remix";
 import type { TrackModalProps } from "~/components/TrackModal";
-import { TrackMeta } from "~/components/SongRequest/base";
+import { TrackMeta } from "@station/client/songrequests";
 
 const TrackModal = loadable<TrackModalProps>(() =>
   import("~/components/TrackModal").then((c) => c.SelectTrackModal)

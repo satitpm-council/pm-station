@@ -1,4 +1,8 @@
-import { PencilIcon, TrashIcon } from "@heroicons/react/20/solid";
+import {
+  ArrowPathIcon,
+  PencilIcon,
+  TrashIcon,
+} from "@heroicons/react/20/solid";
 import { useNavigate } from "@remix-run/react";
 import { useCallback, useState } from "react";
 import { PageHeader } from "@station/client/layout";
@@ -8,7 +12,7 @@ import axios from "shared/axios";
 import type { SongRequestRecord } from "@station/shared/schema/types";
 import dayjs from "shared/dayjs";
 import { withTitle } from "~/utils/pm-station/client";
-import { usePlaylistData } from "~/utils/pm-station/playlists/data";
+import { usePlaylistData } from "@station/client/playlists";
 import { usePlaylistParam } from "~/utils/pm-station/playlists/param";
 import type { DeletePlaylistAction } from "@station/shared/api";
 
@@ -19,9 +23,12 @@ export default function ViewPlaylist() {
   const { playlist, tracks } = usePlaylistData(playlistId);
   const navigate = useNavigate();
   const [selectedTrack, setSelectedTrack] = useState<SongRequestRecord>();
-  const goToEdit = useCallback(
-    () =>
-      navigate(`/pm-station/app/songrequests/playlists/${playlist?.id}/edit`),
+  const goToSubPage = useCallback(
+    (page: "edit" | "sync") => {
+      navigate(
+        `/pm-station/app/songrequests/playlists/${playlist?.id}/${page}`
+      );
+    },
     [navigate, playlist]
   );
   const remove = useCallback(async () => {
@@ -49,9 +56,15 @@ export default function ViewPlaylist() {
             ? [
                 {
                   className: "bg-blue-500 hover:bg-blue-600",
-                  onClick: goToEdit,
+                  onClick: () => goToSubPage("edit"),
                   icon: PencilIcon,
                   text: "แก้ไขรายการ",
+                },
+                {
+                  className: "bg-green-500 hover:bg-green-600",
+                  onClick: () => goToSubPage("sync"),
+                  icon: ArrowPathIcon,
+                  text: "ซิงก์รายการ",
                 },
                 {
                   className: "bg-red-500 hover:bg-red-600",

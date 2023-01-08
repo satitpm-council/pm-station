@@ -1,14 +1,24 @@
+"use client";
+
+import Image from "next/image";
+import Time from "./components/time";
+
 export default function ProgramProjector() {
   return (
     <div className="flex-1 flex-col flex">
       <header className="flex flex-row border-b border-gray-300">
-        <div className="flex-grow flex flex-row gap-8 px-14 py-10 items-center">
+        <div className="flex-grow flex flex-row gap-8 px-12 py-6 items-center">
+          <Image
+            src="/coolkidssatit.png"
+            alt="logo sc"
+            width={100}
+            height={100}
+          />
           <b>PM Station</b>
-          <span className="text-red-500 font-medium text-2xl">
-            อยู่ระหว่างการทดสอบระบบ
-          </span>
         </div>
-        <div className="border-l px-10 py-10">07:06</div>
+        <div className="border-l px-10 py-6 flex items-center">
+          <Time />
+        </div>
       </header>
       <main className="flex-1 flex flex-col items-center justify-center gap-8 p-14 flex-grow">
         <span>ขณะนี้คุณกำลังรับฟังรายการ</span>
@@ -40,12 +50,13 @@ export default function ProgramProjector() {
             https://coolkidssatit.fly.dev/pm-station
           </span>
         </div>
-        <div className="text-5xl absolute right-0 bottom-0 bg-white text-black p-4">
-          <img
+        <div className="text-6xl absolute right-0 bottom-0 bg-white text-black p-4">
+          <Image
             className="object-cover"
             width="300"
             height="300"
             src="/web-qr.svg"
+            alt="QR Code"
           />
         </div>
       </footer>

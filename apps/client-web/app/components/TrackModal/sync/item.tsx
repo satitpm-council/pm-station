@@ -1,8 +1,8 @@
 import { Disclosure, Transition } from "@headlessui/react";
 import { CheckIcon, MinusIcon, XMarkIcon } from "@heroicons/react/20/solid";
 import { useEffect, useMemo, useState } from "react";
-import { TrackMeta } from "~/components/SongRequest/base";
-import TrackThumbnail from "~/components/TrackThumbnail";
+import { TrackMeta } from "@station/client/songrequests";
+import TrackThumbnail from "@station/client/TrackThumbnail";
 import type { SongRequestRecord } from "@station/shared/schema/types";
 import { classNames } from "@station/client/utils";
 import type { MusicInfo } from "~/utils/pm-station/ytmusic/types";

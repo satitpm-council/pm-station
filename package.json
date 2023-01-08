@@ -6,6 +6,8 @@
     "packages/*"
   ],
   "scripts": {
+    "client:dev": "yarn workspace client-web dev",
+    "kiosk:dev": "turbo run dev --filter=kiosk-web... --parallel",
     "bootstrap": "turbo run bootstrap --no-cache",
     "build": "turbo run build",
     "deploy": "turbo run deploy",
@@ -22,6 +24,7 @@
   },
   "resolutions": {
     "axios": "0.27.2",
+    "firebase": "9.9.3",
     "@lemasc/firebase-wrapper": "1.1.1"
   }
 }

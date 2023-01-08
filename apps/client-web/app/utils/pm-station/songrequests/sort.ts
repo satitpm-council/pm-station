@@ -2,13 +2,14 @@ import type { NumericMenuConnectorParamsItem } from "instantsearch.js/es/connect
 
 import type { SongRequestRecord } from "@station/shared/schema/types";
 import type { OrderByDirection } from "firebase/firestore";
-import { LastPlayedDate } from "./date";
+import { LastPlayedDate } from "@station/client/songrequests";
+import type { TrackStatus } from "@station/client/songrequests";
 
 export type ListParams = {
   sortBy: keyof SongRequestRecord;
   order: OrderByDirection;
   page?: number;
-  filter: "all" | "idle" | "played" | "rejected";
+  filter: TrackStatus;
 };
 
 type SortInstantSearchItems = NumericMenuConnectorParamsItem & {

@@ -5,7 +5,7 @@ export function HeaderLarge() {
     <div className="px-2 py-3 flex gap-4 items-center">
       <Image
         draggable={false}
-        src="/logo.png"
+        src="/coolkidssatit.png"
         alt="Logo"
         width="70"
         height="70"

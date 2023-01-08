@@ -1,7 +1,7 @@
 import EditorPageHeader from "~/components/PlaylistEditor/Header";
 import { withTitle } from "~/utils/pm-station/client";
 import PlaylistEditor from "~/components/PlaylistEditor";
-import { usePlaylistData } from "~/utils/pm-station/playlists/data";
+import { usePlaylistData } from "@station/client/playlists";
 import dayjs from "dayjs";
 import { useEffect } from "react";
 import { playlistEditorStore } from "~/components/PlaylistEditor/store";

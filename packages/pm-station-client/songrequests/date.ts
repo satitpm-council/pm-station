@@ -1,5 +1,3 @@
-import type { ListParams } from "./sort";
-
 /**
  * LastPlayedDate constraints set on the database records.
  */
@@ -10,7 +8,7 @@ export const LastPlayedDate = {
   Idle: new Date(0),
 };
 
-type TrackStatus = ListParams["filter"];
+export type TrackStatus = "all" | "idle" | "played" | "rejected";
 
 export const getStatusFromDate = (date?: Date): TrackStatus => {
   // undefined, 0 means idle

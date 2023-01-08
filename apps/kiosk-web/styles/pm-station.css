@@ -84,12 +84,16 @@ form input[type="checkbox"]:disabled {
   overflow: hidden;
 }
 
+.songrequest-container {
+  @apply bg-white bg-opacity-10 rounded-lg shadow-lg overflow-hidden px-4;
+}
+
 .songrequest-item {
-  @apply md:flex justify-center bg-white bg-opacity-10 rounded-lg hover:bg-opacity-20 min-w-0 min-h-0 transition-colors;
+  @apply justify-center hover:bg-opacity-20 min-w-0 min-h-0 transition-colors;
 }
 
 .songrequest-wrapper {
-  @apply items-center md:items-baseline px-4 py-3 md:p-6 flex flex-row md:flex-col gap-4 min-w-0 min-h-0;
+  @apply items-center py-4 flex flex-row gap-4 min-w-0 min-h-0;
 }
 
 .ais-SearchBox-submit {

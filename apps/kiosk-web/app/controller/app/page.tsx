@@ -1,10 +1,6 @@
-import { notFound, redirect } from "next/navigation";
+import {   redirect } from "next/navigation";
 
-// We will write any necessary redirects here.
-export default function PlayerPage() {
-  return (
-    <>
-      <h1>App</h1>
-    </>
-  );
+export default async function ControllerAppRootPage() {
+  redirect("/controller/app/songrequests")
+  return null;
 }

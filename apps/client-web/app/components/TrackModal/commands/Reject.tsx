@@ -1,11 +1,10 @@
 import { useCallback } from "react";
 import { updateDoc } from "@lemasc/swr-firestore";
 import type { SongRequestRecord } from "@station/shared/schema/types";
-import type { ListParams } from "~/utils/pm-station/songrequests";
 import { LastPlayedDate } from "~/utils/pm-station/songrequests";
 import { SongRequestListStore } from "~/components/SongRequest/admin/store";
+import type { TrackStatus } from "@station/client/songrequests";
 
-export type TrackStatus = ListParams["filter"];
 type TrackStatusState = {
   trackStatus: TrackStatus;
   setTrackStatus: (status: TrackStatus) => void;

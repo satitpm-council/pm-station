@@ -1,13 +1,9 @@
-import type { LinksFunction, LoaderFunction } from "@remix-run/node";
-import { redirect } from "@remix-run/node";
-import { json } from "@remix-run/node";
+import type { LinksFunction } from "@remix-run/node";
 import { Link, Outlet } from "@remix-run/react";
 
 import sidebar from "react-pro-sidebar/dist/css/styles.css";
 import sidebarOverrides from "~/styles/sidebar.css";
 import { Header } from "@station/client/layout";
-import type { User } from "~/utils/pm-station/client";
-import { verifySession } from "@station/server/auth/remix";
 import { Bars4Icon, XMarkIcon } from "@heroicons/react/20/solid";
 import { useCallback, useEffect, useState } from "react";
 import Sidebar from "~/components/Sidebar";
@@ -21,29 +17,9 @@ import type {
 } from "@station/shared/api";
 import { signInWithCustomToken } from "firebase/auth";
 
-type UserStore = {
-  user: User;
-};
-
 export const unstable_shouldReload = () => true;
 
-export const loader: LoaderFunction = async ({ request }) => {
-  const user = await verifySession(request);
-
-  const { pathname } = new URL(request.url);
-  if (!user) {
-    return redirect(`/pm-station/?continueUrl=${pathname}`);
-  }
-  if (
-    (user.role === undefined || !user.type) &&
-    pathname !== "/pm-station/app/profile"
-  ) {
-    // WARN: This can't prevent client-side navigation.
-    return redirect("/pm-station/app/profile");
-  }
-
-  return json<UserStore>({ user });
-};
+export { loader } from "@station/server/api/app-layout";
 
 export const links: LinksFunction = () => [
   { rel: "stylesheet", href: sidebar },

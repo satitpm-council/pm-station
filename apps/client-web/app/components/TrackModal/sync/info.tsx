@@ -1,7 +1,7 @@
 import { useMemo } from "react";
 import dayjs from "shared/dayjs";
-import type { TrackThumbnailProps } from "~/components/TrackThumbnail";
-import TrackThumbnail from "~/components/TrackThumbnail";
+import type { TrackThumbnailProps } from "@station/client/TrackThumbnail";
+import TrackThumbnail from "@station/client/TrackThumbnail";
 import type { MusicInfo } from "~/utils/pm-station/ytmusic/types";
 import { videoIdToURL } from "~/utils/pm-station/ytmusic/client";
 

@@ -3,7 +3,7 @@ import { SongRequestRecordList } from "~/components/SongRequest/list";
 import { ViewTrackModal } from "~/components/TrackModal";
 import type { SongRequestRecord } from "@station/shared/schema/types";
 import { withTitle } from "~/utils/pm-station/client";
-import { usePlaylistData } from "~/utils/pm-station/playlists/data";
+import { usePlaylistData } from "@station/client/playlists";
 
 export const meta = withTitle("ดูรายการเพลง");
 
