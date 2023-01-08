@@ -51,6 +51,7 @@ for next_file in $files; do
     else
         rm "$next_file"
     fi
+    unset non_next_file
   fi
 done
 echo ""
