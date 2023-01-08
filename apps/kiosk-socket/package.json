@@ -1,6 +1,9 @@
 {
     "name": "kiosk-socket",
     "version": "1.0.0",
+    "scripts": {
+        "dev": "tsup --config tsup.config.ts --watch --onSuccess \"node ./dist/dev.js\""
+    },
     "dependencies": {
         "@lemasc/swr-firestore": "*",
         "@station/server": "*",
@@ -11,6 +14,12 @@
         "socket.io": "^4.5.4"
     },
     "devDependencies": {
+        "tsc-watch": "^6.0.0",
+        "tsup": "^6.5.0",
         "typescript": "*"
+    },
+    "optionalDependencies": {
+        "bufferutil": "^4.0.7",
+        "utf-8-validate": "^6.0.0"
     }
 }

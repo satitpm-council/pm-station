@@ -11,7 +11,7 @@ import type {
   SongRequestRecord,
   SongRequestSubmission,
 } from "@station/shared/schema/types";
-import { LastPlayedDate } from "../songrequests/date";
+import { LastPlayedDate } from "@station/client/songrequests";
 
 export type SongRequestRecord_V0 = {
   id: string;

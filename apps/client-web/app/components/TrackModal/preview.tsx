@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import type { TrackResponse } from "~/utils/pm-station/spotify/search";
-import TrackThumbnail from "../TrackThumbnail";
+import TrackThumbnail from "@station/client/TrackThumbnail";
 import { PlayIcon, PauseIcon } from "@heroicons/react/20/solid";
 
 export function MusicPreview({

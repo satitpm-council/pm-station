@@ -13,7 +13,7 @@ import type { TypeOf } from "zod";
 import { SongRequestRecord } from "@station/shared/schema";
 import { isString } from "shared/utils";
 import { trackId } from "../spotify/trackId";
-import { LastPlayedDate } from "./date";
+import { LastPlayedDate } from "@station/client/songrequests";
 import { convertFirestoreData } from "./result";
 
 const STRATEGY_COUNT = 4;

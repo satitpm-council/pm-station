@@ -1,6 +1,6 @@
 {
   "extends": "tsconfig/remix",
-  "include": ["remix.env.d.ts", "**/*.ts", "**/*.tsx"],
+  "include": ["remix.env.d.ts", "**/*.ts", "**/*.tsx", "../../packages/pm-station-client/songrequests/base.tsx"],
   "exclude": ["node_modules", "firebase"],
   "compilerOptions": {
     "baseUrl": ".",

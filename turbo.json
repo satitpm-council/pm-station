@@ -18,23 +18,10 @@
         },
         "build": {
             "dependsOn": [
-                "prebuild",
-                "^build"
-            ]
-        },
-        "kiosk-web#build": {
-            "dependsOn": [
                 "^build"
             ],
             "outputs": [
-                ".next/**"
-            ]
-        },
-        "client-web#build": {
-            "dependsOn": [
-                "^build"
-            ],
-            "outputs": [
+                ".next/**",
                 "public/build/**",
                 "build/**"
             ]

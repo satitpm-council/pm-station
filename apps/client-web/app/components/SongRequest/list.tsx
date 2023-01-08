@@ -1,8 +1,7 @@
-import TrackThumbnail from "../TrackThumbnail";
-import { TrackMeta } from "./base";
+import TrackThumbnail from "@station/client/TrackThumbnail";
+import { TrackMeta, Item } from "@station/client/songrequests";
 import dayjs from "shared/dayjs";
-import { Item } from "./item";
-import type { ItemProps } from "./item";
+import type { ItemProps } from "@station/client/songrequests";
 
 import type { SongRequestSearchRecord } from "@station/shared/schema/types";
 import { getStatusFromDate } from "~/utils/pm-station/songrequests";

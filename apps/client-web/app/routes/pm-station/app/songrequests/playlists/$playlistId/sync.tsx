@@ -4,7 +4,7 @@ import { PageHeader } from "@station/client/layout";
 import { SyncMusicModal, ViewTrackModal } from "~/components/TrackModal";
 import type { SongRequestRecord } from "@station/shared/schema/types";
 import { withTitle } from "~/utils/pm-station/client";
-import { usePlaylistData } from "~/utils/pm-station/playlists/data";
+import { usePlaylistData } from "@station/client/playlists";
 import { usePlaylistParam } from "~/utils/pm-station/playlists/param";
 import { isDocumentValid } from "@lemasc/swr-firestore";
 import type { ListProps } from "~/components/SongRequest/list";

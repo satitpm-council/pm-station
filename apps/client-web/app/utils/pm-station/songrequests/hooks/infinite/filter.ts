@@ -1,11 +1,11 @@
 import type { QueryConstraint } from "@lemasc/swr-firestore";
 import { orderBy, where } from "@lemasc/swr-firestore/constraints";
 import type { SongRequestRecord } from "@station/shared/schema/types";
-import { LastPlayedDate } from "../../date";
-import type { ListParams } from "../../sort";
+import { LastPlayedDate } from "@station/client/songrequests";
+import type { TrackStatus } from "@station/client/songrequests";
 
 export const getLastPlayedAtFromFilter = (
-  filter: ListParams["filter"]
+  filter: TrackStatus
 ): QueryConstraint<SongRequestRecord>[] => {
   if (filter === "idle")
     return [where("lastPlayedAt", "==", LastPlayedDate.Idle)];

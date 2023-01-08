@@ -1,4 +1,6 @@
-type ControllerAuthParam = {
+import { ExtendedError } from "socket.io/dist/namespace";
+
+export type ControllerAuthParam = {
   type: "controller";
   /**
    * The Firebase authentication ID token.
@@ -7,10 +9,17 @@ type ControllerAuthParam = {
    * */
   token: string;
   /**
-   * Ackknowledge to force disconnect all socket clients and allow the current device only.
+   * Acknowledge to force disconnect the socket IDs given and allow the current device only.
    */
-  forceDisconnect?: boolean;
+  forceDisconnect?: string[];
 };
+
+export interface DeviceConflictError extends ExtendedError {
+  data: {
+    /** The socket IDs that need to be disconnected */
+    disconnectClients: string[];
+  };
+}
 
 type DisplayAuthParam = {
   type: "display";

@@ -3,7 +3,13 @@ import admin from "@station/server/firebase-admin";
 
 import { getAuth } from "firebase-admin/auth";
 
-import type { User, UserClaims } from "@station/shared/user";
+import {
+  EditorRoleClaims,
+  isEditorClaims,
+  User,
+  UserClaims,
+  UserRole,
+} from "@station/shared/user";
 
 import {
   getSession,
@@ -35,8 +41,20 @@ export const verifySession = async ({
       const { sub } = await auth.verifySessionCookie(cookie.get("fb:token"));
       const { uid, phoneNumber, customClaims, displayName } =
         await auth.getUser(sub);
-      const { role, type } = (customClaims ?? {}) as Partial<UserClaims>;
-      return { uid, phoneNumber, displayName, role, type };
+      const claims = (customClaims ?? {}) as UserClaims;
+      const { role, type } = claims;
+      const session: User = { uid, phoneNumber, displayName, role, type };
+
+      if (isEditorClaims(claims)) {
+        const { role, programId, type } = claims;
+        return {
+          ...session,
+          role,
+          type,
+          programId,
+        };
+      }
+      return session;
     } catch (err) {
       console.error(err);
     }

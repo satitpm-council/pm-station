@@ -9,7 +9,7 @@ import type {
 import admin from "@station/server/firebase-admin";
 import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc";
-import { LastPlayedDate } from "../songrequests/date";
+import { LastPlayedDate } from "@station/client/songrequests";
 
 dayjs.extend(utc);
 

@@ -35,8 +35,12 @@
   @apply bg-amber-600;
 }
 
-.react-calendar__month-view__days__day--weekend {
+.react-calendar__month-view__days__day--weekend:not(.react-calendar__tile--now):not(.react-calendar__tile--active) {
   @apply text-red-400;
+}
+
+.react-calendar__month-view__days__day--weekend.react-calendar__tile--now:not(.react-calendar__tile--active) {
+  @apply text-red-100;
 }
 
 .react-calendar__tile {

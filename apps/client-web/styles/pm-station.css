@@ -72,7 +72,6 @@ form input[type="checkbox"]:checked {
 }
 
 form input[type="radio"]:disabled,
-,
 form input[type="checkbox"]:disabled {
   @apply bg-green-300 cursor-not-allowed;
 }

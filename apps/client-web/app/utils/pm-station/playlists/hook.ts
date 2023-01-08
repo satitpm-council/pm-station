@@ -3,16 +3,24 @@ import type { TypeOf } from "zod";
 import { PlaylistRecord } from "@station/shared/schema";
 
 import { isDocumentValid, useCollection } from "@lemasc/swr-firestore";
-import { orderBy } from "@lemasc/swr-firestore/constraints";
+import { orderBy, where } from "@lemasc/swr-firestore/constraints";
 import { zodValidator } from "shared/utils";
 import { useCallback, useMemo } from "react";
+import { isEditorClaims, useUser } from "../client";
 
 export const usePlaylists = () => {
-  const user = useFirebaseUser();
+  const { user } = useUser();
+  const firebaseUser = useFirebaseUser();
   const swr = useCollection<TypeOf<typeof PlaylistRecord>>(
-    user ? "playlists" : null,
+    firebaseUser ? "playlists" : null,
     {
-      constraints: [orderBy("queuedDate", "asc")],
+      constraints: [
+        orderBy("queuedDate", "asc"),
+        // editor users can only see their own playlists
+        ...(isEditorClaims(user)
+          ? [where("target", "==", user.programId)]
+          : []),
+      ],
     },
     {
       listen: true,

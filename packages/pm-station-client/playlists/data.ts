@@ -27,7 +27,7 @@ export const usePlaylistData = (playlistId?: string, listen = false) => {
             where(
               "playlistId",
               "array-contains",
-              doc(db, "playlists", playlistId)
+              doc(db, `/playlists/${playlistId}`)
             ),
           ]
         : [],
