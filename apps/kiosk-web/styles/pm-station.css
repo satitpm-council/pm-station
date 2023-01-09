@@ -85,11 +85,11 @@ form input[type="checkbox"]:disabled {
 }
 
 .songrequest-container {
-  @apply bg-white bg-opacity-10 rounded-lg shadow-lg overflow-hidden px-4;
+  @apply bg-white bg-opacity-10 rounded-lg shadow-lg overflow-hidden;
 }
 
 .songrequest-item {
-  @apply justify-center hover:bg-opacity-20 min-w-0 min-h-0 transition-colors;
+  @apply px-4 focus:outline-none bg-[#2c2c2c] justify-center hover:bg-opacity-20 min-w-0 min-h-0 transition-colors;
 }
 
 .songrequest-wrapper {

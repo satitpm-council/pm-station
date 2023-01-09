@@ -1,7 +1,7 @@
 "use client";
 
 import { motion, AnimatePresence } from "framer-motion";
-import { controllerStore } from "../shared/store";
+import { controllerStore } from "../store/store";
 
 export default function MiniPlayer() {
   const show = controllerStore((state) => state.showBottomSheet);
