@@ -42,14 +42,16 @@ export default async function ProjectorLayout({
         <div className="flex items-center gap-4 flex-grow">
           <Image
             src="/coolkidssatit.png"
-            width={60}
-            height={60}
+            width={40}
+            height={40}
             alt="coolkidssatit"
           />
-          <b className="font-bold text-lg">PM Station Kiosk</b>
+          <b className="font-bold">PM Station Kiosk</b>
         </div>
         <div className="flex items-center">
-          <Link href="/api/logout">Logout</Link>
+          <Link prefetch={false} href="/api/logout" className="text-sm">
+            Logout
+          </Link>
         </div>
       </nav>
       <main className="px-4 py-6 flex flex-col gap-6">{children}</main>

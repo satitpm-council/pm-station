@@ -6,7 +6,7 @@ import { Request as NodeRequest } from "@remix-run/node";
 function createWebFetchRequest(url: string, headers: Headers): NodeRequest {
   let host = headers.get("x-forwarded-host") || headers.get("host");
   // doesn't seem to be available on their req object!
-  let protocol = headers.get("x-forwarded-host") || "https";
+  let protocol = host?.includes("localhost") ? "http" : "https"
   let _url = new URL(url!, `${protocol}://${host}`);
 
   let init: NodeRequestInit = {

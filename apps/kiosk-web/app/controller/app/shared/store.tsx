@@ -11,8 +11,10 @@ type ContollerState = {
   socket?: Socket<ServerToClientEvents, ClientToServerEvents>;
   user?: User;
   playlistId?: string;
+  showBottomSheet: boolean
 };
 
 export const controllerStore = create<ContollerState>((set) => ({
   isConnected: false,
+  showBottomSheet: false
 }));

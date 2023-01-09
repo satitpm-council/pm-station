@@ -14,7 +14,7 @@ export const loader = async ({ request }: DataFunctionArgs) => {
 
   const { pathname } = new URL(request.url);
   if (!user) {
-    return redirect(`/pm-station/?continueUrl=${pathname}`);
+    return redirect(`/controller/?continueUrl=${pathname}`);
   }
   if (user.role && user.role >= UserRole.EDITOR && user.type === "student") {
     return json<UserStore>({ user });
