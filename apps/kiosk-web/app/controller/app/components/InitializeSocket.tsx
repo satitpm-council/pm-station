@@ -3,9 +3,12 @@
 import { useEffect, useState } from "react";
 import { io, Socket } from "socket.io-client";
 import { AuthParam } from "kiosk-socket/types";
-import { useFirebaseUser } from "@station/client/firebase";
+import { useFirebase, useFirebaseUser } from "@station/client/firebase";
 import { controllerStore } from "../shared/store";
 import { User } from "@station/shared/user";
+import { signInWithCustomToken } from "firebase/auth";
+import axios from "shared/axios";
+import { SessionActionResponse, toFormData } from "@station/shared/api";
 
 /**
  * Resolves the current socket endpoint based on the environment.
@@ -32,13 +35,31 @@ const useSocketEndpoint = () => {
 };
 
 export default function InitializeSocket({ user }: { user: User }) {
+  const { auth } = useFirebase();
   const fb_user = useFirebaseUser();
   const endpoint = useSocketEndpoint();
 
-  console.log(endpoint);
+  console.log(fb_user);
   useEffect(() => {
     controllerStore.setState({ user });
   }, [user]);
+
+  useEffect(() => {
+    if (user && !fb_user) {
+      // If server user session is existed, but not on the client-side,
+      // grab the sign-on token from backend.
+      (async () => {
+        try {
+          const {
+            data: { token },
+          } = await axios.post<SessionActionResponse>("/api/session");
+          await signInWithCustomToken(auth, token);
+        } catch (err) {
+          console.error(err);
+        }
+      })();
+    }
+  }, [user, fb_user, auth]);
 
   useEffect(() => {
     if (!endpoint) return;

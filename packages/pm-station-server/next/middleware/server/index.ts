@@ -1,21 +1,6 @@
 import { redirect } from "next/navigation";
 import type { DataFunctionArgs, TypedResponse } from "@remix-run/node";
-import type { RequestInit as NodeRequestInit } from "@remix-run/node";
-import { Request as NodeRequest } from "@remix-run/node";
-
-function createWebFetchRequest(url: string, headers: Headers): NodeRequest {
-  let host = headers.get("x-forwarded-host") || headers.get("host");
-  // doesn't seem to be available on their req object!
-  let protocol = host?.includes("localhost") ? "http" : "https"
-  let _url = new URL(url!, `${protocol}://${host}`);
-
-  let init: NodeRequestInit = {
-    method: "GET",
-    headers: headers,
-  };
-
-  return new NodeRequest(_url.href, init);
-}
+import { createWebFetchRequest } from "./web-fetch";
 
 const redirectStatusCodes = new Set([301, 302, 303, 307, 308]);
 function isRedirectResponse(response: Response) {

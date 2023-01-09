@@ -1,2 +1,1 @@
-export * from "./api-middleware";
-export * from "./server-middleware";
+export * from "./middleware";
