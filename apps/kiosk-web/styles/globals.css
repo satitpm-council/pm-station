@@ -13,3 +13,13 @@
     display: contents;
   }
 }
+
+.react-modal-sheet-container {
+  background-color: #222 !important;
+}
+.react-modal-sheet-backdrop {
+  background-color: rgba(0, 0, 0, 0.3) !important;
+}
+.react-modal-sheet-drag-indicator {
+  background-color: #666 !important;
+}
