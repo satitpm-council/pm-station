@@ -11,7 +11,7 @@ const { getSession, commitSession, destroySession } =
       sameSite: "lax",
       secure: process.env.NODE_ENV !== "development",
       httpOnly: true,
-      path: "/controller",
+      // we can't set path here because Next.js API uses /api while our app uses /controller
       maxAge: expiresIn,
     },
   });
