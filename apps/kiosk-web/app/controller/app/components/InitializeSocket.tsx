@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { io, Socket } from "socket.io-client";
 import { AuthParam } from "kiosk-socket/types";
 import { useFirebase, useFirebaseUser } from "@station/client/firebase";
-import { controllerStore } from "../shared/store";
+import { controllerStore } from "../store/store";
 import { User } from "@station/shared/user";
 import { signInWithCustomToken } from "firebase/auth";
 import axios from "shared/axios";

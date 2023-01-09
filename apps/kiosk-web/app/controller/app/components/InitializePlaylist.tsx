@@ -5,7 +5,7 @@ import { TypeOf } from "zod";
 import { PlaylistRecord } from "@station/shared/schema";
 import { useEffect, useMemo } from "react";
 import { zodValidator } from "shared/utils";
-import { controllerStore } from "../shared/store";
+import { controllerStore } from "../store/store";
 
 export default function InitializePlaylist({
   initData,
