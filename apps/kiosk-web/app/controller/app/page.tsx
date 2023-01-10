@@ -1,14 +1,5 @@
-import MiniPlayer from "./components/MiniPlayer";
-import BottomSheet from "./components/BottomSheet";
-import Queue from "./components/Queue";
+import { redirect } from "next/navigation";
 
-export default function SongRequestTab() {
-  return (
-    <>
-      <h1 className="font-bold text-4xl">สถานะ</h1>
-      <Queue />
-      <MiniPlayer />
-      <BottomSheet />
-    </>
-  );
+export default function ControllerAppPage() {
+  redirect("/controller/app/queue");
 }

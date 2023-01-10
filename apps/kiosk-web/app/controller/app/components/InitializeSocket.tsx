@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { io, Socket } from "socket.io-client";
 import { AuthParam } from "kiosk-socket/types";
 import { useFirebase, useFirebaseUser } from "@station/client/firebase";
@@ -35,6 +35,7 @@ const useSocketEndpoint = () => {
 };
 
 export default function InitializeSocket({ user }: { user: User }) {
+  const isLoading = useRef(false);
   const { auth } = useFirebase();
   const fb_user = useFirebaseUser();
   const endpoint = useSocketEndpoint();
@@ -45,10 +46,11 @@ export default function InitializeSocket({ user }: { user: User }) {
   }, [user]);
 
   useEffect(() => {
-    if (user && !fb_user) {
+    if (user && !fb_user && !isLoading.current) {
       // If server user session is existed, but not on the client-side,
       // grab the sign-on token from backend.
       (async () => {
+        isLoading.current = true;
         try {
           const {
             data: { token },
@@ -57,6 +59,7 @@ export default function InitializeSocket({ user }: { user: User }) {
         } catch (err) {
           console.error(err);
         }
+        isLoading.current = false;
       })();
     }
   }, [user, fb_user, auth]);

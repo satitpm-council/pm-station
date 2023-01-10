@@ -7,7 +7,12 @@ import Link from "next/link";
 
 import { getTodayPlaylist } from "kiosk-socket/utils";
 import { notFound } from "next/navigation";
+import { Suspense } from "react";
 import InitializePlaylist from "./components/InitializePlaylist";
+import MiniPlayer from "./components/MiniPlayer";
+import BottomSheet from "./components/BottomSheet";
+import Container from "./container";
+import Tabs from "./components/Tabs";
 
 const fetchUser = async () => {
   const { user } = await asServerMiddleware(
@@ -19,25 +24,24 @@ const fetchUser = async () => {
 };
 
 const fetchPlaylist = async () => {
-  return await getTodayPlaylist().catch((err) => {
-    console.error(err);
-    notFound();
-  });
+  return await getTodayPlaylist();
 };
 export default async function ProjectorLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  const [user, serverPlaylist] = await Promise.all([
-    fetchUser(),
-    fetchPlaylist(),
-  ]);
+  const user = await fetchUser();
+  const serverPlaylist = fetchPlaylist();
 
   return (
-    <div className="flex-1 flex flex-col items-stretch h-full min-h-screen bg-gradient-to-b from-[#151515] to-[#121212] text-white">
+    <Container>
       <InitializeSocket user={user} />
-      <InitializePlaylist initData={serverPlaylist} />
+      <Suspense fallback={null}>
+        {/* @ts-ignore */}
+        <InitializePlaylist initDataPromise={serverPlaylist} />
+      </Suspense>
+
       <nav className="sticky top-0 bg-[#151515] z-[90] border-b flex items-center py-2 px-4 gap-4">
         <div className="flex items-center gap-4 flex-grow">
           <Image
@@ -54,7 +58,15 @@ export default async function ProjectorLayout({
           </Link>
         </div>
       </nav>
-      <main className="px-4 py-6 flex flex-col gap-6">{children}</main>
-    </div>
+      <main className="px-4 py-6 flex flex-col gap-6 mb-[125px]">
+        {children}
+      </main>
+
+      <footer className="z-20 fixed bottom-0 left-0 right-0 w-full flex flex-col justify-center">
+        <MiniPlayer />
+        <Tabs />
+      </footer>
+      <BottomSheet />
+    </Container>
   );
 }

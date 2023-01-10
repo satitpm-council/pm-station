@@ -6,10 +6,17 @@ import { LoginAction, toFormData } from "@station/shared/api";
 import { toast } from "react-toastify";
 import axios from "axios";
 
+const CONTROLLER_PAGE = "/controller/app";
+
 export const useServerLogin = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const mounted = useRef(false);
+
+  useEffect(() => {
+    router.prefetch(CONTROLLER_PAGE);
+  }, [router]);
+
   const serverLogin = async (user: User) => {
     // grab the id token and pass it to the backend
     const token = await user.getIdToken();
@@ -22,14 +29,7 @@ export const useServerLogin = () => {
         })
       );
 
-      router.replace("/controller/app");
-      await new Promise((res, rej) => {
-        setTimeout(() => {
-          if (mounted.current) {
-            rej(new Error("Redirect Timeout"));
-          }
-        }, 10000);
-      });
+      router.replace(CONTROLLER_PAGE);
     } catch (err) {
       console.error(err);
       toast(
