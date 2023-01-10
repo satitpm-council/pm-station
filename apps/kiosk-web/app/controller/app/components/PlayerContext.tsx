@@ -49,7 +49,7 @@ function PlayListener({
     }
   }, [videoId, load, stop]);
 
-  return children;
+  return <>{children}</>;
 }
 export default function PlayerContext({
   children,
