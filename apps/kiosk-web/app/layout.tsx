@@ -6,6 +6,7 @@ const promptFont = Prompt({
   variable: "--font-prompt",
   weight: ["400", "500", "600"],
   subsets: ["latin", "thai"],
+  display: "block",
 });
 
 export default function RootLayout({

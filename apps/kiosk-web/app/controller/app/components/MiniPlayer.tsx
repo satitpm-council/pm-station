@@ -9,20 +9,16 @@ export default function MiniPlayer() {
     <>
       <AnimatePresence>
         {!show && (
-          <footer className="z-20 fixed bottom-0 left-0 right-0 w-full flex justify-center">
-            <motion.button
-              onClick={() =>
-                controllerStore.setState({ showBottomSheet: true })
-              }
-              initial={{ translateY: "100%" }}
-              animate={{ translateY: "0px" }}
-              exit={{ translateY: "100%" }}
-              transition={{ duration: 0.4 }}
-              className="w-full flex items-center justify-between px-6 py-5 shadow-lg bg-[#222222]"
-            >
-              <b>ยังไม่มีรายการเพลง</b>
-            </motion.button>
-          </footer>
+          <motion.button
+            onClick={() => controllerStore.setState({ showBottomSheet: true })}
+            initial={{ translateY: "100%", opacity: 0 }}
+            animate={{ translateY: "0px", opacity: 0.95 }}
+            exit={{ translateY: "100%", opacity: 0 }}
+            transition={{ duration: 0.4 }}
+            className="w-full flex items-center justify-between px-6 py-4 bg-[#222222]"
+          >
+            <b>ยังไม่มีรายการเพลง</b>
+          </motion.button>
         )}
       </AnimatePresence>
     </>

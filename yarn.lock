@@ -2252,7 +2252,7 @@
     "@jridgewell/resolve-uri" "^3.0.3"
     "@jridgewell/sourcemap-codec" "^1.4.10"
 
-"@lemasc/firebase-wrapper@1.1.1", "@lemasc/firebase-wrapper@^1.0.1", "@lemasc/firebase-wrapper@^1.1.0":
+"@lemasc/firebase-wrapper@^1.0.1", "@lemasc/firebase-wrapper@^1.1.0":
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/@lemasc/firebase-wrapper/-/firebase-wrapper-1.1.1.tgz#ab2fca309b21393172e23e8c32aede07054032ed"
   integrity sha512-mgnHF2cU7IhhsmNwOJOT/1SDLjmeRom0XLrJJspRp3tuUNK9xDBR0VdvBSYHPcZX+b5Xzi1YyhMfAqKeHs2Kzg==
@@ -3956,7 +3956,7 @@ axios-retry@*, axios-retry@^3.3.1:
     "@babel/runtime" "^7.15.4"
     is-retry-allowed "^2.2.0"
 
-axios@*, axios@0.27.2, axios@^0.27.2:
+axios@*, axios@^0.27.2:
   version "0.27.2"
   resolved "https://registry.yarnpkg.com/axios/-/axios-0.27.2.tgz#207658cc8621606e586c85db4b41a750e756d972"
   integrity sha512-t+yRIyySRTp/wua5xEr+z1q60QmLq8ABsS5O9Me1AsE5dfKqgnCFzwiCZZ/cGNd1lq4/7akDWMxdhVlucjmnOQ==
@@ -6031,7 +6031,7 @@ firebase-admin@^11.0.1:
     "@google-cloud/firestore" "^5.0.2"
     "@google-cloud/storage" "^6.1.0"
 
-firebase@*, firebase@9.9.3, firebase@^9.9.3:
+firebase@*, firebase@^9.9.3:
   version "9.9.3"
   resolved "https://registry.yarnpkg.com/firebase/-/firebase-9.9.3.tgz#f759ca9bd845b6c05a0c69a0cd62a23b3876d6bb"
   integrity sha512-lU1FstWqfVZQfz4+TWCZvqJYbwZMyoyP0X/xD/YIfrtXgquOMEDTpoasH4P79N9y3I8iV+6gQHuVmpK+AX2elg==
@@ -9795,7 +9795,7 @@ react-slidedown@^2.4.5:
   dependencies:
     tslib "^2.0.0"
 
-react-toastify@*:
+react-toastify@*, react-toastify@^9.1.1:
   version "9.1.1"
   resolved "https://registry.yarnpkg.com/react-toastify/-/react-toastify-9.1.1.tgz#9280caea4a13dc1739c350d90660a630807bf10b"
   integrity sha512-pkFCla1z3ve045qvjEmn2xOJOy4ZciwRXm1oMPULVkELi5aJdHCN/FHnuqXq8IwGDLB7PPk2/J6uP9D8ejuiRw==

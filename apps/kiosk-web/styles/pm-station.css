@@ -1,6 +1,6 @@
 :root {
   --toastify-color-dark: #2c2c2c;
-  --toastify-font-family: unset;
+  --toastify-font-family: var(--font-prompt);
 }
 
 .Toastify__toast-body > div:last-child {
