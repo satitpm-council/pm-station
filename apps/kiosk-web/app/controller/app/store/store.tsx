@@ -1,4 +1,5 @@
 import create from "zustand";
+import { subscribeWithSelector } from "zustand/middleware";
 import {
   ClientToServerEvents,
   ServerToClientEvents,
@@ -16,6 +17,7 @@ type ContollerState = {
   user?: User;
   playlistId?: string;
   showBottomSheet: boolean;
+  playingTrack?: Track;
 };
 
 export const addTrack = (track: Track) => {
@@ -25,8 +27,10 @@ export const addTrack = (track: Track) => {
   }));
 };
 
-export const controllerStore = create<ContollerState>((set) => ({
-  isConnected: false,
-  showBottomSheet: false,
-  queue: new Set(),
-}));
+export const controllerStore = create<ContollerState>()(
+  subscribeWithSelector((set) => ({
+    isConnected: false,
+    showBottomSheet: false,
+    queue: new Set(),
+  }))
+);

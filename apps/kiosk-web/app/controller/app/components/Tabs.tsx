@@ -1,5 +1,8 @@
+"use client";
+
 import { BarsArrowDownIcon, MusicalNoteIcon } from "@heroicons/react/20/solid";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 type Item = {
   name: string;
   href: string;
@@ -19,6 +22,7 @@ const items: Item[] = [
 ];
 
 export default function Tabs() {
+  const pathname = usePathname();
   return (
     <div className="bg-[#222222] border-t border-zinc-600 flex divide-x divide-zinc-600">
       {items.map((item) => (
@@ -27,8 +31,18 @@ export default function Tabs() {
           key={item.name}
           className="flex flex-col gap-1 items-center text-center w-full px-6 py-3 text-sm"
         >
-          {<item.icon className="h-5 w-5 text-gray-300" />}
-          <span className="text-gray-400">{item.name}</span>
+          {
+            <item.icon
+              className={`h-5 w-5 ${
+                pathname === item.href ? "text-zinc-100" : "text-zinc-500"
+              }`}
+            />
+          }
+          <span
+            className={pathname === item.href ? "text-white" : "text-zinc-500"}
+          >
+            {item.name}
+          </span>
         </Link>
       ))}
     </div>

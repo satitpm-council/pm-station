@@ -1,4 +1,3 @@
-import "react-toastify/dist/ReactToastify.min.css";
 import Providers from "./providers";
 
 export default function ControllerLayout({

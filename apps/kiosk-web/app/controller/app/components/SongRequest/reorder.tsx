@@ -1,6 +1,6 @@
 import { Reorder } from "framer-motion";
 import { useCallback } from "react";
-import { controllerStore, Track } from "../../store";
+import { controllerStore, playTrack, Track } from "../../store";
 import { ReorderItem } from "./reorder-item";
 
 export default function SongRequestReorderList() {
@@ -10,6 +10,10 @@ export default function SongRequestReorderList() {
       queue: new Set(tracks),
     });
   }, []);
+
+  const onItemClick = useCallback((track: Track) => {
+    playTrack(track);
+  }, []);
   return (
     <Reorder.Group
       className="songrequest-container"
@@ -18,7 +22,7 @@ export default function SongRequestReorderList() {
       values={queue}
     >
       {queue.map((track) => (
-        <ReorderItem key={track.id} track={track} onItemClick={console.log} />
+        <ReorderItem key={track.id} track={track} onItemClick={onItemClick} />
       ))}
     </Reorder.Group>
   );

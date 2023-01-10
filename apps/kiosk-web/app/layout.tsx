@@ -1,4 +1,5 @@
 import { Prompt } from "@next/font/google";
+import "react-toastify/dist/ReactToastify.min.css";
 import "../styles/globals.css";
 import "../styles/pm-station.css";
 
