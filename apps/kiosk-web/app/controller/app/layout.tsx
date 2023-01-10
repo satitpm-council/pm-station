@@ -13,6 +13,7 @@ import MiniPlayer from "./components/MiniPlayer";
 import BottomSheet from "./components/BottomSheet";
 import Container from "./container";
 import Tabs from "./components/Tabs";
+import PlayerContext from "./components/PlayerContext";
 
 const fetchUser = async () => {
   const { user } = await asServerMiddleware(
@@ -58,15 +59,17 @@ export default async function ProjectorLayout({
           </Link>
         </div>
       </nav>
-      <main className="px-4 py-6 flex flex-col gap-6 mb-[125px]">
+      <main className="px-4 py-6 flex flex-col gap-6 mb-[140px]">
         {children}
       </main>
 
-      <footer className="z-20 fixed bottom-0 left-0 right-0 w-full flex flex-col justify-center">
-        <MiniPlayer />
-        <Tabs />
-      </footer>
-      <BottomSheet />
+      <PlayerContext>
+        <footer className="z-20 fixed bottom-0 left-0 right-0 w-full flex flex-col justify-center">
+          <MiniPlayer />
+          <Tabs />
+        </footer>
+        <BottomSheet />
+      </PlayerContext>
     </Container>
   );
 }

@@ -2,8 +2,24 @@
 
 import { motion, AnimatePresence } from "framer-motion";
 import { controllerStore } from "../store/store";
+import { MiniPlayerItem } from "./MiniPlayer/item";
 
-export default function MiniPlayer() {
+function MiniPlayer() {
+  const currentTrack = controllerStore((state) => state.playingTrack);
+  return (
+    <div className="flex">
+      <div className="flex flex-col">
+        {currentTrack ? (
+          <MiniPlayerItem track={currentTrack} />
+        ) : (
+          <b>ยังไม่มีรายการเพลง</b>
+        )}
+      </div>
+    </div>
+  );
+}
+
+export default function BottomMiniPlayer() {
   const show = controllerStore((state) => state.showBottomSheet);
   return (
     <>
@@ -17,7 +33,7 @@ export default function MiniPlayer() {
             transition={{ duration: 0.4 }}
             className="w-full flex items-center justify-between px-6 py-4 bg-[#222222]"
           >
-            <b>ยังไม่มีรายการเพลง</b>
+            <MiniPlayer />
           </motion.button>
         )}
       </AnimatePresence>

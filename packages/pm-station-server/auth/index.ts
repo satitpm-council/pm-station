@@ -33,7 +33,7 @@ export const createSession = async (
 
 export const verifySession = async ({
   headers,
-}: Request): Promise<User | null | undefined> => {
+}: Pick<Request, "headers">): Promise<User | null | undefined> => {
   const cookie = await getSession(headers.get("Cookie"));
   if (cookie.has("fb:token")) {
     try {
