@@ -1,20 +1,30 @@
 import { Disclosure, Transition } from "@headlessui/react";
 import { CheckIcon, MinusIcon, XMarkIcon } from "@heroicons/react/20/solid";
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { TrackMeta } from "@station/client/songrequests";
 import TrackThumbnail from "@station/client/TrackThumbnail";
 import type { SongRequestRecord } from "@station/shared/schema/types";
 import { classNames } from "@station/client/utils";
 import type { MusicInfo } from "~/utils/pm-station/ytmusic/types";
-import { MusicInfoComponent } from "./info";
+import { EditMusic, ViewMusic } from "./item-mode";
+import { syncModalStore } from "./store";
 
 export const SyncMusicItem = ({
   track,
-  result,
+  index,
 }: {
   track: SongRequestRecord;
-  result?: MusicInfo | null;
+  index: number;
 }) => {
+  const resultProp = syncModalStore((state) => state.results?.[index] ?? null);
+  const [mode, setMode] = useState<"view" | "edit">("view");
+  const customResult = syncModalStore((state) =>
+    state.customResults.get(index)
+  );
+  const result = useMemo(
+    () => customResult || resultProp,
+    [customResult, resultProp]
+  );
   const [open, setOpen] = useState(false);
   const Icon = useMemo(
     () => (result === null ? MinusIcon : result ? CheckIcon : XMarkIcon),
@@ -26,6 +36,28 @@ export const SyncMusicItem = ({
       setOpen(true);
     }
   }, [result]);
+
+  useEffect(() => {
+    setMode("view");
+  }, [result]);
+
+  const setCustomResult = useCallback(
+    (result: MusicInfo | null) => {
+      syncModalStore.setState((s) => {
+        const customResults = new Map(s.customResults);
+        if (result) {
+          customResults.set(index, result);
+        } else {
+          customResults.delete(index);
+        }
+        return {
+          ...s,
+          customResults,
+        };
+      });
+    },
+    [index]
+  );
 
   return (
     <Disclosure key={track.id}>
@@ -75,8 +107,31 @@ export const SyncMusicItem = ({
               static
               className="rounded-b-lg bg-white bg-opacity-5 p-4 space-y-2"
             >
-              <b className="font-medium">ผลการค้นหา:</b>
-              {result && <MusicInfoComponent info={result} />}
+              {mode === "view" ? (
+                <ViewMusic result={result} />
+              ) : (
+                <EditMusic setCustomResult={setCustomResult} />
+              )}
+              <div className="flex gap-2 text-sm py-2">
+                <button
+                  className={classNames(
+                    "pm-station-btn",
+                    mode === "view" && "bg-blue-500 hover:bg-blue-600",
+                    mode === "edit" && "bg-red-500 hover:bg-red-600"
+                  )}
+                  onClick={() => setMode(mode === "view" ? "edit" : "view")}
+                >
+                  {mode === "view" ? "แก้ไข" : "ยกเลิก"}
+                </button>
+                {customResult && (
+                  <button
+                    className="pm-station-btn bg-purple-500 hover:bg-purple-600"
+                    onClick={() => setCustomResult(null)}
+                  >
+                    คืนค่าการค้นหาเริ่มต้น
+                  </button>
+                )}
+              </div>
             </Disclosure.Panel>
           )}
         </Transition>
