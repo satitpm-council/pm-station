@@ -57,7 +57,6 @@ jobs:
               COMMIT_SHA=${{ github.sha }}
               TURBO_TOKEN=${{ secrets.TURBO_TOKEN }}
               TURBO_TEAM=${{ secrets.TURBO_TEAM }}
-              TURBO_REMOTE_ONLY=true
             cache-from: type=gha
             cache-to: type=gha,mode=max
         - name: Installing flyctl

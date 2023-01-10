@@ -38,6 +38,8 @@ RUN yarn install --production
 FROM project as builder
 
 WORKDIR /app
+ARG TURBO_TOKEN
+ARG TURBO_TEAM
 COPY --from=pruner /app/out/full/ /app
 COPY --from=deps /app/node_modules /app/node_modules
 COPY turbo.json turbo.json

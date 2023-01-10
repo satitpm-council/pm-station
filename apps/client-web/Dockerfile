@@ -39,6 +39,8 @@ RUN yarn install --production
 
 # Build the app
 FROM project as builder
+ARG TURBO_TOKEN
+ARG TURBO_TEAM
 
 ENV NODE_ENV=production
 WORKDIR /app
