@@ -8,6 +8,7 @@ import { SyncMusicItem } from "./item";
 import type { SearchActionResponse } from "@station/shared/api";
 import { SubmitButton } from "@station/client/SubmitButton";
 import { getFirestore, doc, writeBatch } from "firebase/firestore";
+import { resetStore, syncModalStore } from "./store";
 
 export const SyncMusicModal = ({
   tracks,
@@ -15,7 +16,6 @@ export const SyncMusicModal = ({
   closeModal,
 }: ModalState & { tracks: SongRequestRecord[] }) => {
   const [isLoading, setIsLoading] = useState(false);
-  const [results, setResults] = useState<SearchActionResponse["data"]>();
   const searchMusic = useCallback(async () => {
     if (tracks.length > 0) {
       const trackQueries = tracks.map((v) => `${v.artists[0]} ${v.name}`);
@@ -25,7 +25,8 @@ export const SyncMusicModal = ({
           "/pm-station/app/songrequests/stream/search",
           { q: trackQueries }
         );
-        setResults(data.data);
+        console.log(syncModalStore.getState());
+        syncModalStore.setState({ results: data.data });
       } catch (err) {
         console.error(err);
       } finally {
@@ -38,21 +39,24 @@ export const SyncMusicModal = ({
     const firestore = getFirestore();
 
     const batch = writeBatch(firestore);
+    const { results, customResults } = syncModalStore.getState();
     if (!results || results.length !== tracks.length) return;
     tracks.forEach((track, i) => {
       const updateData: Partial<SongRequestRecord> = {
-        youtubeId: results[i].videoId,
+        youtubeId: (customResults.get(i) ?? results[i]).videoId,
       };
+      debugger;
       batch.update(doc(firestore, "songrequests", track.id), updateData);
     });
     await batch.commit();
     closeModal();
-  }, [tracks, results, closeModal]);
+  }, [tracks, closeModal]);
 
   const onClose = useCallback(() => {
-    setResults(undefined);
+    resetStore();
   }, []);
 
+  const searched = syncModalStore(({ results }) => results !== null);
   return (
     <Modal
       onClose={onClose}
@@ -69,25 +73,21 @@ export const SyncMusicModal = ({
           </p>
         </div>
         <SubmitButton
-          disabled={results !== undefined}
+          disabled={searched}
           onClick={searchMusic}
-          loading={results === undefined && isLoading}
+          loading={!searched && isLoading}
         >
           ค้นหารายการ
         </SubmitButton>
         <div className="flex flex-wrap flex-col text-left gap-4">
           {tracks?.map((track, i) => (
-            <SyncMusicItem
-              result={results ? results[i] : null}
-              key={track.id}
-              track={track}
-            />
+            <SyncMusicItem index={i} key={track.id} track={track} />
           ))}
         </div>
         <SubmitButton
-          disabled={results === undefined}
+          disabled={!searched}
           onClick={saveResults}
-          loading={results !== undefined && isLoading}
+          loading={searched && isLoading}
         >
           บันทึกข้อมูล
         </SubmitButton>
