@@ -6,7 +6,7 @@ import type { Program } from "@station/shared/schema/types";
 import type { SongRequestRecord } from "@station/shared/schema/types";
 import type { DriveFile } from ".";
 import type { PlaylistSyncParam } from "@station/shared/api";
-import { usePlaylistData } from "../playlists/data";
+import { usePlaylistData } from "@station/client/playlists";
 import { usePrograms } from "../programs";
 
 export type SongRequestRecordWithSync = SongRequestRecord & {
