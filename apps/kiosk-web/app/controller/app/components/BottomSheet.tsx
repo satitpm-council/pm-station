@@ -2,7 +2,10 @@
 
 import { useRef, useEffect } from "react";
 import Sheet from "react-modal-sheet";
-import { controllerStore, toggleShowBottomSheet } from "../store";
+import {
+  controllerStore,
+  toggleShowBottomSheet,
+} from "kiosk-web/store/controller";
 import Player from "./Player";
 
 export default function BottomSheet() {

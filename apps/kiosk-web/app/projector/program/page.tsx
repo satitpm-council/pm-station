@@ -1,9 +1,22 @@
 "use client";
 
+import { isDocumentValid } from "@lemasc/swr-firestore";
+import { usePlaylist } from "@station/client/playlists";
 import Image from "next/image";
+import { useProgram } from "../../../shared/useProgram";
+import { controllerStore } from "../../../store/controller";
 import Time from "./components/time";
 
 export default function ProgramProjector() {
+  const programId = controllerStore((state) => state.programId);
+  const { data } = useProgram(programId, {
+    listen: true,
+  });
+
+  const playlistId = controllerStore((state) => state.playlistId);
+  const { data: playlist } = usePlaylist(playlistId, {
+    listen: true,
+  });
   return (
     <div className="flex-1 flex-col flex">
       <header className="flex flex-row border-b border-gray-300">
@@ -14,7 +27,7 @@ export default function ProgramProjector() {
             width={100}
             height={100}
           />
-          <b>PM Station</b>
+          <b className="text-4xl">PM Station</b>
         </div>
         <div className="border-l px-10 py-6 flex items-center">
           <Time />
@@ -22,18 +35,22 @@ export default function ProgramProjector() {
       </header>
       <main className="flex-1 flex flex-col items-center justify-center gap-8 p-14 flex-grow">
         <span>ขณะนี้คุณกำลังรับฟังรายการ</span>
-        <h2 className="text-6xl font-bold">อะไรกันครับเนี่ย</h2>
+        <h2 className="text-6xl font-bold">
+          {data && isDocumentValid(data) && data.name}
+        </h2>
         <span className="text-3xl opacity-75">
-          ทุกวันพุธ เวลา 07:00 - 07:40 น.
+          ทุกวันศุกร์ เวลา 07:00 - 07:40 น.
         </span>
         <div className="flex flex-col gap-4 p-10 text-2xl text-center">
           <h3 className="text-3xl font-medium">ดำเนินรายการโดย:</h3>
           <ul className="leading-10">
-            <li>นางสาวเอ นามสกุลไม่มี</li>
-            <li>นางสาวบี นามสกุลเดี๋ยวก็มี</li>
-            <li>นางสาวซี นามสกุลไม่พึงมี</li>
+            {playlist &&
+              isDocumentValid(playlist) &&
+              playlist.speakers?.map((speaker) => (
+                <li key={speaker}>{speaker}</li>
+              ))}
           </ul>
-          <span className="opacity-75">นักเรียนชั้นมัธยมศึกษาปีที่ 8/1</span>
+          <span className="opacity-75">นักเรียนชั้นมัธยมศึกษาปีที่ 4/3</span>
         </div>
       </main>
       <footer className="relative py-10 px-14 w-full bg-zinc-800 text-white text-center flex flex-row">
@@ -44,7 +61,7 @@ export default function ProgramProjector() {
           </p>
           <span>IG: @coolkidssatit</span>
         </div>
-        <div className="mr-[320px] text-right flex flex-col gap-3 items-end">
+        <div className="mr-[270px] text-right flex flex-col gap-3 items-end">
           <b className="text-3xl">สามารถส่งคำขอเพลงเข้าสู่รายการได้ที่</b>
           <span className="text-2xl">
             https://coolkidssatit.fly.dev/pm-station
@@ -53,10 +70,11 @@ export default function ProgramProjector() {
         <div className="text-6xl absolute right-0 bottom-0 bg-white text-black p-4">
           <Image
             className="object-cover"
-            width="300"
-            height="300"
+            width="250"
+            height="250"
             src="/web-qr.svg"
             alt="QR Code"
+            priority
           />
         </div>
       </footer>

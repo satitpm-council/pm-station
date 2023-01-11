@@ -1,30 +1,27 @@
 import create from "zustand";
 import { subscribeWithSelector } from "zustand/middleware";
-import {
-  ClientToServerEvents,
-  ServerToClientEvents,
-} from "kiosk-socket/types/socket-interfaces";
+import { ControllerSendEvents } from "kiosk-socket/types/socket/controller";
 import { Socket } from "socket.io-client";
 import { User } from "@station/shared/user";
 import { SongRequestRecord } from "@station/shared/schema/types";
 import { ValidatedDocument } from "@lemasc/swr-firestore";
 
 export type Track = ValidatedDocument<SongRequestRecord>;
+
+export type MediaStatus = "playing" | "paused" | "error" | null;
+
+export type ClientSocket = Socket<never, ControllerSendEvents>;
+
 type ContollerState = {
   queue: Set<Track>;
   isConnected: boolean;
-  socket?: Socket<ServerToClientEvents, ClientToServerEvents>;
+  socket?: ClientSocket;
   user?: User;
   playlistId?: string;
+  programId?: string;
   showBottomSheet: boolean;
   playingTrack?: Track;
-};
-
-export const addTrack = (track: Track) => {
-  controllerStore.setState((s) => ({
-    ...s,
-    queue: new Set<Track>(s.queue).add(track),
-  }));
+  mediaStatus: MediaStatus;
 };
 
 export const controllerStore = create<ContollerState>()(
@@ -32,5 +29,6 @@ export const controllerStore = create<ContollerState>()(
     isConnected: false,
     showBottomSheet: false,
     queue: new Set(),
+    mediaStatus: null,
   }))
 );

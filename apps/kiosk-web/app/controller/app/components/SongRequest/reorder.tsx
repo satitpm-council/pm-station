@@ -1,6 +1,6 @@
 import { Reorder } from "framer-motion";
 import { useCallback } from "react";
-import { controllerStore, playTrack, Track } from "../../store";
+import { controllerStore, playTrack, Track } from "kiosk-web/store/controller";
 import { ReorderItem } from "./reorder-item";
 
 export default function SongRequestReorderList() {

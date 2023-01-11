@@ -7,6 +7,7 @@ const PlaylistRecord = z.object({
   status: z.enum(["played", "queued", "playing"]),
   target: z.string(),
   totalTracks: z.number(),
+  speakers: z.array(z.string()).optional(),
 });
 
 const SetPlaylistAction = z.object({

@@ -6,9 +6,8 @@ import Image from "next/image";
 import Link from "next/link";
 
 import { getTodayPlaylist } from "kiosk-socket/utils";
-import { notFound } from "next/navigation";
 import { Suspense } from "react";
-import InitializePlaylist from "./components/InitializePlaylist";
+import InitializePlaylist from "kiosk-web/components/InitializePlaylist";
 import MiniPlayer from "./components/MiniPlayer";
 import BottomSheet from "./components/BottomSheet";
 import Container from "./container";

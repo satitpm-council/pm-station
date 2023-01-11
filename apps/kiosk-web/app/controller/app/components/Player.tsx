@@ -2,7 +2,7 @@ import { PlayIcon, StopIcon } from "@heroicons/react/24/solid";
 import TrackThumbnail from "@station/client/TrackThumbnail";
 import { useEffect } from "react";
 import { useAudioPlayer } from "react-use-audio-player";
-import { controllerStore } from "../store";
+import { controllerStore } from "kiosk-web/store/controller";
 
 export default function Player() {
   const currentTrack = controllerStore((state) => state.playingTrack);
