@@ -5,7 +5,7 @@ import { getStatusFromDate } from "~/utils/pm-station/songrequests";
 import type { SongRequestRecord } from "@station/shared/schema/types";
 import type { CommandAction, CommandActionHandler } from "./types";
 
-import type { TrackStatus } from "./Reject";
+import type { TrackStatus } from "@station/client/songrequests";
 import RejectButton from "./Reject";
 
 const AddTrackToPlaylist = loadable(() => import("./AddToPlaylist"));

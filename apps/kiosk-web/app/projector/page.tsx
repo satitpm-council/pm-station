@@ -8,7 +8,7 @@ dayjs.extend(utc);
 dayjs.extend(timezone);
 dayjs.tz.setDefault("Asia/Bangkok");
 
-export const checkPlaylistAndRedirect = async () => {
+export default async function PlayerPage() {
   const playlist = await getTodayPlaylist();
   if (playlist) {
     const now = dayjs.tz(dayjs());
@@ -21,8 +21,5 @@ export const checkPlaylistAndRedirect = async () => {
   } else {
     notFound();
   }
-};
-
-export default async function PlayerPage() {
-  await checkPlaylistAndRedirect();
+  return null;
 }
