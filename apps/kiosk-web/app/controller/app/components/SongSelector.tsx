@@ -3,7 +3,7 @@
 import { useCallback, useEffect } from "react";
 import { SongRequestRecordList } from "../components/SongRequest/list";
 import { usePlaylistData } from "@station/client/playlists";
-import { addTrack, controllerStore } from "../store/store";
+import { addTrack, controllerStore } from "kiosk-web/store/controller";
 import { toast } from "react-toastify";
 import { ValidatedDocument } from "@lemasc/swr-firestore";
 import { SongRequestRecord } from "@station/shared/schema/types";

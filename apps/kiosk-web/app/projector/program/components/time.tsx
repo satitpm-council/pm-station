@@ -2,16 +2,10 @@
 
 import { useEffect, useState } from "react";
 import dayjs, { Dayjs } from "dayjs";
+import { projectorStore } from "kiosk-web/store/projector";
 
 export default function Time() {
-  const [date, setDate] = useState<Dayjs>(dayjs());
-  useEffect(() => {
-    const interval = setInterval(() => setDate(dayjs()), 1000 * 60);
-    return () => {
-      console.log("Remove");
-      clearInterval(interval);
-    };
-  }, []);
+  const date = projectorStore((state) => state.datetime);
   return (
     <div className="space-x-2 text-4xl font-bold">
       <span>{date.format("HH")}</span>

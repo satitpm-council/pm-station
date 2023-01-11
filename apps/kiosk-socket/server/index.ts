@@ -1,23 +1,27 @@
-import { Server } from "socket.io";
+import { Server as IOServer, Socket as IOSocket } from "socket.io";
 import { DefaultEventsMap } from "socket.io/dist/typed-events";
 
-import {
-  ClientToServerEvents,
-  ServerToClientEvents,
-  ServerSocketData,
-} from "../types/socket-interfaces";
+import { ClientToServerEvents, SocketData } from "../types/socket/server";
+import { setupControllerEvents } from "./controller";
 
 import { authMiddleware } from "./middleware";
 
-export type ServerSocket = Server<
-  ServerToClientEvents,
+export type Server = IOServer<
   ClientToServerEvents,
   DefaultEventsMap,
-  ServerSocketData
+  DefaultEventsMap,
+  SocketData
 >;
 
-const initializeSocket = (server: any): ServerSocket => {
-  const io: ServerSocket = new Server(server, {
+export type Socket = IOSocket<
+  ClientToServerEvents,
+  DefaultEventsMap,
+  DefaultEventsMap,
+  SocketData
+>;
+
+const initializeSocket = (server: any): Server => {
+  const io: Server = new IOServer(server, {
     ...(process.env.NODE_ENV !== "production"
       ? {
           cors: {
@@ -37,10 +41,13 @@ const initializeSocket = (server: any): ServerSocket => {
   });
 
   io.on("connection", async (socket) => {
-    const data = socket.data as ServerSocketData;
+    const data = socket.data as SocketData;
     if (!data.playlist) return;
-    console.log(data.user);
     socket.join(data.type);
+
+    if (data.type === "controller") {
+      setupControllerEvents(socket);
+    }
   });
   return io;
 };

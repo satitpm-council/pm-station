@@ -1,38 +1,14 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { io, Socket } from "socket.io-client";
 import { AuthParam } from "kiosk-socket/types";
 import { useFirebase, useFirebaseUser } from "@station/client/firebase";
-import { controllerStore } from "../store/store";
+import { controllerStore, initializeSocket } from "kiosk-web/store/controller";
 import { User } from "@station/shared/user";
 import { signInWithCustomToken } from "firebase/auth";
 import axios from "shared/axios";
-import { SessionActionResponse, toFormData } from "@station/shared/api";
-
-/**
- * Resolves the current socket endpoint based on the environment.
- *
- * In development, we use the local server running in port 3001;
- *
- * In production, we use the socket server running in the same domain as the app.
- * @returns
- */
-const useSocketEndpoint = () => {
-  const [endpoint, setEndpoint] = useState<string | null>(null);
-  useEffect(() => {
-    if (process.env.NODE_ENV === "development") {
-      const { protocol, hostname } = new URL(window.location.href);
-      setEndpoint(`${protocol}//${hostname}:3001`);
-    } else {
-      // initialize socket api first
-      fetch("/api/socket").then(() => {
-        setEndpoint(window.location.origin);
-      });
-    }
-  }, []);
-  return endpoint;
-};
+import { SessionActionResponse } from "@station/shared/api";
+import { useSocketEndpoint } from "kiosk-web/shared/useSocketEndpoint";
 
 export default function InitializeSocket({ user }: { user: User }) {
   const isLoading = useRef(false);
@@ -72,23 +48,8 @@ export default function InitializeSocket({ user }: { user: User }) {
         type: "controller",
         token: await fb_user.getIdToken(),
       };
-      const socket: Socket = io(endpoint, {
-        auth: setupAuthParam,
-      });
 
-      controllerStore.setState({ socket });
-      socket.on("connect", () => {
-        console.log("Connected successfully");
-        controllerStore.setState({ isConnected: true });
-      });
-      socket.on("connect_error", (error) => {
-        console.log(error);
-        controllerStore.setState({ isConnected: false });
-      });
-      socket.on("disconnect", (reason) => {
-        console.log(reason);
-        controllerStore.setState({ isConnected: false });
-      });
+      initializeSocket(endpoint, setupAuthParam);
     })();
 
     return () => {

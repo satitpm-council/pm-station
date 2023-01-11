@@ -1,13 +1,13 @@
-import { ServerSocket } from ".";
+import { Server } from ".";
 import { AuthParam, ControllerAuthParam, DeviceConflictError } from "../types";
 import { getTodayPlaylist } from "../utils";
 import { verifyIdToken } from "./firebase";
 
-type Middleware = Parameters<ServerSocket["use"]>["0"];
+type Middleware = Parameters<Server["use"]>["0"];
 type MiddlewareParams = Parameters<Middleware>;
 
 const disconnectClients = async (
-  io: ServerSocket,
+  io: Server,
   auth: ControllerAuthParam
 ): Promise<void> => {
   const controllerClients = (await io.fetchSockets()).filter(
@@ -37,7 +37,7 @@ const disconnectClients = async (
 };
 
 export const authMiddleware = async (
-  io: ServerSocket,
+  io: Server,
   socket: MiddlewareParams["0"]
 ): Promise<null> => {
   console.log("Starting auth middleware...");

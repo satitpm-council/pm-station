@@ -12,12 +12,10 @@ import type { TypeOf } from "zod";
 import { zodValidator } from "shared/utils";
 import { PlaylistRecord } from "@station/shared/schema";
 import { SongRequestRecord } from "@station/shared/schema";
+import { usePlaylist } from "./usePlaylist";
 
 export const usePlaylistData = (playlistId?: string, listen = false) => {
-  const { data: playlistData } = useDocument(
-    playlistId ? `playlists/${playlistId}` : null,
-    { validator: zodValidator(PlaylistRecord) }
-  );
+  const { data: playlistData } = usePlaylist(playlistId);
   const { db } = useFirebase();
   const { data } = useCollection<TypeOf<typeof SongRequestRecord>>(
     playlistId ? "songrequests" : null,

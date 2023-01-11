@@ -2,6 +2,7 @@ import Countdown from "./components/countdown";
 import Image from "next/image";
 
 export default function LandingPage() {
+  console.log("Landing page");
   return (
     <main className="flex flex-1 py-10 px-8 flex-col text-center gap-6 items-center justify-center">
       <div className="flex gap-10 py-4">
