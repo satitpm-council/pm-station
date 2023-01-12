@@ -8,7 +8,14 @@ export default async function InitializePlaylist({
 }: {
   initDataPromise: Promise<ValidatedDocument<TypeOf<typeof PlaylistRecord>>>;
 }) {
-  const initData = await initDataPromise;
+  try {
+    const initData = await initDataPromise;
 
-  return <ClientInitializePlaylist initData={initData} />;
+    return <ClientInitializePlaylist initData={initData} />;
+  }
+  catch (err) {
+    console.error(err)
+    
+    return null;
+  }
 }

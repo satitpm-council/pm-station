@@ -24,7 +24,7 @@ const fetchUser = async () => {
 };
 
 const fetchPlaylist = async () => {
-  return await getTodayPlaylist();
+  return await getTodayPlaylist().catch(() => undefined);
 };
 export default async function ProjectorLayout({
   children,
