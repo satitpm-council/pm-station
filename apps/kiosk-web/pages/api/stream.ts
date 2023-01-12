@@ -23,7 +23,6 @@ const handler: NextApiHandler = async (req, res) => {
   if (videoId && typeof videoId === "string" && ytdl.validateID(videoId)) {
     ytdl(videoId, { quality: "highestaudio", filter: "audioonly" })
       .on("info", (info: ytdl.videoInfo, format: ytdl.videoFormat) => {
-        console.log(format);
         // Set any neccessary headers!
         res.setHeader("Cache-Control", `private,max-age=${60 * 60}`);
         format.mimeType && res.setHeader("Content-Type", format.mimeType);

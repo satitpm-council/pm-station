@@ -1,22 +1,8 @@
-"use client";
-
-import { isDocumentValid } from "@lemasc/swr-firestore";
-import { usePlaylist } from "@station/client/playlists";
 import Image from "next/image";
-import { useProgram } from "../../../shared/useProgram";
-import { controllerStore } from "../../../store/controller";
+import AnimatedView from "./components/AnimatedView";
 import Time from "./components/time";
 
 export default function ProgramProjector() {
-  const programId = controllerStore((state) => state.programId);
-  const { data } = useProgram(programId, {
-    listen: true,
-  });
-
-  const playlistId = controllerStore((state) => state.playlistId);
-  const { data: playlist } = usePlaylist(playlistId, {
-    listen: true,
-  });
   return (
     <div className="flex-1 flex-col flex">
       <header className="flex flex-row border-b border-gray-300">
@@ -33,25 +19,8 @@ export default function ProgramProjector() {
           <Time />
         </div>
       </header>
-      <main className="flex-1 flex flex-col items-center justify-center gap-8 p-14 flex-grow">
-        <span>ขณะนี้คุณกำลังรับฟังรายการ</span>
-        <h2 className="text-6xl font-bold">
-          {data && isDocumentValid(data) && data.name}
-        </h2>
-        <span className="text-3xl opacity-75">
-          ทุกวันศุกร์ เวลา 07:00 - 07:40 น.
-        </span>
-        <div className="flex flex-col gap-4 p-10 text-2xl text-center">
-          <h3 className="text-3xl font-medium">ดำเนินรายการโดย:</h3>
-          <ul className="leading-10">
-            {playlist &&
-              isDocumentValid(playlist) &&
-              playlist.speakers?.map((speaker) => (
-                <li key={speaker}>{speaker}</li>
-              ))}
-          </ul>
-          <span className="opacity-75">นักเรียนชั้นมัธยมศึกษาปีที่ 4/3</span>
-        </div>
+      <main className="flex-1 flex-grow">
+        <AnimatedView />
       </main>
       <footer className="relative py-10 px-14 w-full bg-zinc-800 text-white text-center flex flex-row">
         <div className="flex flex-col text-left gap-2 flex-grow text-2xl">

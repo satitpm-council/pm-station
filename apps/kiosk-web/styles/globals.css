@@ -12,6 +12,9 @@
   [data-nextjs-scroll-focus-boundary] {
     display: contents;
   }
+  button {
+    @apply focus:outline-none;
+  }
 }
 
 .react-modal-sheet-container {

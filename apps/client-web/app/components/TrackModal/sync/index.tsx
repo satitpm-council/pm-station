@@ -45,7 +45,6 @@ export const SyncMusicModal = ({
       const updateData: Partial<SongRequestRecord> = {
         youtubeId: (customResults.get(i) ?? results[i]).videoId,
       };
-      debugger;
       batch.update(doc(firestore, "songrequests", track.id), updateData);
     });
     await batch.commit();

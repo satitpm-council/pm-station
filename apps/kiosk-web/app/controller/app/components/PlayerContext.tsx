@@ -5,7 +5,6 @@ import { AudioPlayerProvider, useAudioPlayer } from "react-use-audio-player";
 import { controllerStore, setMediaStatus } from "kiosk-web/store/controller";
 
 const onend = () => {
-  console.log("onEnd");
   // remove the current track from the queue
   controllerStore.setState((state) => {
     const queue = new Set(state.queue);
@@ -23,7 +22,9 @@ const onend = () => {
 };
 
 function PlayListener() {
-  const { load, stop } = useAudioPlayer();
+  const { load, stop, stopped } = useAudioPlayer();
+
+  console.log(stopped);
 
   useEffect(
     () =>
