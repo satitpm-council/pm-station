@@ -15,16 +15,16 @@ const disconnectClients = async (
   );
 
   if (controllerClients.length > 0) {
-    if (auth.forceDisconnect) {
-      // Disconnect the clients that are in the force disconnect list
-      const clientsToDisconnect = controllerClients.filter((c) =>
-        auth.forceDisconnect?.includes(c.id)
-      );
-      if (clientsToDisconnect.length > 0) {
-        clientsToDisconnect.forEach((c) => c.disconnect(true));
-        return disconnectClients(io, auth);
-      }
+    //if (auth.forceDisconnect) {
+    // Disconnect the clients that are in the force disconnect list
+    const clientsToDisconnect = controllerClients.filter((c) =>
+      auth.forceDisconnect?.includes(c.id)
+    );
+    if (clientsToDisconnect.length > 0) {
+      clientsToDisconnect.forEach((c) => c.disconnect(true));
+      return disconnectClients(io, auth);
     }
+    /*}
     // There're still clients pending to be disconnected.
     // Throws an error with the list of clients to be disconnected.
     const error = new Error(
@@ -33,6 +33,7 @@ const disconnectClients = async (
     error.data = { disconnectClients: controllerClients.map((c) => c.id) };
 
     throw error;
+    */
   }
 };
 
@@ -42,11 +43,11 @@ export const authMiddleware = async (
 ): Promise<null> => {
   console.log("Starting auth middleware...");
   const auth = (socket.handshake.auth || {}) as AuthParam;
+  socket.data.type = auth.type;
   if (auth.type === "controller") {
     if (!auth.token) throw new Error("Unauthorized.");
     const user = await verifyIdToken(auth.token, true);
     socket.data.user = user;
-    socket.data.type = auth.type;
     await disconnectClients(io, auth);
     socket.data.playlist = await getTodayPlaylist();
   }

@@ -1,4 +1,3 @@
-import { TrackResponse } from "@station/shared/schema";
 import { controllerStore, MediaStatus, Track } from "./store";
 
 export const toggleShowBottomSheet = () => {
@@ -16,17 +15,13 @@ export const addTrack = (track: Track) => {
 };
 
 export const playTrack = (track: Track) => {
-  const { socket } = controllerStore.getState();
-  if (socket) {
-    socket.emit("play", TrackResponse.parse(track));
-  }
   controllerStore.setState((s) => ({
     ...s,
     playingTrack: track,
   }));
 };
 
-export const stopTrack = (track: Track) => {
+export const stopTrack = () => {
   const { socket } = controllerStore.getState();
   if (socket) {
     socket.emit("stop");

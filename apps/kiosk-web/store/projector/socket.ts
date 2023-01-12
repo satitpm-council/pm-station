@@ -11,12 +11,12 @@ export const initializeSocket = (endpoint: string) => {
   });
 
   projectorStore.setState({ socket });
+  socket.onAny((...args) => console.log("Socket Received:", args));
   socket.on("connect", () => {
-    socket.on("play", (track) =>
-      projectorStore.setState({ currentTrack: track })
-    );
-    socket.on("stop", () =>
-      projectorStore.setState({ currentTrack: undefined })
-    );
+    console.log("Connected to socket server.");
   });
+  socket.on("play", (track) =>
+    projectorStore.setState({ currentTrack: track })
+  );
+  socket.on("stop", () => projectorStore.setState({ currentTrack: undefined }));
 };

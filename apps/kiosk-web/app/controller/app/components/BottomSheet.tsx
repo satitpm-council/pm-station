@@ -10,6 +10,20 @@ import Player from "./Player";
 
 export default function BottomSheet() {
   const show = controllerStore((state) => state.showBottomSheet);
+
+  useEffect(
+    () =>
+      controllerStore.subscribe(
+        (state) => state.playingTrack,
+        (track) => {
+          if (!track) {
+            controllerStore.setState({ showBottomSheet: false });
+          }
+        }
+      ),
+    []
+  );
+
   return (
     <Sheet isOpen={show} onClose={toggleShowBottomSheet} snapPoints={[0.8]}>
       <Sheet.Container>

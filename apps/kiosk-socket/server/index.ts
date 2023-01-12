@@ -42,11 +42,12 @@ const initializeSocket = (server: any): Server => {
 
   io.on("connection", async (socket) => {
     const data = socket.data as SocketData;
-    if (!data.playlist) return;
+    console.log(data);
     socket.join(data.type);
-
+    socket.onAny((...args) => console.log("Socket Received:", args));
+    socket.onAnyOutgoing((...args) => console.log("Socket Sent:", args));
     if (data.type === "controller") {
-      setupControllerEvents(socket);
+      setupControllerEvents(socket, io);
     }
   });
   return io;

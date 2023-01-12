@@ -11,6 +11,8 @@ export const initializeSocket = (
   });
 
   controllerStore.setState({ socket });
+
+  socket.onAnyOutgoing((...args) => console.log("Socket Send:", args));
   socket.on("connect", () => {
     controllerStore.setState({ isConnected: true });
   });

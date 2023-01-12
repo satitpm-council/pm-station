@@ -1,11 +1,13 @@
-import { Socket } from ".";
+import { Server, Socket } from ".";
 
-export const setupControllerEvents = (socket: Socket) => {
+export const setupControllerEvents = (socket: Socket, io: Server) => {
   // Forward events from controller to the projector
   socket.on("play", (track) => {
-    socket.to("projector").emit("play", track);
+    console.log("Controller requested play:", track);
+    console.log(Array.from(socket.rooms.values()));
+    io.to("display").emit("play", track);
   });
   socket.on("stop", () => {
-    socket.to("projector").emit("stop");
+    io.to("display").emit("stop");
   });
 };

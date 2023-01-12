@@ -9,6 +9,7 @@ import { signInWithCustomToken } from "firebase/auth";
 import axios from "shared/axios";
 import { SessionActionResponse } from "@station/shared/api";
 import { useSocketEndpoint } from "kiosk-web/shared/useSocketEndpoint";
+import { TrackResponse } from "@station/shared/schema";
 
 export default function InitializeSocket({ user }: { user: User }) {
   const isLoading = useRef(false);
@@ -41,9 +42,8 @@ export default function InitializeSocket({ user }: { user: User }) {
   }, [user, fb_user, auth]);
 
   useEffect(() => {
-    if (!endpoint) return;
+    if (!endpoint || !fb_user) return;
     (async () => {
-      if (!fb_user) return;
       const setupAuthParam: AuthParam = {
         type: "controller",
         token: await fb_user.getIdToken(),
@@ -54,9 +54,29 @@ export default function InitializeSocket({ user }: { user: User }) {
 
     return () => {
       const { socket } = controllerStore.getState();
+      socket?.emit("stop");
       socket?.disconnect();
+      controllerStore.setState({ socket: undefined, isConnected: false });
     };
   }, [fb_user, endpoint]);
+
+  useEffect(
+    () =>
+      controllerStore.subscribe(
+        (state) => state.mediaStatus,
+        (mediaStatus) => {
+          const { socket, playingTrack } = controllerStore.getState();
+          if (socket) {
+            if (mediaStatus === "playing" && playingTrack) {
+              socket.emit("play", TrackResponse.parse(playingTrack));
+            } else if (playingTrack) {
+              socket.emit("stop");
+            }
+          }
+        }
+      ),
+    []
+  );
 
   return null;
 }

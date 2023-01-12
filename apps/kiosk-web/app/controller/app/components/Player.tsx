@@ -1,27 +1,37 @@
-import { PlayIcon, StopIcon } from "@heroicons/react/24/solid";
+import { StopIcon } from "@heroicons/react/20/solid";
 import TrackThumbnail from "@station/client/TrackThumbnail";
-import { useEffect } from "react";
-import { useAudioPlayer } from "react-use-audio-player";
 import { controllerStore } from "kiosk-web/store/controller";
+import { useAudioPosition } from "react-use-audio-player";
+import { MediaStatusButtonIcon } from "./MiniPlayer/item";
 
+const formatTime = (seconds: number) => {
+  const floored = Math.floor(seconds);
+  let from = 14;
+  let length = 5;
+  // Display hours only if necessary.
+  if (floored >= 3600) {
+    from = 11;
+    length = 8;
+  }
+
+  return new Date(floored * 1000).toISOString().substr(from, length);
+};
+
+const Duration = () => {
+  const { position, duration, percentComplete } = useAudioPosition();
+  return (
+    <span>
+      {formatTime(position)}/{formatTime(duration)} (
+      {Math.floor(percentComplete)}%)
+    </span>
+  );
+};
 export default function Player() {
   const currentTrack = controllerStore((state) => state.playingTrack);
-  const { togglePlayPause, load, stop } = useAudioPlayer();
-  useEffect(() => {
-    console.log(currentTrack);
-    if (currentTrack?.youtubeId) {
-      load({
-        src: `/api/stream?v=${currentTrack.youtubeId}`,
-        autoplay: true,
-        xhr: {
-          withCredentials: true,
-        },
-        html5: true,
-      });
-    }
-  }, [currentTrack, load]);
+
   return currentTrack ? (
     <div className="flex flex-col items-center justify-center gap-6">
+      <b className="text-lg">เพลงปัจจุบัน:</b>
       <TrackThumbnail
         track={currentTrack}
         className={{
@@ -34,13 +44,15 @@ export default function Player() {
         <span className="text-gray-200">{currentTrack.artists.join("/")}</span>
       </div>
       <div className="flex flex-row gap-4">
-        <button onClick={togglePlayPause}>
-          <PlayIcon className="h-20 w-20" />
-        </button>
-        <button onClick={() => stop()}>
-          <StopIcon className="h-20 w-20" />
+        <MediaStatusButtonIcon className="rounded-full bg-zinc-700 h-20 w-20 hover:bg-zinc-800" />
+        <button
+          className="flex justify-center items-center rounded-full bg-zinc-700 h-20 w-20 hover:bg-zinc-800"
+          onClick={() => stop()}
+        >
+          <StopIcon className="w-6 h-6" />
         </button>
       </div>
+      <Duration />
     </div>
   ) : null;
 }
