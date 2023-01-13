@@ -15,6 +15,7 @@ const socketHandler: NextApiHandler = async (req, res) => {
   if (req.socket.server.io) {
     // socket already initialized
     res.end();
+    return;
   }
   req.socket.server.io = initalizeSocket(req.socket.server);
   setTimeout(() => {
