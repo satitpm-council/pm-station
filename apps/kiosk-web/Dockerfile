@@ -60,4 +60,4 @@ COPY --from=builder --chown=nextjs:nodejs /app/apps/kiosk-web/.next/standalone .
 COPY --from=builder --chown=nextjs:nodejs /app/apps/kiosk-web/.next/static ./apps/kiosk-web/.next/static
 COPY --from=builder /app/apps/kiosk-web/public ./apps/kiosk-web/public
  
-CMD node ./apps/kiosk-web/server.js
+CMD ["node","--trace-warnings", "./apps/kiosk-web/server.js"]
