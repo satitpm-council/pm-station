@@ -44,8 +44,10 @@ const initializeSocket = (server: any): Server => {
     const data = socket.data as SocketData;
     console.log(data);
     socket.join(data.type);
-    socket.onAny((...args) => console.log("Socket Received:", args));
-    socket.onAnyOutgoing((...args) => console.log("Socket Sent:", args));
+    if (process.env.NODE_ENV === "development") {
+      socket.onAny((...args) => console.log("Socket Received:", args));
+      socket.onAnyOutgoing((...args) => console.log("Socket Sent:", args));
+    }
     if (data.type === "controller") {
       setupControllerEvents(socket, io);
     }
