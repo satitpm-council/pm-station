@@ -14,11 +14,31 @@ export const addTrack = (track: Track) => {
   }));
 };
 
+export const removeTrack = (track: Track) => {
+  controllerStore.setState((s) => {
+    const queue = new Set<Track>(s.queue);
+    queue.delete(track);
+    return {
+      ...s,
+      queue,
+    };
+  });
+};
+
 export const playTrack = (track: Track) => {
-  controllerStore.setState((s) => ({
-    ...s,
-    playingTrack: track,
-  }));
+  controllerStore.setState((s) => {
+    const queue = Array.from(s.queue.values());
+    // get the index of the track in the queue
+    const index = queue.findIndex((t) => t.id === track.id);
+    // remove any previous tracks from the queue
+    queue.splice(0, index);
+
+    return {
+      ...s,
+      queue: new Set<Track>(queue),
+      playingTrack: track,
+    };
+  });
 };
 
 export const stopTrack = () => {

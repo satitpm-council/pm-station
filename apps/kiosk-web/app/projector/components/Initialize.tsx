@@ -1,7 +1,11 @@
 "use client";
 
 import { useEffect, useMemo } from "react";
-import { projectorStore, initializeSocket } from "kiosk-web/store/projector";
+import {
+  projectorStore,
+  initializeSocket,
+  cleanupSocket,
+} from "kiosk-web/store/projector";
 import dayjs from "dayjs";
 import { usePathname, useRouter } from "next/navigation";
 import { usePlaylist } from "@station/client/playlists";
@@ -62,10 +66,7 @@ export default function Initialize() {
   useEffect(() => {
     if (!endpoint) return;
     initializeSocket(endpoint);
-    return () => {
-      const { socket } = projectorStore.getState();
-      socket?.disconnect();
-    };
+    return () => cleanupSocket();
   }, [endpoint]);
 
   return null;

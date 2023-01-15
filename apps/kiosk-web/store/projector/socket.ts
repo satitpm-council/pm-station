@@ -15,8 +15,29 @@ export const initializeSocket = (endpoint: string) => {
   socket.on("connect", () => {
     console.log("Connected to socket server.");
   });
-  socket.on("play", (track) =>
-    projectorStore.setState({ currentTrack: track })
-  );
-  socket.on("stop", () => projectorStore.setState({ currentTrack: undefined }));
+  socket.on("play", (track) => {
+    const durationTimeout = setTimeout(() => {
+      projectorStore.setState({ currentTrack: undefined });
+    }, track.duration_ms);
+    projectorStore.setState({ currentTrack: track, durationTimeout });
+  });
+  socket.on("stop", () => {
+    projectorStore.setState((s) => {
+      if (s.durationTimeout) {
+        clearTimeout(s.durationTimeout);
+      }
+      return { ...s, durationTimeout: undefined, currentTrack: undefined };
+    });
+  });
+};
+
+export const cleanupSocket = () => {
+  const { socket, durationTimeout } = projectorStore.getState();
+  if (durationTimeout) {
+    clearTimeout(durationTimeout);
+  }
+  if (socket) {
+    socket.removeAllListeners();
+    socket.disconnect();
+  }
 };

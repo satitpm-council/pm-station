@@ -11,6 +11,7 @@ type ProjectorStore = {
   datetime: Dayjs;
   status?: "landing" | "program" | "end";
   currentTrack?: TrackResponse;
+  durationTimeout?: NodeJS.Timeout;
   socket?: ClientSocket;
 };
 

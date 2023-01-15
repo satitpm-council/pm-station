@@ -23,3 +23,11 @@ export const initializeSocket = (
     controllerStore.setState({ isConnected: false });
   });
 };
+
+export const cleanupSocket = () => {
+  const { socket } = controllerStore.getState();
+  if (socket) {
+    socket.removeAllListeners();
+    socket.disconnect();
+  }
+};
