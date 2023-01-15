@@ -8,6 +8,7 @@
         "@lemasc/swr-firestore": "*",
         "@station/server": "*",
         "@station/shared": "*",
+        "@upstash/redis": "^1.19.1",
         "dayjs": "*",
         "firebase-admin": "*",
         "shared": "*",

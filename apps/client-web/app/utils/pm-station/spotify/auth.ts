@@ -1,5 +1,5 @@
 import axios from "axios";
-import { redis } from "../../redis";
+import { redis } from "@station/server/redis";
 import { isString, isNumber } from "shared/utils";
 
 const getCredentials = () => {

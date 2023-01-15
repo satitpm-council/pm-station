@@ -3,6 +3,7 @@
 import { useEffect } from "react";
 import { AudioPlayerProvider, useAudioPlayer } from "react-use-audio-player";
 import { controllerStore, setMediaStatus } from "kiosk-web/store/controller";
+import { TrackResponse } from "@station/shared/schema";
 
 const onend = () => {
   // remove the current track from the queue
@@ -22,9 +23,7 @@ const onend = () => {
 };
 
 function PlayListener() {
-  const { load, stop, stopped } = useAudioPlayer();
-
-  console.log(stopped);
+  const { player, load, stop, stopped } = useAudioPlayer();
 
   useEffect(
     () =>
@@ -34,21 +33,27 @@ function PlayListener() {
           console.log(videoId);
           if (videoId) {
             console.log("Should load");
-            load({
-              src: `/api/stream?v=${videoId}`,
-              format: "ogg",
-              xhr: {
-                withCredentials: true,
-              },
-              html5: true,
-              autoplay: true,
-              onloaderror: () => setMediaStatus("error"),
-              onplayerror: () => setMediaStatus("error"),
-              onplay: () => setMediaStatus("playing"),
-              onpause: () => setMediaStatus("paused"),
-              onstop: () => setMediaStatus("paused"),
-              onend,
-            });
+            // Howler has problems while playing new, fresh audio stream.
+            // Preload the stream with a fetch request to avoid this.
+            fetch(`/api/stream?v=${videoId}`)
+              .then(() => {
+                load({
+                  src: `/api/stream?v=${videoId}`,
+                  format: "ogg",
+                  xhr: {
+                    withCredentials: true,
+                  },
+                  html5: true,
+                  autoplay: true,
+                  onloaderror: () => setMediaStatus("error"),
+                  onplayerror: () => setMediaStatus("error"),
+                  onplay: () => setMediaStatus("playing"),
+                  onpause: () => setMediaStatus("paused"),
+                  onstop: () => setMediaStatus("paused"),
+                  onend,
+                });
+              })
+              .catch(() => setMediaStatus("error"));
           } else {
             stop();
           }
@@ -56,6 +61,35 @@ function PlayListener() {
       ),
     // eslint-disable-next-line react-hooks/exhaustive-deps
     []
+  );
+
+  useEffect(
+    () =>
+      controllerStore.subscribe(
+        (state) => state.mediaStatus,
+        (mediaStatus, previousMediaStatus) => {
+          const { socket, playingTrack } = controllerStore.getState();
+          console.log(mediaStatus, previousMediaStatus, playingTrack);
+          if (socket) {
+            if (mediaStatus === "playing" && playingTrack) {
+              const track = TrackResponse.parse(playingTrack);
+              // we use duration from the player to get the exact time left.
+              track.duration_ms =
+                player && player.duration() > 0
+                  ? Math.floor((player.duration() - player.seek()) * 1000)
+                  : track.duration_ms;
+              const trackEndTime = Date.now() + track.duration_ms;
+              socket.emit("play", track, trackEndTime);
+            } else if (
+              mediaStatus !== "playing" &&
+              previousMediaStatus === "playing"
+            ) {
+              socket.emit("stop");
+            }
+          }
+        }
+      ),
+    [player]
   );
 
   return null;

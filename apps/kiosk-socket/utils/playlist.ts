@@ -18,6 +18,7 @@ export const getTodayPlaylist = async (): Promise<
 > => {
   const date = dayjs()
     .tz("Asia/Bangkok")
+    .date(13)
     .hour(0)
     .minute(0)
     .second(0)

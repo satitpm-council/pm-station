@@ -18,7 +18,7 @@ export const SongRequestRecordItem = <T extends SongRequestSearchRecord>({
       <TrackThumbnail
         track={track}
         className={{
-          wrapper: "basis-1/4 min-w-[85px] relative",
+          wrapper: "basis-1/4 min-w-[50px] relative",
           image: "w-full h-auto rounded-lg",
           badge:
             "bg-yellow-400 text-gray-900 font-medium px-4 py-2 bottom-1 left-1 md:bottom-2 md:left-2",

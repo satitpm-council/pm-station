@@ -1,7 +1,7 @@
 import { StopIcon } from "@heroicons/react/20/solid";
 import TrackThumbnail from "@station/client/TrackThumbnail";
 import { controllerStore } from "kiosk-web/store/controller";
-import { useAudioPosition } from "react-use-audio-player";
+import { useAudioPlayer, useAudioPosition } from "react-use-audio-player";
 import { MediaStatusButtonIcon } from "./MiniPlayer/item";
 
 const formatTime = (seconds: number) => {
@@ -29,6 +29,7 @@ const Duration = () => {
 export default function Player() {
   const currentTrack = controllerStore((state) => state.playingTrack);
 
+  const { stop } = useAudioPlayer();
   return currentTrack ? (
     <div className="flex flex-col items-center justify-center gap-6">
       <b className="text-lg">เพลงปัจจุบัน:</b>
@@ -47,7 +48,10 @@ export default function Player() {
         <MediaStatusButtonIcon className="rounded-full bg-zinc-700 h-20 w-20 hover:bg-zinc-800" />
         <button
           className="flex justify-center items-center rounded-full bg-zinc-700 h-20 w-20 hover:bg-zinc-800"
-          onClick={() => stop()}
+          onClick={() => {
+            stop();
+            controllerStore.setState({ playingTrack: undefined });
+          }}
         >
           <StopIcon className="w-6 h-6" />
         </button>
