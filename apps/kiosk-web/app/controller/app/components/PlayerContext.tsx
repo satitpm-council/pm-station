@@ -1,8 +1,12 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useRef, useState } from "react";
 import { AudioPlayerProvider, useAudioPlayer } from "react-use-audio-player";
-import { controllerStore, setMediaStatus } from "kiosk-web/store/controller";
+import {
+  controllerStore,
+  setMediaStatus,
+  stopTrack,
+} from "kiosk-web/store/controller";
 import { TrackResponse } from "@station/shared/schema";
 
 const onend = () => {
@@ -23,22 +27,41 @@ const onend = () => {
 };
 
 function PlayListener() {
-  const { player, load, stop, stopped } = useAudioPlayer();
+  const { play, ready, player, load, stop, pause } = useAudioPlayer();
+  // Calling load on the same source will not trigger a play event.
+  // So we need to store the last played source ourselves, and trigger play manually.
+  // This will mostly be used when the user stop the same track and play it again.
+  const lastPlaySrc = useRef<string>();
 
+  // When the playingTrack changes, we need to load and play the new track.
   useEffect(
     () =>
       controllerStore.subscribe(
         (state) => state.playingTrack?.youtubeId,
-        (videoId) => {
+        (videoId, previousVideoId) => {
           console.log(videoId);
+          // Not the same videoId, pause and just think what to do next.
+          if (previousVideoId !== videoId) {
+            pause();
+          }
+          // The current track has a videoId, play it.
           if (videoId) {
-            console.log("Should load");
+            const src = `/api/stream?v=${videoId}`;
+            // Same source as before, trigger play
+            if (lastPlaySrc.current === src) {
+              console.log("Same source, trigger play");
+              play();
+              return;
+            }
+            // Not the same source, load with autoplay.
+            console.log("Should start play");
+            lastPlaySrc.current = src;
             // Howler has problems while playing new, fresh audio stream.
             // Preload the stream with a fetch request to avoid this.
-            fetch(`/api/stream?v=${videoId}`)
+            fetch(src)
               .then(() => {
                 load({
-                  src: `/api/stream?v=${videoId}`,
+                  src,
                   format: "ogg",
                   xhr: {
                     withCredentials: true,
@@ -49,7 +72,7 @@ function PlayListener() {
                   onplayerror: () => setMediaStatus("error"),
                   onplay: () => setMediaStatus("playing"),
                   onpause: () => setMediaStatus("paused"),
-                  onstop: () => setMediaStatus("paused"),
+                  onstop: () => stopTrack(),
                   onend,
                 });
               })
@@ -59,10 +82,10 @@ function PlayListener() {
           }
         }
       ),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    []
+    [load, play, pause, stop]
   );
 
+  // When mediaStatus changes, we need to send updates to the socket server.
   useEffect(
     () =>
       controllerStore.subscribe(

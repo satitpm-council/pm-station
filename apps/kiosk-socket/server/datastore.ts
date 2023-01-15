@@ -8,18 +8,18 @@ type CachedData<V> = {
   validator?: (value: any) => V;
 };
 
+type CachedResult<V> = Pick<CachedData<V>, "expiration"> & {
+  value: NonNullable<CachedData<V>["value"]>;
+};
+
 type CachedDataStore<T> = {
   [K in keyof T & string]: CachedData<T[K]>;
 };
 
-type Options<V> = Pick<CachedData<V>, "validator"> & {
-  expiration: number;
-};
+export type Options<V> = Pick<CachedData<V>, "validator" | "expiration">;
 
-// Check if the given value is a valid JS Date object
-const isDate = (value: any): value is Date => {
-  return value instanceof Date && !isNaN(value.getTime());
-};
+/** Shorthand function for prefixing keys stored in Redis */
+const __ = (key: string) => "PMStation_Kiosk_" + key;
 
 /**
  * The DataStore class provides a layer of datestore with expiration time check,
@@ -41,18 +41,25 @@ export default class DataStore<T extends Record<string, unknown>> {
     this.defaults = defaults;
   }
 
-  private returnData<K extends keyof T & string, V extends T[K]>({
+  private returnData<K extends keyof T & string>({
     value,
     validator,
-  }: Omit<CachedData<V>, "expiration">): V | null {
+    expiration,
+  }: CachedData<T[K]>): CachedResult<T[K]> | null {
     if (value) {
-      return validator ? validator(value) : value;
+      return {
+        value: validator ? validator(value) : value,
+        expiration,
+      } as CachedResult<T[K]>;
     }
     return null;
   }
-  private getFromCache<K extends keyof T & string>(key: K): T[K] | null {
+  private getFromCache<K extends keyof T & string>(
+    key: K
+  ): CachedResult<T[K]> | null {
+    console.log("getCache", this.data);
     if (this.data[key]) {
-      if (this.data[key].expiration < Date.now()) {
+      if (this.data[key].expiration > Date.now()) {
         return this.returnData(this.data[key]);
       }
       this.unsetCacheValue(key);
@@ -60,30 +67,44 @@ export default class DataStore<T extends Record<string, unknown>> {
     throw new Error(`Cached value for '${key}' is not valid or not existed.`);
   }
   /**
-   * Reads a value from the cache. If the key is expired or not found in the cache, it will try to get the value from Redis.
+   * Get a value from the cache. If the key is expired or not found in the cache, it will try to get the value from Redis.
    * @param key - The key of the data that will be read.
    * @returns The value of the key, or null if the key is not found or expired.
    */
-  async read<K extends keyof T & string>(key: K): Promise<T[K] | null> {
+  async get<K extends keyof T & string>(
+    key: K
+  ): Promise<CachedResult<T[K]> | null> {
+    console.log("get", key);
     try {
       return this.getFromCache(key);
-    } catch {
-      const [ttl, value] = await Promise.all([
-        redis.pttl(key),
-        redis.get<T[K]>(key),
-      ]);
-      if (value) {
-        const { validator, expiration } = this.data[key] ?? {};
-        const validatedValue = this.returnData({ value, validator });
-        const data: CachedData<T[K]> = Object.assign({}, this.defaults, {
-          value: validatedValue,
-          expiration: expiration,
-          validator,
-        });
+    } catch (err) {
+      console.error(err);
+      try {
+        const [ttl, value] = await Promise.all([
+          redis.pttl(__(key)),
+          redis.get<T[K]>(__(key)),
+        ]);
+        console.log(ttl, value);
         if (ttl > 0 && value) {
+          const { validator, expiration } = this.data[key] ?? {};
+          const validatedValue = this.returnData({
+            value,
+            validator,
+            expiration,
+          }) as CachedResult<T[K]>;
+          const data: CachedData<T[K]> = Object.assign(
+            {},
+            this.defaults as CachedData<T[K]>,
+            validatedValue
+          );
           this.setCache(key, data);
-          return data.value;
+          return {
+            expiration,
+            value: validatedValue.value,
+          };
         }
+      } catch (err) {
+        console.error(err);
       }
       return null;
     }
@@ -94,35 +115,38 @@ export default class DataStore<T extends Record<string, unknown>> {
    * @param value - The value of the data that will be set.
    * @param options - The options for the data that will be set.
    * @returns The value of the key, or null if the key is not found or expired.
+   * @throws If the value is already expired by the given expiration time.
    */
   async set<K extends keyof T & string>(
     key: K,
     value: T[K],
-    options: Partial<Options<T[K]>>
+    options?: Partial<Options<T[K]>>
   ): Promise<void>;
   /**
    * Writes a value to the cache and sets the expiration time.
    * @param key - The key of the data that will be set.
    * @param value - The value of the data that will be set.
    * @param expiration - The Unix timestamp in milliseconds that represents the expiration time of the key.
-   * @returns The value of the key, or null if the key is not found or expired.
+   * @throws If the value is already expired by the given expiration time.
    */
   async set<K extends keyof T & string>(
     key: K,
     value: T[K],
-    expiration: Options<T[K]>["expiration"]
+    expiration?: Options<T[K]>["expiration"]
   ): Promise<void>;
   /**
    * Writes a value to the cache and sets the expiration time.
    * @param key - The key of the data that will be set.
    * @param value - The value of the data that will be set.
    * @param optionsOrExpiration - The options or expiration time for the data that will be set.
+   * @throws If the value is already expired by the given expiration time.
    */
   async set<K extends keyof T & string>(
     key: K,
     value: T[K],
-    optionsOrExpiration: Partial<Options<T[K]>> | Options<T[K]>["expiration"]
+    optionsOrExpiration?: Partial<Options<T[K]>> | Options<T[K]>["expiration"]
   ) {
+    console.log("set", key, value, optionsOrExpiration);
     const options: Options<T[K]> = Object.assign(
       {},
       this.defaults,
@@ -147,8 +171,8 @@ export default class DataStore<T extends Record<string, unknown>> {
     }
 
     // Set the remote redis cache
-    redis.set(key, JSON.stringify(value));
-    redis.expireat(key, expiration);
+    await redis.set(__(key), JSON.stringify(value));
+    await redis.pexpireat(__(key), expiration);
 
     // Set the local cache
     this.setCache(key, data);
@@ -156,6 +180,7 @@ export default class DataStore<T extends Record<string, unknown>> {
 
   private setCache<K extends keyof T & string>(key: K, data: CachedData<T[K]>) {
     this.data[key] = data;
+    console.log("setCache", this.data);
   }
 
   /**
@@ -163,7 +188,7 @@ export default class DataStore<T extends Record<string, unknown>> {
    * @param key - The key of the data that will be deleted.
    */
   async delete<K extends keyof T & string>(key: K) {
-    await redis.del(key);
+    await redis.del(__(key));
     delete this.data[key];
   }
 

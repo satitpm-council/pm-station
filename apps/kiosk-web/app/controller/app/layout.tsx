@@ -26,7 +26,8 @@ const fetchUser = async () => {
 const fetchPlaylist = async () => {
   return await getTodayPlaylist().catch(() => undefined);
 };
-export default async function ProjectorLayout({
+
+export default async function ControllerLayout({
   children,
 }: {
   children: React.ReactNode;
