@@ -1,4 +1,4 @@
-import { Server } from ".";
+import { Server } from "../types";
 import { AuthParam, ControllerAuthParam, DeviceConflictError } from "../types";
 import { getTodayPlaylist } from "../utils";
 import { verifyIdToken } from "./firebase";
@@ -15,7 +15,7 @@ const disconnectClients = async (
   );
 
   if (controllerClients.length > 0) {
-    //if (auth.forceDisconnect) {
+    // if (auth.forceDisconnect) {
     // Disconnect the clients that are in the force disconnect list
     const clientsToDisconnect = controllerClients.filter((c) =>
       auth.forceDisconnect?.includes(c.id)
@@ -24,17 +24,15 @@ const disconnectClients = async (
       clientsToDisconnect.forEach((c) => c.disconnect(true));
       return disconnectClients(io, auth);
     }
-    /*}
-    // There're still clients pending to be disconnected.
-    // Throws an error with the list of clients to be disconnected.
-    const error = new Error(
-      "More than 1 controller clients are currently connected. Requires force disconnect."
-    ) as DeviceConflictError;
-    error.data = { disconnectClients: controllerClients.map((c) => c.id) };
-
-    throw error;
-    */
   }
+  // There're still clients pending to be disconnected.
+  // Throws an error with the list of clients to be disconnected.
+  const error = new Error(
+    "More than 1 controller clients are currently connected. Requires force disconnect."
+  ) as DeviceConflictError;
+  error.data = { disconnectClients: controllerClients.map((c) => c.id) };
+
+  throw error;
 };
 
 export const authMiddleware = async (
@@ -48,8 +46,7 @@ export const authMiddleware = async (
     if (!auth.token) throw new Error("Unauthorized.");
     const user = await verifyIdToken(auth.token, true);
     socket.data.user = user;
-    await disconnectClients(io, auth);
-    socket.data.playlist = await getTodayPlaylist();
+    //await disconnectClients(io, auth);
   }
   return null;
 };

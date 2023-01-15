@@ -42,7 +42,7 @@ export const ReorderItem = ({ track, ...props }: ItemProps<Track>) => {
         touchAction: "pan-x",
       }}
     >
-      <div {...bind()}>
+      <div className="flex-grow flex-shrink-0" {...bind()}>
         <SongRequestRecordItem track={track} {...props} />
       </div>
       <div

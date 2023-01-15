@@ -1,27 +1,16 @@
-import { Server as IOServer, Socket as IOSocket } from "socket.io";
-import { DefaultEventsMap } from "socket.io/dist/typed-events";
+import { Server, Socket } from "socket.io";
 
-import { ClientToServerEvents, SocketData } from "../types/socket/server";
+import { Server as IOServer, Socket as IOSocket } from "../types";
+import { SocketData } from "../types/socket/server";
 import { setupControllerEvents } from "./controller";
-
+import DataStore from "./datastore";
+import type { ServerStore } from "../types";
 import { authMiddleware } from "./middleware";
-
-export type Server = IOServer<
-  ClientToServerEvents,
-  DefaultEventsMap,
-  DefaultEventsMap,
-  SocketData
->;
-
-export type Socket = IOSocket<
-  ClientToServerEvents,
-  DefaultEventsMap,
-  DefaultEventsMap,
-  SocketData
->;
+import dayjs from "dayjs";
+import { setupDisplayEvents } from "./display";
 
 const initializeSocket = (server: any): Server => {
-  const io: Server = new IOServer(server, {
+  const io: IOServer = new Server(server, {
     ...(process.env.NODE_ENV !== "production"
       ? {
           cors: {
@@ -31,6 +20,7 @@ const initializeSocket = (server: any): Server => {
       : {}),
   });
 
+  let store: DataStore<ServerStore> | undefined;
   io.use((socket, next) => {
     authMiddleware(io, socket)
       .then(() => next())
@@ -41,6 +31,17 @@ const initializeSocket = (server: any): Server => {
   });
 
   io.on("connection", async (socket) => {
+    if (!store) {
+      store = new DataStore({
+        expiration: dayjs()
+          .add(1, "day")
+          .hour(0)
+          .minute(0)
+          .second(0)
+          .millisecond(0)
+          .unix(),
+      });
+    }
     const data = socket.data as SocketData;
     console.log(data);
     socket.join(data.type);
@@ -49,8 +50,22 @@ const initializeSocket = (server: any): Server => {
       socket.onAnyOutgoing((...args) => console.log("Socket Sent:", args));
     }
     if (data.type === "controller") {
-      setupControllerEvents(socket, io);
+      setupControllerEvents(socket, io, store);
     }
+
+    if (data.type === "display") {
+      setupDisplayEvents(socket, io, store);
+    }
+
+    /* socket.on("disconnect", async () => {
+      const pendingSockets = (await io.fetchSockets()).filter(
+        (v) => v.data.type === "controller"
+      );
+      if (pendingSockets.length === 0) {
+        // destroy the current datastore
+        store = undefined;
+      }
+    });*/
   });
   return io;
 };
