@@ -6,6 +6,7 @@ import { SubmitButton } from "@station/client/SubmitButton";
 import { getFormData } from "@station/shared/api";
 import type { ActionResponse } from "@station/shared/api";
 import type { User, UserClaims } from "~/utils/pm-station/client";
+import { isEditorClaims } from "~/utils/pm-station/client";
 import { UserRole } from "~/utils/pm-station/client";
 import { verifySession, updateProfile } from "@station/server/auth/remix";
 import { useUser, withTitle } from "~/utils/pm-station/client";
@@ -23,14 +24,20 @@ const typeRadio: Record<UserClaims["type"], string> = {
 export const action: ActionFunction = async ({ request }) => {
   try {
     const user = await verifySession(request);
-    const { displayName, type, role } = await getFormData<User>(request);
+    const { displayName, type } = await getFormData<User>(request);
     if (!user || !displayName || !type)
       throw new Error("Missing required parameters.");
+    const role = UserRole.EDITOR; //user.role ?? UserRole.USER;
     const headers = {
       "Set-Cookie": await updateProfile(request, user?.uid, {
         displayName,
         type,
-        role: role ?? UserRole.USER,
+        role,
+        ...(role === UserRole.EDITOR && isEditorClaims(user)
+          ? {
+              programId: user.programId,
+            }
+          : {}),
       }),
     };
     if (user.role !== undefined && user.type) {

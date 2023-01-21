@@ -33,4 +33,4 @@ export type GenericUserClaims = {
 export type UserClaims = GenericUserClaims | EditorRoleClaims;
 
 export type User = Pick<UserRecord, "displayName" | "phoneNumber" | "uid"> &
-  Partial<UserClaims>;
+  UserClaims;

@@ -17,6 +17,36 @@ import { UserRole, useUser } from "~/utils/pm-station/client";
 import { useEffect, useState } from "react";
 import { SidebarContent, SidebarFooter } from "react-pro-sidebar";
 
+const MusicIcon = <MusicalNoteIcon className="h-4 w-4" />;
+
+function SongRequestMenu({ showIcon = true }: { showIcon?: boolean }) {
+  return (
+    <MenuItem
+      icon={showIcon ? MusicIcon : undefined}
+      route="/pm-station/app/songrequests/"
+    >
+      ส่งคำขอเปิดเพลง
+    </MenuItem>
+  );
+}
+
+function EditorSongRequestMenu() {
+  return (
+    <SubMenu
+      route="/pm-station/app/songrequests"
+      title="PM Music Request"
+      icon={MusicIcon}
+    >
+      <SongRequestMenu showIcon={false} />
+      <MenuItem route="/pm-station/app/songrequests/editor">
+        จัดการคำขอเพลง
+      </MenuItem>
+      <MenuItem route="/pm-station/app/songrequests/playlists">
+        จัดการรายการคำขอเพลง
+      </MenuItem>
+    </SubMenu>
+  );
+}
 export default function Sidebar({
   open,
   setOpen,
@@ -84,27 +114,13 @@ export default function Sidebar({
           >
             ข้อมูลส่วนตัว
           </MenuItem>
-          <SubMenu
-            route="/pm-station/app/songrequests"
-            title="PM Music Request"
-            icon={<MusicalNoteIcon className="h-4 w-4" />}
-          >
-            <MenuItem route="/pm-station/app/songrequests/">
-              ส่งคำขอเปิดเพลง
-            </MenuItem>
-            {isRegistered &&
-              user?.role !== undefined &&
-              user.role >= UserRole.MODERATOR && (
-                <>
-                  <MenuItem route="/pm-station/app/songrequests/editor">
-                    จัดการคำขอเพลง
-                  </MenuItem>
-                  <MenuItem route="/pm-station/app/songrequests/playlists">
-                    จัดการรายการคำขอเพลง
-                  </MenuItem>
-                </>
-              )}
-          </SubMenu>
+          {isRegistered &&
+            user?.role !== undefined &&
+            (user?.role >= UserRole.EDITOR ? (
+              <EditorSongRequestMenu />
+            ) : (
+              <SongRequestMenu />
+            ))}
         </Menu>
       </SidebarContent>
 

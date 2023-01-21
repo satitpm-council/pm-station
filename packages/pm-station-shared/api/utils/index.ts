@@ -3,7 +3,7 @@
 // to preserve JSON-like DX.
 
 type ObjectAsString<T extends Record<string, unknown>> = {
-  [K in keyof T]: T[K] extends string ? T[K] : never;
+  [K in keyof T]: T[K] extends string ? T[K] : string;
 };
 
 export const getFormData = async <T extends Record<any, any>>(

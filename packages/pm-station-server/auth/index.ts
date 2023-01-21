@@ -84,13 +84,18 @@ const customTokenToIdToken = async (token: string) => {
 export const updateProfile = async (
   request: Request,
   uid: string,
-  { displayName, role, type }: Pick<User, "displayName"> & UserClaims
+  target: Pick<User, "displayName"> & UserClaims
 ) => {
   const auth = getAuth(admin);
+  const { displayName, role, type } = target;
   await auth.updateUser(uid, {
     displayName,
   });
-  const claims: UserClaims = { role, type };
+  const claims: UserClaims = {
+    role,
+    type,
+    ...(isEditorClaims(target) ? { programId: target.programId } : {}),
+  };
   await auth.setCustomUserClaims(uid, claims);
   const token = await auth.createCustomToken(uid, claims);
   return createSession(request.headers, await customTokenToIdToken(token));

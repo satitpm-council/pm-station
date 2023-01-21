@@ -15,11 +15,11 @@ export const usePlaylists = () => {
     firebaseUser ? "playlists" : null,
     {
       constraints: [
+        ...(isEditorClaims(user)
+          ? [where("target", "==", "dz2GGrNBZOiY5pZzkjEv")]
+          : []),
         orderBy("queuedDate", "asc"),
         // editor users can only see their own playlists
-        ...(isEditorClaims(user)
-          ? [where("target", "==", user.programId)]
-          : []),
       ],
     },
     {
