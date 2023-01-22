@@ -15,7 +15,7 @@ jobs:
       name: Deploy app
       strategy:
         matrix:
-          package: ["kiosk-web", "client-web"]
+          package: ["client-web"]
       runs-on: ubuntu-latest
       steps:
         - name: Cancel Previous Runs
