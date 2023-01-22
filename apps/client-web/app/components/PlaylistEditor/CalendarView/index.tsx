@@ -50,7 +50,7 @@ export default function CalendarView() {
 
   return (
     <div className="-mt-10 flex items-start flex-col lg:flex-row lg:gap-6 xl:gap-10 relative">
-      <div className="pt-10 lg:flex-shrink-0 xl:basis-[33%] 2xl:basis-2/5 lg:sticky lg:top-0">
+      <div className="pt-10 lg:flex-shrink-0 lg:basis-2/5 xl:basis-[33%] 2xl:basis-2/5 lg:sticky lg:top-0">
         <Calendar
           tileContent={getTileContent}
           value={date}
