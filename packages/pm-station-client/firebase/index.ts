@@ -7,6 +7,7 @@ import type { Firestore } from "firebase/firestore";
 import { getFirestore } from "firebase/firestore";
 import { useEffect, useState } from "react";
 import { getFirebaseConfig } from "./config";
+import LogRocket from "logrocket";
 
 type FirebaseStore = {
   app: FirebaseApp;
@@ -43,6 +44,15 @@ export const useFirebaseUser = () => {
   const { auth } = useFirebase();
   const [user, setUser] = useState<User | null | undefined>();
   useEffect(() => onIdTokenChanged(auth, setUser), [auth]);
+
+  useEffect(() => {
+    if (user) {
+      LogRocket.identify(user.uid, {
+        name: user.displayName as string,
+        phoneNumber: user.phoneNumber as string,
+      });
+    }
+  }, [user]);
   return user;
 };
 
