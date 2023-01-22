@@ -1,7 +1,7 @@
 import { Dialog } from "@headlessui/react";
 import { isDocumentValid } from "@lemasc/swr-firestore";
 import { useNavigate } from "@remix-run/react";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
 import shallow from "zustand/shallow";
 import axios from "shared/axios";
@@ -12,9 +12,12 @@ import { usePrograms } from "~/utils/pm-station/programs";
 import Modal from "../Modal";
 import { SubmitButton } from "@station/client/SubmitButton";
 import { playlistEditorStore } from "./store";
+import { useFirebaseUser } from "@station/client/firebase";
+import dayjs from "dayjs";
 
 type FormValues = Pick<SetPlaylistAction, "target" | "queuedDate">;
 export default function ConfirmPlaylistModal() {
+  const user = useFirebaseUser();
   const { data: programs } = usePrograms();
   const { count, duration } = playlistEditorStore(
     ({ count, duration }) => ({ count, duration }),
@@ -33,6 +36,7 @@ export default function ConfirmPlaylistModal() {
 
   const submit = useCallback(
     async (form: FormValues) => {
+      if (!user) return;
       try {
         setSubmitting(true);
         const { data, reset } = playlistEditorStore.getState();
@@ -42,6 +46,11 @@ export default function ConfirmPlaylistModal() {
             ...form,
             tracks: data.map(({ id }) => id),
             playlistId: playlistEditorStore.getState().targetPlaylist?.id,
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${await user.getIdToken()}`,
+            },
           }
         );
         reset();
@@ -52,7 +61,7 @@ export default function ConfirmPlaylistModal() {
         setSubmitting(false);
       }
     },
-    [navigate]
+    [navigate, user]
   );
 
   useEffect(() => {
@@ -75,6 +84,12 @@ export default function ConfirmPlaylistModal() {
       }
     );
   }, [reset]);
+
+  const minDate = useMemo(() => {
+    let date = dayjs();
+    if (date.hour() >= 7) date = date.add(1, "day");
+    return date.format("YYYY-MM-DD");
+  }, []);
 
   return (
     <Modal isOpen={isOpen} closeModal={closeModal}>
@@ -120,9 +135,11 @@ export default function ConfirmPlaylistModal() {
               autoComplete="off"
               title="วันที่เปิดรายการเพลง"
               required
+              min={minDate}
               pattern="\d{4}-\d{2}-\d{2}"
               {...register("queuedDate", {
                 valueAsDate: true,
+                min: minDate,
               })}
             />
           </div>

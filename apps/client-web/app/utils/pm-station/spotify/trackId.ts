@@ -2,6 +2,7 @@ import { customAlphabet } from "nanoid/async";
 
 const numbers = "0123456789";
 const alphabets = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+const thaiAlphabets = "กขฃคฅฆงจฉชซฌญฎฏฐฑฒณดตถทธนบปผฝพฟภมยรลวศษสหฬอฮ";
 
 const numbersGenerator = customAlphabet(numbers, 1);
 const alphabetsGenerator = customAlphabet(numbers + alphabets, 21);
@@ -14,4 +15,9 @@ const alphabetsGenerator = customAlphabet(numbers + alphabets, 21);
  */
 export const trackId = async () => {
   return (await numbersGenerator()) + (await alphabetsGenerator());
+};
+
+export const trackName = async () => {
+  const language = Math.random() > 0.5 ? thaiAlphabets : alphabets;
+  return await customAlphabet(language, 21)();
 };

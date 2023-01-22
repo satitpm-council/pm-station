@@ -30,23 +30,6 @@ function SongRequestMenu({ showIcon = true }: { showIcon?: boolean }) {
   );
 }
 
-function EditorSongRequestMenu() {
-  return (
-    <SubMenu
-      route="/pm-station/app/songrequests"
-      title="PM Music Request"
-      icon={MusicIcon}
-    >
-      <SongRequestMenu showIcon={false} />
-      <MenuItem route="/pm-station/app/songrequests/editor">
-        จัดการคำขอเพลง
-      </MenuItem>
-      <MenuItem route="/pm-station/app/songrequests/playlists">
-        จัดการรายการคำขอเพลง
-      </MenuItem>
-    </SubMenu>
-  );
-}
 export default function Sidebar({
   open,
   setOpen,
@@ -117,7 +100,19 @@ export default function Sidebar({
           {isRegistered &&
             user?.role !== undefined &&
             (user?.role >= UserRole.EDITOR ? (
-              <EditorSongRequestMenu />
+              <SubMenu
+                route="/pm-station/app/songrequests"
+                title="PM Music Request"
+                icon={MusicIcon}
+              >
+                <SongRequestMenu showIcon={false} />
+                <MenuItem route="/pm-station/app/songrequests/editor">
+                  จัดการคำขอเพลง
+                </MenuItem>
+                <MenuItem route="/pm-station/app/songrequests/playlists">
+                  จัดการรายการคำขอเพลง
+                </MenuItem>
+              </SubMenu>
             ) : (
               <SongRequestMenu />
             ))}

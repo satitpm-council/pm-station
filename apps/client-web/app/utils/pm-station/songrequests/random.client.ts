@@ -12,11 +12,12 @@ import { where } from "firebase/firestore";
 import type { TypeOf } from "zod";
 import { SongRequestRecord } from "@station/shared/schema";
 import { isString } from "shared/utils";
-import { trackId } from "../spotify/trackId";
+import { trackId, trackName } from "../spotify/trackId";
 import { LastPlayedDate } from "@station/client/songrequests";
 import { convertFirestoreData } from "./result";
 
 const STRATEGY_COUNT = 4;
+
 enum RandomStrategy {
   "Greater_ASC" = 0,
   "Greater_DESC" = 1,
@@ -116,16 +117,21 @@ export default class RandomTrackSelector {
    * @param trackId Track ID
    * @param strategy Random stretegy to be used.
    */
-  async getRandomTrackByStrategy(trackId: string, strategy: RandomStrategy) {
+  async getRandomTrackByStrategy(
+    trackId: string,
+    strategy: RandomStrategy,
+    mode: "id" | "name"
+  ) {
     const { op, order } = fromRandomStrategy(strategy);
-    const notIn = this.getNotInCaluse(trackId, op);
+    //const notIn = this.getNotInCaluse(trackId, op);
+    const field = mode === "id" ? documentId() : "name";
     const { docs } = await getDocs(
       query(
         collection(this.db, "/songrequests"),
         where("lastPlayedAt", "==", LastPlayedDate.Idle),
-        where(documentId(), op, trackId),
-        ...notIn,
-        orderBy(documentId(), order),
+        where(field, op, trackId),
+        //...notIn,
+        orderBy(field, order),
         limit(1)
       )
     );
@@ -133,6 +139,7 @@ export default class RandomTrackSelector {
       const data = convertFirestoreData(docs[0], SongRequestRecord);
       if (data && !this.processedTrackIds.has(data.id)) {
         this.setProcessedTrackId(data.id);
+        console.log(data, trackId, strategy, mode);
         return data;
       }
     }
@@ -142,13 +149,32 @@ export default class RandomTrackSelector {
    * Returns the randomized from any possible RandomStrategy.
    * Track ID will be automatically generated.
    */
-  async getRandomTrack(): Promise<
+  async getRandomTrackById(): Promise<
     TypeOf<typeof SongRequestRecord> | undefined
   > {
     const id = await trackId();
     const strategies = shuffleArray(Array.from(Array(STRATEGY_COUNT).keys()));
     for (let i = 0; i < 4; i++) {
-      const random = await this.getRandomTrackByStrategy(id, strategies[i]);
+      const random = await this.getRandomTrackByStrategy(
+        id,
+        strategies[i],
+        "id"
+      );
+      if (random) return random;
+    }
+  }
+
+  async getRandomTrackByName(): Promise<
+    TypeOf<typeof SongRequestRecord> | undefined
+  > {
+    const name = await trackName();
+    const strategies = shuffleArray(Array.from(Array(STRATEGY_COUNT).keys()));
+    for (let i = 0; i < 4; i++) {
+      const random = await this.getRandomTrackByStrategy(
+        name,
+        strategies[i],
+        "name"
+      );
       if (random) return random;
     }
   }
@@ -164,7 +190,10 @@ export default class RandomTrackSelector {
         Array(pendingSize)
           .fill(undefined)
           .map(async () => {
-            const value = await this.getRandomTrack();
+            const value =
+              Math.random() > 0.4
+                ? await this.getRandomTrackByName()
+                : await this.getRandomTrackById();
             if (value && !selectedIds.has(value.id)) {
               selected.add(value);
               this.setProcessedTrackId(value.id);
