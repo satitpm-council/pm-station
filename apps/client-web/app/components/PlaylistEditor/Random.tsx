@@ -6,15 +6,18 @@ import { playlistEditorStore } from "./store";
 
 export default function RandomTrackButton() {
   const { db } = useFirebase();
+  const isLoading = useRef(false);
   const random = useRef<RandomTrackSelector>();
   useEffect(() => {
     random.current = new RandomTrackSelector(db);
   }, [db]);
 
   const randomSong = useCallback(() => {
+    if (isLoading.current) return;
     const { count, addedIds, addId, pushData } = playlistEditorStore.getState();
     const tracksLeft = count - addedIds.size;
     if (tracksLeft > 0) {
+      isLoading.current = true;
       random.current?.getRandomTracks(tracksLeft).then((data) => {
         const filteredData = data.filter(({ id }) => {
           if (addedIds.has(id)) return false;
@@ -22,6 +25,7 @@ export default function RandomTrackButton() {
           return true;
         });
         pushData(filteredData);
+        isLoading.current = false;
       });
     } else {
       toast(
