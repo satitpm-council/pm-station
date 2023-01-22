@@ -5,6 +5,7 @@ import { hydrateRoot } from "react-dom/client";
 import { useEffect } from "react";
 import LogRocket from "logrocket";
 import SentryConfig from "./sentry.client.json";
+import "broadcastchannel-polyfill";
 
 Sentry.init({
   dsn:
