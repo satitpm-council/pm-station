@@ -5,10 +5,16 @@ require("dotenv").config();
 require("dotenv").config({ path: "../../.env" });
 
 const sentryClientFile = path.join(process.cwd(), "app", "sentry.client.json");
-if (!process.env.SENTRY_DSN && !fs.existsSync(sentryClientFile)) {
+if (
+  (!process.env.SENTRY_DSN || !process.env.LOGROCKET_ID) &&
+  !fs.existsSync(sentryClientFile)
+) {
   throw new Error("SENTRY_DSN environment varriable not found.");
 }
 fs.writeFileSync(
   sentryClientFile,
-  JSON.stringify({ SENTRY_DSN: process.env.SENTRY_DSN })
+  JSON.stringify({
+    SENTRY_DSN: process.env.SENTRY_DSN,
+    LOGROCKET_ID: process.env.LOGROCKET_ID,
+  })
 );

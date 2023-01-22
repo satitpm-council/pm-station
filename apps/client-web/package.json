@@ -40,6 +40,7 @@
     "eslint-config-coolkidssatit": "*",
     "firebase": "^9.9.3",
     "firebase-admin": "^11.0.1",
+    "logrocket": "^3.0.1",
     "nanoid": "^4.0.0",
     "node-calls-python": "^1.7.5",
     "react": "^18.2.0",
