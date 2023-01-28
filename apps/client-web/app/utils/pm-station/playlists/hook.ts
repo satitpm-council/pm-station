@@ -7,6 +7,7 @@ import { orderBy, where } from "@lemasc/swr-firestore/constraints";
 import { zodValidator } from "shared/utils";
 import { useCallback, useMemo } from "react";
 import { isEditorClaims, useUser } from "../client";
+import { documentId } from "firebase/firestore";
 
 export const usePlaylists = () => {
   const { user } = useUser();
@@ -16,7 +17,7 @@ export const usePlaylists = () => {
     {
       constraints: [
         ...(isEditorClaims(user)
-          ? [where("target", "==", "dz2GGrNBZOiY5pZzkjEv")]
+          ? [where("target", "==", user?.programId)]
           : []),
         orderBy("queuedDate", "asc"),
         // editor users can only see their own playlists
