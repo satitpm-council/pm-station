@@ -22,6 +22,7 @@
     "firebase-admin": "^11.4.1",
     "framer-motion": "^8.2.4",
     "kiosk-socket": "*",
+    "logrocket": "^3.0.1",
     "next": "^13.1.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
