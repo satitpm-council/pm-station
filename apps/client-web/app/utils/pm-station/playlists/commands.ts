@@ -70,8 +70,8 @@ export const usePlaylistCommands = (
   const buttons: ButtonProps[] | undefined = useMemo(
     () =>
       user &&
-      (user?.role === UserRole.ADMIN ||
-        (playlist && playlist.status === "queued"))
+      playlist &&
+      (user?.role === UserRole.ADMIN || playlist.status === "queued")
         ? commands
             .filter(({ minRole }) => (minRole ? user.role >= minRole : true))
             .map(({ type, text, ...v }) => {
