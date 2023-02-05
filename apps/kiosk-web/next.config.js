@@ -2,7 +2,7 @@ const path = require("path");
 const { getPackages } = require("build-config");
 const { DefinePlugin } = require("webpack");
 
-require("dotenv").config({ path: "../../.env" });
+const { parsed } = require("dotenv").config({ path: "../../.env" });
 
 // Although Next.js provides 'NEXT_PUBLIC' prefixes for env to be exposes to client
 // We just want to preserve variable names on both frameworks.
@@ -10,7 +10,7 @@ require("dotenv").config({ path: "../../.env" });
 const injectedEnvVars = parsed
   ? Object.fromEntries(
       // This seems to be vulnerable, but environments are exposed to system when building on Vercel.
-      Object.entries(process.env)
+      Object.entries(parsed)
         // For example, PM_STATION_FIREBASE(_PUBLIC_)APP_ID should pass,
         // but SOMETHING_PUBLIC shouldn't.
         .filter(([k]) => k.includes("_PUBLIC_"))

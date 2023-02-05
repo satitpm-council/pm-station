@@ -1,21 +1,23 @@
-name: Deploy to Fly
+name: Build and Deploy to Fly
+
 on:
-  push:
-    branches: ["main"]
-  pull_request:
-    types: [opened, synchronize]
+  workflow_call:
+    inputs:
+      package:
+        required: true
+        type: string
+        
 env:
   FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
   TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
   TURBO_TEAM: ${{ secrets.TURBO_TEAM }}
   VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
   VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+
+
 jobs:
-  deploy:
+   deploy:
       name: Deploy app
-      strategy:
-        matrix:
-          package: ["client-web", "kiosk-web"]
       runs-on: ubuntu-latest
       steps:
         - name: Cancel Previous Runs
@@ -26,7 +28,7 @@ jobs:
           uses: SebRollen/toml-action@v1.0.2
           id: app_name
           with:
-            file: apps/${{ matrix.package }}/fly.toml
+            file: apps/${{ inputs.package }}/fly.toml
             field: app
         - name: Fetching environment variables
           run: vercel env pull --yes --token ${{ secrets.TURBO_TOKEN }}
@@ -53,7 +55,7 @@ jobs:
           uses: docker/build-push-action@v3
           with:
             context: .
-            file: apps/${{ matrix.package }}/Dockerfile
+            file: apps/${{ inputs.package }}/Dockerfile
             push: true
             tags: registry.fly.io/${{ steps.app_name.outputs.value }}:${{ github.ref_name }}-${{ github.sha }}
             build-args: |
@@ -65,4 +67,4 @@ jobs:
         - name: Installing flyctl
           uses: superfly/flyctl-actions/setup-flyctl@master
         - name: Deploy
-          run: flyctl deploy --config ./apps/${{ matrix.package }}/fly.toml --image registry.fly.io/${{ steps.app_name.outputs.value }}:${{ github.ref_name }}-${{ github.sha }}
+          run: flyctl deploy --config ./apps/${{ inputs.package }}/fly.toml --image registry.fly.io/${{ steps.app_name.outputs.value }}:${{ github.ref_name }}-${{ github.sha }}
