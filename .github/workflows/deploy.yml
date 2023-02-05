@@ -16,7 +16,7 @@ jobs:
       strategy:
         fail-fast: false
         matrix:
-          package: ["client-web", "kiosk-web"]
+          package: ["kiosk-web"]
       runs-on: ubuntu-latest
       steps:
         - name: Cancel Previous Runs
