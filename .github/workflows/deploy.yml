@@ -1,23 +1,22 @@
-name: Build and Deploy to Fly
-
+name: Deploy to Fly
 on:
-  workflow_call:
-    inputs:
-      package:
-        required: true
-        type: string
-        
+  push:
+    branches: ["main"]
+  pull_request:
+    types: [opened, synchronize]
 env:
   FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
   TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
   TURBO_TEAM: ${{ secrets.TURBO_TEAM }}
   VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
   VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
-
-
 jobs:
-   deploy:
+  deploy:
       name: Deploy app
+      strategy:
+        fail-fast: false
+        matrix:
+          package: ["client-web", "kiosk-web"]
       runs-on: ubuntu-latest
       steps:
         - name: Cancel Previous Runs
@@ -28,8 +27,17 @@ jobs:
           uses: SebRollen/toml-action@v1.0.2
           id: app_name
           with:
-            file: apps/${{ inputs.package }}/fly.toml
+            file: apps/${{ matrix.package }}/fly.toml
             field: app
+        - name: Checking if deployment is required
+          run: |
+                  set +e
+                  exit_code=$(npx turbo-ignore ${{ matrix.package }})
+                  set -e
+                  if [ $exit_code -eq 0]; then
+                    echo "Skipping deployment for package ${{ matrix.package }}"
+                    exit 78
+                  fi
         - name: Fetching environment variables
           run: vercel env pull --yes --token ${{ secrets.TURBO_TOKEN }}
         - name: Set up Docker Buildx
@@ -55,7 +63,7 @@ jobs:
           uses: docker/build-push-action@v3
           with:
             context: .
-            file: apps/${{ inputs.package }}/Dockerfile
+            file: apps/${{ matrix.package }}/Dockerfile
             push: true
             tags: registry.fly.io/${{ steps.app_name.outputs.value }}:${{ github.ref_name }}-${{ github.sha }}
             build-args: |
@@ -67,4 +75,4 @@ jobs:
         - name: Installing flyctl
           uses: superfly/flyctl-actions/setup-flyctl@master
         - name: Deploy
-          run: flyctl deploy --config ./apps/${{ inputs.package }}/fly.toml --image registry.fly.io/${{ steps.app_name.outputs.value }}:${{ github.ref_name }}-${{ github.sha }}
+          run: flyctl deploy --config ./apps/${{ matrix.package }}/fly.toml --image registry.fly.io/${{ steps.app_name.outputs.value }}:${{ github.ref_name }}-${{ github.sha }}
