@@ -33,11 +33,13 @@ withEsbuildOverride((option) => {
 
 /** @type {import('@remix-run/dev').AppConfig} */
 module.exports = {
+  serverBuildTarget: "vercel",
   ignoredRouteFiles: ["**/.*"],
   // appDirectory: "app",
   // assetsBuildDirectory: "public/build",
   // serverBuildPath: ".netlify/functions-internal/server.js",
   // publicPath: "/build/",
+  server: process.env.NODE_ENV === "development" ? undefined : "./server.js",
   serverDependenciesToBundle: [/^@station\//, "shared"],
   watchPaths: async () => {
     return getPackagesPaths().map((p) => `../../${p}/**/*`);

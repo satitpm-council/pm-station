@@ -32,9 +32,9 @@ jobs:
         - name: Checking if deployment is required
           run: |
                   set +e
-                  exit_code=$(npx turbo-ignore ${{ matrix.package }})
+                  npx turbo-ignore ${{ matrix.package }}
                   set -e
-                  if [ $exit_code -eq 0 ]; then
+                  if [ $? -eq 0 ]; then
                     echo "Skipping deployment for package ${{ matrix.package }}"
                     exit 78
                   fi
