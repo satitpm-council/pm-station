@@ -24,6 +24,7 @@ jobs:
             tag=$(flyctl image show  --config ./apps/${{ matrix.package }}/fly.toml -j | node -pe 'JSON.parse(fs.readFileSync(0)).Tag.split("-")[1]')
             npx turbo-ignore ${{ matrix.package }} --fallback=$tag
           env:
+            VERCEL: 1
             FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
             TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
             TURBO_TEAM: ${{ secrets.TURBO_TEAM }}
