@@ -30,7 +30,7 @@ jobs:
             TURBO_TEAM: ${{ secrets.TURBO_TEAM }}
         - name: Build and Deploy
           if: ${{ failure() }}
-          uses: ./.github/actions/deploy.yml
+          uses: ./.github/actions/deploy
           with:
             package: ${{ matrix.package }}
             FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
