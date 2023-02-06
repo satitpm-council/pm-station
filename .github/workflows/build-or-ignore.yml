@@ -1,0 +1,28 @@
+name: Deploy or Ignore
+on:
+  push:
+    branches: ["main"]
+env:
+  TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
+  TURBO_TEAM: ${{ secrets.TURBO_TEAM }}
+jobs:
+  build-or-ignore:
+      name: Build only on changes
+      runs-on: ubuntu-latest
+      strategy:
+        fail-fast: false
+        matrix:
+          package: ["kiosk-web"]
+      steps:
+        - name: Cancel Previous Runs
+          uses: styfle/cancel-workflow-action@0.9.1
+        - name: Check out code
+          uses: actions/checkout@v3
+        - name: Checking for changes
+          run: npx turbo-ignore ${{ matrix.package }}
+        - name: Build and Deploy
+          if: ${{ failure() }}
+          uses: ./.github/workflows/by.yml
+          with:
+            package: ${{ matrix.package }}
+          secrets: inherit
