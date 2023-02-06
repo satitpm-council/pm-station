@@ -1,10 +1,10 @@
-name: Deploy or Ignore
+name: Build or Ignore
 on:
   push:
     branches: ["main"]
 jobs:
   build-or-ignore:
-      name: Build only on changes
+      name: Build and Deploy
       runs-on: ubuntu-latest
       strategy:
         fail-fast: false
@@ -15,6 +15,8 @@ jobs:
           uses: styfle/cancel-workflow-action@0.9.1
         - name: Check out code
           uses: actions/checkout@v3
+          with:
+            fetch-depth: 0
         - name: Checking for changes
           run: npx turbo-ignore ${{ matrix.package }}
           env:
@@ -22,7 +24,7 @@ jobs:
             TURBO_TEAM: ${{ secrets.TURBO_TEAM }}
         - name: Build and Deploy
           if: ${{ failure() }}
-          uses: ./.github/actions/build-or-ignore.yml
+          uses: ./.github/actions/deploy.yml
           with:
             package: ${{ matrix.package }}
             FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
