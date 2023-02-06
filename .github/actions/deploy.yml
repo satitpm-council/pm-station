@@ -1,24 +1,28 @@
 name: "Build and Deploy to Fly"
-on:
-  workflow_call:
-    inputs:
-      package:
-        required: true
-        type: string
-        
-env:
-  FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
-  TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
-  TURBO_TEAM: ${{ secrets.TURBO_TEAM }}
-  VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
-  VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+description: "Builds and deploys the given package to Fly" 
+inputs:
+  package:
+    description: "Target package to be built"
+    required: true
+  FLY_API_TOKEN:
+    description: "Fly API Token"
+    required: true
+  TURBO_TOKEN:
+    description: "Vercel API Turborepo Token"
+    required: true
+  TURBO_TEAM:
+    description: "Vercel API Turborepo Team"
+    required: true
+  VERCEL_ORG_ID:
+    description: "Vercel CLI Organization ID. Use for pulling environment variables."
+    required: true
+  VERCEL_PROJECT_ID: 
+    description: "Vercel CLI Project ID. Use for pulling environment variables."
+    required: true
 
-
-jobs:
-   deploy:
-      name: Deploy app
-      runs-on: ubuntu-latest
-      steps:
+runs:
+  using: 'composite'
+  steps:
         - name: Cancel Previous Runs
           uses: styfle/cancel-workflow-action@0.9.1
         - name: Check out code
@@ -31,6 +35,10 @@ jobs:
             field: app
         - name: Fetching environment variables
           run: vercel env pull --yes --token ${{ secrets.TURBO_TOKEN }}
+          shell: bash
+          env:
+            VERCEL_ORG_ID: ${{ inputs.VERCEL_ORG_ID }}
+            VERCEL_PROJECT_ID: ${{ inputs.VERCEL_PROJECT_ID }}
         - name: Set up Docker Buildx
           uses: docker/setup-buildx-action@v2
           with:
@@ -49,7 +57,7 @@ jobs:
           with:
             registry: registry.fly.io
             username: x
-            password: ${{ secrets.FLY_API_TOKEN }}
+            password: ${{ inputs.FLY_API_TOKEN }}
         - name: 🐳 Docker build
           uses: docker/build-push-action@v3
           with:
@@ -59,11 +67,14 @@ jobs:
             tags: registry.fly.io/${{ steps.app_name.outputs.value }}:${{ github.ref_name }}-${{ github.sha }}
             build-args: |
               COMMIT_SHA=${{ github.sha }}
-              TURBO_TOKEN=${{ secrets.TURBO_TOKEN }}
-              TURBO_TEAM=${{ secrets.TURBO_TEAM }}
+              TURBO_TOKEN=${{ inputs.TURBO_TOKEN }}
+              TURBO_TEAM=${{ inputs.TURBO_TEAM }}
             cache-from: type=gha
             cache-to: type=gha,mode=max
         - name: Installing flyctl
           uses: superfly/flyctl-actions/setup-flyctl@master
         - name: Deploy
           run: flyctl deploy --config ./apps/${{ inputs.package }}/fly.toml --image registry.fly.io/${{ steps.app_name.outputs.value }}:${{ github.ref_name }}-${{ github.sha }}
+          env:
+            FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
+          shell: bash

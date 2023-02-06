@@ -2,9 +2,6 @@ name: Deploy or Ignore
 on:
   push:
     branches: ["main"]
-env:
-  TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
-  TURBO_TEAM: ${{ secrets.TURBO_TEAM }}
 jobs:
   build-or-ignore:
       name: Build only on changes
@@ -20,9 +17,16 @@ jobs:
           uses: actions/checkout@v3
         - name: Checking for changes
           run: npx turbo-ignore ${{ matrix.package }}
+          env:
+            TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
+            TURBO_TEAM: ${{ secrets.TURBO_TEAM }}
         - name: Build and Deploy
           if: ${{ failure() }}
-          uses: ./.github/workflows/by.yml
+          uses: ./.github/actions/build-or-ignore.yml
           with:
             package: ${{ matrix.package }}
-          secrets: inherit
+            FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
+            TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
+            TURBO_TEAM: ${{ secrets.TURBO_TEAM }}
+            VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+            VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
