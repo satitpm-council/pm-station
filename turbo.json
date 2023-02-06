@@ -26,6 +26,7 @@
                 "^build"
             ],
             "outputs": [
+                "api/**",
                 "public/build/**",
                 "build/**"
             ]
