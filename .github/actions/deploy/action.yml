@@ -34,7 +34,7 @@ runs:
             file: apps/${{ inputs.package }}/fly.toml
             field: app
         - name: Fetching environment variables
-          run: vercel env pull --yes --token ${{ secrets.TURBO_TOKEN }}
+          run: vercel env pull --yes --token ${{ inputs.TURBO_TOKEN }}
           shell: bash
           env:
             VERCEL_ORG_ID: ${{ inputs.VERCEL_ORG_ID }}
@@ -76,5 +76,5 @@ runs:
         - name: Deploy
           run: flyctl deploy --config ./apps/${{ inputs.package }}/fly.toml --image registry.fly.io/${{ steps.app_name.outputs.value }}:${{ github.ref_name }}-${{ github.sha }}
           env:
-            FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
+            FLY_API_TOKEN: ${{ inputs.FLY_API_TOKEN }}
           shell: bash
