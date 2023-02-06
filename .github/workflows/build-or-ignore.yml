@@ -17,9 +17,11 @@ jobs:
           uses: actions/checkout@v3
           with:
             fetch-depth: 0
+        - name: Installing flyctl
+          uses: superfly/flyctl-actions/setup-flyctl@master
         - name: Checking for changes
           run: |
-            tag=$(fly image show  --config ./apps/${{ matrix.package }}/fly.toml -j | node -pe 'JSON.parse(fs.readFileSync(0)).Tag.split("-")[1]')
+            tag=$(flyctl image show  --config ./apps/${{ matrix.package }}/fly.toml -j | node -pe 'JSON.parse(fs.readFileSync(0)).Tag.split("-")[1]')
             npx turbo-ignore ${{ matrix.package }} --fallback=$tag
           env:
             FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
