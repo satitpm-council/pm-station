@@ -26,7 +26,8 @@ jobs:
             set -e
             EXIT_CODE=0
             npx turbo-ignore ${{ matrix.package }} --fallback=$tag || EXIT_CODE=$?
-            if [ $EXIT_CODE -ne 0 ]; then          
+            if [ $EXIT_CODE -ne 0 ]; then  
+               echo "Should continue deployment"      
                echo "SHOULD_DEPLOY=true" >> $GITHUB_OUTPUT  
             fi
           env:
