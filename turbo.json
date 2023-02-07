@@ -23,6 +23,7 @@
             "outputs": [
                 ".next/**",
                 "api/**",
+                "public/build/**",
                 "build/**"
             ]
         },
