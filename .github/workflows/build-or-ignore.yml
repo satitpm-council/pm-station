@@ -22,11 +22,12 @@ jobs:
         - name: Checking for changes
           id: check-changes
           run: |
-            set +e
             tag=$(flyctl image show  --config ./apps/${{ matrix.package }}/fly.toml -j | node -pe 'JSON.parse(fs.readFileSync(0)).Tag.split("-")[1]')
-            npx turbo-ignore ${{ matrix.package }} --fallback=$tag
-            if [ $? -ne 0 ]; then          
-               echo "SHOULD_DEPLOY=true" >> $GITHUB_OUTPUT     
+            set -e
+            EXIT_CODE=0
+            npx turbo-ignore ${{ matrix.package }} --fallback=$tag || EXIT_CODE=$?
+            if [ $EXIT_CODE -ne 0 ]; then          
+               echo "SHOULD_DEPLOY=true" >> $GITHUB_OUTPUT  
             fi
           env:
             VERCEL: 1
