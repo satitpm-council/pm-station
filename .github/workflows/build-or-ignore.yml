@@ -36,7 +36,7 @@ jobs:
             TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
             TURBO_TEAM: ${{ secrets.TURBO_TEAM }}
         - name: Build and Deploy
-          if: ${{ steps.random-check-changes.outputs.SHOULD_DEPLOY }}
+          if: ${{ steps.check-changes.outputs.SHOULD_DEPLOY }}
           uses: ./.github/actions/deploy
           with:
             package: ${{ matrix.package }}
