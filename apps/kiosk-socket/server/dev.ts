@@ -6,8 +6,9 @@ import initializeSocket from ".";
 const httpServer = createServer();
 const socket = initializeSocket(httpServer);
 
-httpServer.listen(3001, () => {
-  console.log("Starting socket server on PORT 3001");
+const port = process.env.PORT || 3001;
+httpServer.listen(port, () => {
+  console.log(`Starting socket server on PORT ${port}`);
 });
 
 process.on("SIGINT", () => {

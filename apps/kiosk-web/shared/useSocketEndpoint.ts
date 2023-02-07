@@ -17,10 +17,7 @@ export const useSocketEndpoint = () => {
       const { protocol, hostname } = new URL(window.location.href);
       setEndpoint(`${protocol}//${hostname}:3001`);
     } else {
-      // initialize socket api first
-      fetch("/api/socket").then(() => {
-        setEndpoint(window.location.origin);
-      });
+      setEndpoint("https://pm-station-kiosk-socket.fly.dev");
     }
   }, []);
   return endpoint;
