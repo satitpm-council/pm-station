@@ -9,17 +9,36 @@ import { authMiddleware } from "./middleware";
 import dayjs from "dayjs";
 import { setupDisplayEvents } from "./display";
 
+const allowedOrigins = [
+  "https://pm-station-kiosk.vercel.app",
+  "https://coolkidssatit.fly.dev",
+];
+
 const initializeSocket = (server: any): Server => {
   const io: IOServer = new Server(server, {
-    ...(process.env.NODE_ENV !== "production"
-      ? {
-          cors: {
+    cors: {
+      ...(process.env.NODE_ENV !== "development"
+        ? {
+            origin: (origin, callback) => {
+              if (process.env.NODE_ENV !== "production") {
+                console.log(origin);
+              }
+              if (origin && allowedOrigins.includes(origin)) {
+                callback(null, true);
+              } else {
+                callback(new Error("Not allowed by CORS"));
+              }
+            },
+          }
+        : {
+            // Allow all origins in development
             origin: "*",
-          },
-        }
-      : {}),
+          }),
+      allowedHeaders: "Origin, X-Requested-With, Content-Type, Accept",
+      methods: ["GET", "POST", "OPTIONS", "HEAD"],
+      credentials: true,
+    },
   });
-
   let store: DataStore<ServerStore> | undefined;
   io.use((socket, next) => {
     authMiddleware(io, socket)

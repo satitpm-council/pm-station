@@ -15,10 +15,10 @@ export const initializeSocket = (endpoint: string) => {
   socket.on("connect", () => {
     console.log("Connected to socket server.");
   });
-  socket.on("play", (track) => {
+  socket.on("play", (track, trackEndTime) => {
     const durationTimeout = setTimeout(() => {
       projectorStore.setState({ currentTrack: undefined });
-    }, track.duration_ms);
+    }, trackEndTime - new Date().valueOf());
     projectorStore.setState({ currentTrack: track, durationTimeout });
   });
   socket.on("stop", () => {
