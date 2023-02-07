@@ -25,7 +25,7 @@ export default function ProgramView() {
     listen: true,
   });
 
-  const daysInThai = projectorStore((state) => days[state.datetime.date()]);
+  const daysInThai = projectorStore((state) => days[state.datetime.day()]);
   const playlistId = controllerStore((state) => state.playlistId);
   const { data: playlist } = usePlaylist(playlistId, {
     listen: true,
