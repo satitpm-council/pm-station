@@ -12,7 +12,7 @@ export const usePrograms = () => {
     user && user.role && user.role > UserRole.USER ? "programs" : null,
     {
       constraints: isEditorClaims(user)
-        ? [where(documentId(), "==", user?.programId)]
+        ? [where(documentId(), "==", user?.programId ?? "unknown")]
         : undefined,
     },
     {

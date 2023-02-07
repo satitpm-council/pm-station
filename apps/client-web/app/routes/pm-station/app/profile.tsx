@@ -27,7 +27,7 @@ export const action: ActionFunction = async ({ request }) => {
     const { displayName, type } = await getFormData<User>(request);
     if (!user || !displayName || !type)
       throw new Error("Missing required parameters.");
-    const role = UserRole.EDITOR; //user.role ?? UserRole.USER;
+    const role = user.role ?? UserRole.USER;
     const headers = {
       "Set-Cookie": await updateProfile(request, user?.uid, {
         displayName,

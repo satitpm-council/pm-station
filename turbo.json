@@ -19,24 +19,12 @@
         "build": {
             "dependsOn": [
                 "^build"
-            ]
-        },
-        "client-web#deploy": {
-            "dependsOn": [
-                "^build"
             ],
             "outputs": [
+                ".next/**",
                 "api/**",
                 "public/build/**",
                 "build/**"
-            ]
-        },
-        "kiosk-web#deploy": {
-            "dependsOn": [
-                "^build"
-            ],
-            "outputs": [
-                ".next/**"
             ]
         },
         "deploy": {}
