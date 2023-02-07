@@ -1,7 +1,7 @@
 node_modules
 
 /.cache
-/public/pm-station/build
+/public/build
 /build
 .env
 sentry.client.json

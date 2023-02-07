@@ -36,9 +36,9 @@ module.exports = {
   serverBuildTarget: "vercel",
   ignoredRouteFiles: ["**/.*"],
   // appDirectory: "app",
-  assetsBuildDirectory: "public/pm-station/build",
+  // assetsBuildDirectory: "public/build",
   // serverBuildPath: ".netlify/functions-internal/server.js",
-  publicPath: "/pm-station/build/",
+  // publicPath: "/build/",
   server: process.env.NODE_ENV === "development" ? undefined : "./server.js",
   serverDependenciesToBundle: [/^@station\//, "shared"],
   watchPaths: async () => {
