@@ -17,7 +17,7 @@ export const usePlaylists = () => {
     {
       constraints: [
         ...(isEditorClaims(user)
-          ? [where("target", "==", user?.programId)]
+          ? [where("target", "==", user?.programId ?? "")]
           : []),
         orderBy("queuedDate", "asc"),
         // editor users can only see their own playlists
