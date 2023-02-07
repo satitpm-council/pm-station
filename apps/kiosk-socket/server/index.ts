@@ -17,12 +17,9 @@ const allowedOrigins = [
 const initializeSocket = (server: any): Server => {
   const io: IOServer = new Server(server, {
     cors: {
-      ...(process.env.NODE_ENV !== "development"
+      ...(process.env.NODE_ENV === "production"
         ? {
             origin: (origin, callback) => {
-              if (process.env.NODE_ENV !== "production") {
-                console.log(origin);
-              }
               if (origin && allowedOrigins.includes(origin)) {
                 callback(null, true);
               } else {
