@@ -22,7 +22,7 @@ jobs:
         - name: Checking for changes
           id: check-changes
           run: |
-            set -e
+            set +e
             tag=$(flyctl image show  --config ./apps/${{ matrix.package }}/fly.toml -j | node -pe 'JSON.parse(fs.readFileSync(0)).Tag.split("-")[1]')
             npx turbo-ignore ${{ matrix.package }} --fallback=$tag
             if [ $? -ne 0 ]; then          
