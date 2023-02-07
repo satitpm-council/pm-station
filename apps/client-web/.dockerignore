@@ -2,7 +2,7 @@ node_modules
 *.log
 .DS_Store
 /.cache
-/public/build
+/public/pm-station/build
 /build
 /firebase
 /.git
