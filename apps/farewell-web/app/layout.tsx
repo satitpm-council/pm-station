@@ -1,7 +1,6 @@
 import { Prompt } from "@next/font/google";
-import "react-toastify/dist/ReactToastify.min.css";
+
 import "../styles/globals.css";
-import "../styles/pm-station.css";
 
 const promptFont = Prompt({
   variable: "--font-prompt",
@@ -17,8 +16,12 @@ export default function RootLayout({
 }) {
   return (
     <html lang="th" className={promptFont.variable}>
+      {/*
+        <head /> will contain the components returned by the nearest parent
+        head.tsx. Find out more at https://beta.nextjs.org/docs/api-reference/file-conventions/head
+      */}
       <head />
-      <body>{children}</body>
+      <body className="flex flex-col h-full min-h-screen">{children}</body>
     </html>
   );
 }
