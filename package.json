@@ -8,10 +8,13 @@
   "scripts": {
     "client:dev": "yarn workspace client-web dev",
     "kiosk:dev": "turbo run dev --filter=kiosk-web... --parallel",
+    "kiosk": "yarn workspace kiosk-web",
+    "fw": "yarn workspace farewell-web",
     "bootstrap": "turbo run bootstrap --no-cache",
     "build": "turbo run build",
     "deploy": "turbo run deploy",
-    "postinstall": "patch-package"
+    "postinstall": "patch-package",
+    "update": "lernaupdate --lazy"
   },
   "dependencies": {
     "@lemasc/swr-firestore": "^2.2.1",
@@ -20,7 +23,8 @@
     "turbo": "^1.6.3"
   },
   "devDependencies": {
-    "eslint": "^8.30.0"
+    "eslint": "^8.30.0",
+    "lerna-update-wizard": "^1.1.2"
   },
   "resolutions": {
     "axios": "0.27.2",
