@@ -14,9 +14,8 @@ import {
 } from "@heroicons/react/20/solid";
 import { Link, useMatches } from "@remix-run/react";
 import { UserRole, useUser } from "~/utils/pm-station/client";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { SidebarContent, SidebarFooter } from "react-pro-sidebar";
-import { useCallback } from "react";
 
 const MusicIcon = <MusicalNoteIcon className="h-4 w-4" />;
 
@@ -42,23 +41,12 @@ export default function Sidebar({
   const { user, isRegistered } = useUser();
 
   const matches = useMatches();
-  const justToggle = useRef(false);
   useEffect(() => {
-    if (justToggle.current) {
-      justToggle.current = false;
-      return;
-    }
     setOpen(false);
     if (window.matchMedia("(min-width: 1024px)").matches) {
       setCollapsed(true);
     }
   }, [matches, setOpen, setCollapsed]);
-
-  const toggleSidebar = useCallback(() => {
-    justToggle.current = true;
-    setCollapsed((prev) => !prev);
-    setOpen(true);
-  }, [setOpen]);
 
   useEffect(() => {
     const listener = () => {
@@ -148,7 +136,7 @@ export default function Sidebar({
         >
           <button
             type="button"
-            onClick={() => toggleSidebar()}
+            onClick={() => setCollapsed((c) => !c)}
             title="เปิด/ปิด"
             className="w-full"
             id="toggle-sidebar"
