@@ -14,7 +14,8 @@ import {
 } from "@heroicons/react/20/solid";
 import { Link, useMatches } from "@remix-run/react";
 import { UserRole, useUser } from "~/utils/pm-station/client";
-import { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
+import shallow from "zustand/shallow";
 import { SidebarContent, SidebarFooter } from "react-pro-sidebar";
 
 const MusicIcon = <MusicalNoteIcon className="h-4 w-4" />;
@@ -31,22 +32,37 @@ function SongRequestMenu({ showIcon = true }: { showIcon?: boolean }) {
 }
 
 export default function Sidebar({
+  collapsed,
+  setCollapsed,
   open,
   setOpen,
 }: {
+  collapsed: boolean;
+  setCollapsed: React.Dispatch<React.SetStateAction<boolean>>;
   open: boolean;
   setOpen: (value: boolean) => void;
 }) {
-  const [collapsed, setCollapsed] = useState(false);
   const { user, isRegistered } = useUser();
 
   const matches = useMatches();
+
+  const idMatches = useMemo(() => matches.map((v) => v.id), [matches]);
+  const stableMatches = useRef(idMatches);
+  const rerender = useState(false)[1];
+
+  useEffect(() => {
+    if (shallow(idMatches, stableMatches.current)) return;
+    stableMatches.current = idMatches;
+    rerender((v) => !v);
+  }, [idMatches, rerender]);
+
   useEffect(() => {
     setOpen(false);
     if (window.matchMedia("(min-width: 1024px)").matches) {
       setCollapsed(true);
     }
-  }, [matches, setOpen, setCollapsed]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [stableMatches.current]);
 
   useEffect(() => {
     const listener = () => {
@@ -55,7 +71,7 @@ export default function Sidebar({
     const mql = window.matchMedia("(min-width: 1024px)");
     mql.addEventListener("change", listener);
     return () => mql.removeEventListener("change", listener);
-  }, []);
+  }, [setCollapsed]);
 
   return (
     <ProSidebar
