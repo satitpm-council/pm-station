@@ -1,5 +1,5 @@
 import type { LinksFunction } from "@remix-run/node";
-import { Link, Outlet } from "@remix-run/react";
+import { Link, Outlet, useMatches } from "@remix-run/react";
 
 import sidebar from "react-pro-sidebar/dist/css/styles.css";
 import sidebarOverrides from "~/styles/sidebar.css";
@@ -27,7 +27,9 @@ export const links: LinksFunction = () => [
 ];
 
 export default function Index() {
+  const [collapsed, setCollapsed] = useState(false);
   const [open, setOpen] = useState(false);
+
   const { auth } = useFirebase();
   const sessionToken = useAuthenticityToken();
   useEffect(() => {
@@ -58,16 +60,30 @@ export default function Index() {
     setIsPopup(window.opener !== null);
   }, []);
 
-  const openMenu = useCallback(() => setOpen(true), []);
+  const openMenu = useCallback(() => {
+    setOpen(true);
+  }, []);
+
   const closePopup = useCallback(() => window.close(), []);
   return (
     <div className="overflow-hidden flex  items-stretch h-screen gap-4 bg-gradient-to-b from-[#151515] to-[#121212] text-white">
-      {!isPopup && <Sidebar open={open} setOpen={setOpen} />}
+      {!isPopup && (
+        <Sidebar
+          collapsed={collapsed}
+          setCollapsed={setCollapsed}
+          open={open}
+          setOpen={setOpen}
+        />
+      )}
       <div
         id="app"
         className="flex flex-col overflow-auto h-full min-h-screen w-full"
       >
-        <nav className="flex flex-row gap-1 items-center px-4 py-2 lg:hidden">
+        <nav
+          className={`flex flex-row gap-1 items-center px-4 py-2${
+            !isPopup ? " lg:hidden" : ""
+          }`}
+        >
           <button
             title={isPopup ? "ปิดหน้าต่าง" : "เปิดแถบนำทาง"}
             onClick={isPopup ? closePopup : openMenu}
@@ -83,7 +99,11 @@ export default function Index() {
             <Header />
           </Link>
         </nav>
-        <main className="px-6 lg:px-8 py-4 lg:pt-12 pb-12 flex-1 flex flex-col gap-6">
+        <main
+          className={`px-6  py-4 ${
+            !isPopup ? "lg:px-8 lg:pt-12 " : ""
+          }pb-12 flex-1 flex flex-col gap-6`}
+        >
           <Outlet />
         </main>
       </div>
