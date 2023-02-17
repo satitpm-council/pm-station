@@ -1,11 +1,18 @@
 import { ImageFile } from "@/types/image";
-import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/24/outline";
+import {
+  ArrowRightIcon,
+  CheckIcon,
+  ChevronLeftIcon,
+  ChevronRightIcon,
+} from "@heroicons/react/24/outline";
 import { AnimatePresence, motion, MotionConfig } from "framer-motion";
 import Image from "next/image";
 import { useCallback, useState } from "react";
 import { useSwipeable } from "react-swipeable";
 import { variants } from "../utils/animationVariants";
 import { range } from "../utils/range";
+
+import axios from "axios";
 
 import useKeyPress from "react-use-keypress";
 
@@ -139,6 +146,19 @@ export default function SharedModal({
                   )}
                 </>
               )}
+              <div className="absolute top-0 z-20 right-0 flex items-center gap-2 p-3 text-white">
+                <button
+                  onClick={() => {
+                    const studentId = prompt("ป้อนรหัสประจำตัวนักเรียน");
+                    if (studentId) {
+                    }
+                  }}
+                  className="rounded-full bg-black/50 p-2 text-white/75 backdrop-blur-lg transition hover:bg-black/75 hover:text-white"
+                  title="ต่อไป"
+                >
+                  <CheckIcon className="h-5 w-5" />
+                </button>
+              </div>
             </div>
           )}
           {/* Bottom Nav bar */}

@@ -1,5 +1,6 @@
 import { DriveImageFile } from "@/types/image";
 import _drive from "@/utils/gdrive";
+import { exifDate } from "@/utils/image.client";
 import { GetServerSideProps, NextApiHandler } from "next";
 import Image from "next/image";
 import Link from "next/link";
@@ -19,6 +20,7 @@ export const getServerSideProps: GetServerSideProps<Props> = async (ctx) => {
       q: `'${folderId}' in parents and mimeType contains 'image/'`,
       fields:
         "files(id, name, createdTime, webViewLink, thumbnailLink, imageMediaMetadata(width, height, time))",
+      orderBy: "createdTime",
     });
 
     return { props: { files: data.files as DriveImageFile[] } };
@@ -36,7 +38,7 @@ export default function PendingImagesPage({ files }: Props) {
         {files.map((v) => (
           <Link
             key={v.id}
-            className="rounded bg-white shadow-md flex flex-col gap-2 border p-4"
+            className="rounded bg-gray-100 hover:bg-gray-300 shadow-md flex flex-col gap-2 border p-4"
             href={`/admin/images/editor/${v.id}`}
           >
             <div>
@@ -51,7 +53,7 @@ export default function PendingImagesPage({ files }: Props) {
             <div>
               <h2 className="text-lg font-semibold text-black">{v.name}</h2>
               <p className="text-sm text-gray-500">
-                {v.imageMediaMetadata.width} x {v.imageMediaMetadata.height}
+                {exifDate(v).format("DD/MM/YYYY HH:mm:ss")}
               </p>
             </div>
           </Link>

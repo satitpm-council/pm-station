@@ -1,4 +1,6 @@
+// @ts-ignore
 import imagemin from "imagemin";
+// @ts-ignore
 import imageminJpegtran from "imagemin-jpegtran";
 import type { ImageFile } from "../types/image";
 

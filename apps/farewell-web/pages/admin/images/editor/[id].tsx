@@ -34,7 +34,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     .execute();
 
   const imagesWithBlurDataUrls = await Promise.all(
-    resources.map(getBase64ImageUrl)
+    resources.map((v) => getBase64ImageUrl(v as any))
   );
 
   return {
@@ -56,7 +56,6 @@ export default function PhotoEditor({ file, frames }: Props) {
   const [frameIndex, setFrameIndex] = useState(0);
   return (
     <main>
-      <div>Photo Editor</div>
       <div className="flex flex-col items-center justify-center">
         <div className="select-none w-full max-w-4xl">
           <SharedModal
