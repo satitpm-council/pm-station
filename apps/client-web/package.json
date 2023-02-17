@@ -17,7 +17,7 @@
     "test": "tsc --skipLibCheck --noEmit"
   },
   "dependencies": {
-    "@googleapis/drive": "^4.0.0",
+    "@googleapis/drive": "4.0.2",
     "@headlessui/react": "1.7.10",
     "@heroicons/react": "^2.0.13",
     "@lemasc/swr-firestore": "*",
@@ -38,7 +38,7 @@
     "broadcastchannel-polyfill": "^1.0.1",
     "build-config": "*",
     "cross-env": "^7.0.3",
-    "dayjs": "*",
+    "dayjs": "^1.11.7",
     "eslint-config-coolkidssatit": "*",
     "firebase": "^9.9.3",
     "firebase-admin": "^11.4.1",
