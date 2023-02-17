@@ -11,14 +11,14 @@
     "deploy": "cd ../../ && flyctl deploy --dockerfile ./apps/kiosk-web/Dockerfile --config ./apps/kiosk-web/fly.toml"
   },
   "dependencies": {
-    "@googleapis/drive": "^4.0.0",
+    "@googleapis/drive": "4.0.2",
     "@headlessui/react": "1.7.10",
     "@heroicons/react": "^2.0.13",
     "@next/font": "13.1.6",
     "@station/client": "*",
     "@station/server": "*",
     "@station/shared": "*",
-    "dayjs": "*",
+    "dayjs": "^1.11.7",
     "firebase-admin": "^11.4.1",
     "framer-motion": "^8.2.4",
     "kiosk-socket": "*",
