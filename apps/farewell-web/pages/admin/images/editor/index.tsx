@@ -49,7 +49,7 @@ export default function PendingImagesPage({ files }: Props) {
               />
             </div>
             <div>
-              <h2 className="text-lg font-semibold">{v.name}</h2>
+              <h2 className="text-lg font-semibold text-black">{v.name}</h2>
               <p className="text-sm text-gray-500">
                 {v.imageMediaMetadata.width} x {v.imageMediaMetadata.height}
               </p>

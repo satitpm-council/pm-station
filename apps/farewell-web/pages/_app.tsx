@@ -13,7 +13,7 @@ const promptFont = Prompt({
 export default function MyApp({ Component, pageProps }: AppProps) {
   return (
     <div
-      className={`${promptFont.variable} font-sans h-full min-h-screen bg-black px-4 py-6 lg:px-6 lg:py-10`}
+      className={`${promptFont.variable} font-sans h-full min-h-screen bg-black px-4 py-6 lg:px-6 lg:py-10 text-white`}
     >
       <Component {...pageProps} />
     </div>
