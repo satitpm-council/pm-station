@@ -16,7 +16,7 @@ export default function downloadPhoto(url: string, filename: string) {
     const params = new URLSearchParams();
     params.set("url", url);
     params.set("filename", filename);
-    window.location.replace("/farewell/api/download?" + params.toString());
+    window.location.replace("/api/download?" + params.toString());
     return;
   }
   fetch(url, {

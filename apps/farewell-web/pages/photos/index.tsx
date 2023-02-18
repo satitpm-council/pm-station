@@ -38,13 +38,13 @@ export const getServerSideProps: GetServerSideProps<Props> = withIronSessionSsr(
         }
         return {
           redirect: {
-            destination: `/farewell/api/code?${params.toString()}`,
+            destination: `/api/code?${params.toString()}`,
           },
         };
       }
       return {
         redirect: {
-          destination: "/farewell",
+          destination: "/",
         },
       };
     }
@@ -109,7 +109,7 @@ const ShareButton = ({ user }: Pick<Props, "user">) => {
 
   const onClick = useCallback(() => {
     navigator.clipboard.writeText(
-      `${window.location.origin}/farewell/share?code=${user.uid}`
+      `${window.location.origin}/share?code=${user.uid}`
     );
     setShow(true);
     transitionRef.current = setTimeout(() => {
@@ -158,7 +158,7 @@ export default function ImagesViewPage({ files, user }: Props) {
         </div>
         <div className="my-[-70px] mx-[-50px] lg:my-[-100px] flex-shrink-0">
           <Image
-            src="/logo/FCSHADOW.png"
+            src="/farewell/logo/FCSHADOW.png"
             alt="FCSHADOW"
             className="object-cover"
             width={300}
@@ -184,7 +184,7 @@ export default function ImagesViewPage({ files, user }: Props) {
         </div>
         <ShareButton user={user} />
         <div className="absolute right-0 top-0 p-6 z-10">
-          <Link href="/farewell/api/logout" title="Logout">
+          <Link href="/api/logout" title="Logout">
             <ArrowRightOnRectangleIcon className="h-5 w-5" />
           </Link>
         </div>

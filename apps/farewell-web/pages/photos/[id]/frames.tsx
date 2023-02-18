@@ -41,7 +41,7 @@ export const getServerSideProps: GetServerSideProps<Props> = withIronSessionSsr(
       return {
         props: { frames: [] },
         redirect: {
-          destination: "/farewell/photos",
+          destination: "/photos",
         },
       };
     }
@@ -121,7 +121,7 @@ export default function ImagesViewPage({ frames, file }: Props) {
         </div>
         <div className="my-[-70px] mx-[-50px] lg:my-[-100px] flex-shrink-0">
           <Image
-            src="/logo/FCSHADOW.png"
+            src="/farewell/logo/FCSHADOW.png"
             alt="FCSHADOW"
             className="object-cover"
             width={300}

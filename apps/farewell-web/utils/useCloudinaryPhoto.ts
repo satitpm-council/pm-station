@@ -9,7 +9,7 @@ const useCloudinaryPhoto = (file?: {
   id: string | number;
 }) => {
   return useSWR(
-    file ? `/farewell/api/images/get?fileId=${file.id}` : null,
+    file ? `/api/images/get?fileId=${file.id}` : null,
     async (url) => {
       const { data } = await axios.get<ImageApiFile>(url);
       if (data) {
