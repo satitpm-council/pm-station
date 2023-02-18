@@ -14,7 +14,7 @@ export default function IndexPage() {
       <div className="mx-4 after:content relative col-span-1 row-span-3 flex flex-col items-center justify-center gap-2 md:gap-4 lg:gap-10 overflow-hidden rounded-lg bg-white/10 px-6 py-8 text-center text-white shadow-highlight after:pointer-events-none after:absolute after:inset-0 after:rounded-lg after:shadow-highlight">
         <div className="my-[-70px] mx-[-50px] flex-shrink-0">
           <Image
-            src="/logo/FCSHADOW.png"
+            src="/farewell/logo/FCSHADOW.png"
             alt="FCSHADOW"
             className="object-cover"
             width={300}
