@@ -18,6 +18,14 @@ const nextConfig = {
   experimental: {
     appDir: true,
   },
+  async rewrites() {
+    return [
+      {
+        source: "/farewell",
+        destination: "/",
+      },
+    ];
+  },
 };
 
 module.exports = nextConfig;
