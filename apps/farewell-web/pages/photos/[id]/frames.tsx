@@ -33,7 +33,7 @@ export const getServerSideProps: GetServerSideProps<Props> = withIronSessionSsr(
       return {
         props: { frames: [] },
         redirect: {
-          destination: "/",
+          destination: "/farewell",
         },
       };
     }
@@ -41,7 +41,7 @@ export const getServerSideProps: GetServerSideProps<Props> = withIronSessionSsr(
       return {
         props: { frames: [] },
         redirect: {
-          destination: "/photos",
+          destination: "/farewell/photos",
         },
       };
     }

@@ -7,26 +7,7 @@ import {
 import { customAlphabet } from "nanoid";
 import { NextApiHandler } from "next";
 
-const studentIds = [
-  "17209",
-  "17505",
-  "17509",
-  "17644",
-  "17653",
-  "17709",
-  "17989",
-  "17992",
-  "17997",
-  "18019",
-  "18047",
-  "18048",
-  "18070",
-  "18071",
-  "18086",
-  "18104",
-  "18414",
-  "18432",
-];
+const studentIds = ["17411"];
 
 const nanoid = customAlphabet("0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ_-", 6);
 

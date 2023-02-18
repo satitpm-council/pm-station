@@ -38,13 +38,13 @@ export const getServerSideProps: GetServerSideProps<Props> = withIronSessionSsr(
         }
         return {
           redirect: {
-            destination: `/api/code?${params.toString()}`,
+            destination: `/farewell/api/code?${params.toString()}`,
           },
         };
       }
       return {
         redirect: {
-          destination: "/",
+          destination: "/farewell",
         },
       };
     }
@@ -184,7 +184,7 @@ export default function ImagesViewPage({ files, user }: Props) {
         </div>
         <ShareButton user={user} />
         <div className="absolute right-0 top-0 p-6 z-10">
-          <Link href="/api/logout" title="Logout">
+          <Link href="/farewell/api/logout" title="Logout">
             <ArrowRightOnRectangleIcon className="h-5 w-5" />
           </Link>
         </div>
