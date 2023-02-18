@@ -5,7 +5,7 @@
     "dependencies": {
         "@remix-run/express": "*",
         "@station/shared": "*",
-        "axios": "*"
+        "axios": "^0.27.2"
     },
     "devDependencies": {
         "next": "13.1.6",

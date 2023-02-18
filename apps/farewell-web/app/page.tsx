@@ -1,12 +1,11 @@
 import Image from "next/image";
-import whiteLogo from "./logo/WHITE.png";
 
 export default function Loading() {
   return (
     <div className="flex flex-col items-center justify-center flex-grow bg-red-800 text-white">
       <Image
         className="-my-10"
-        src={whiteLogo}
+        src={"/logo/WHITE.png"}
         width={300}
         height={300}
         alt="Logo"
