@@ -1,5 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  basePath: "/farewell",
   images: {
     formats: ["image/avif", "image/webp"],
     remotePatterns: [
@@ -15,10 +16,6 @@ const nextConfig = {
   },
   async rewrites() {
     return [
-      {
-        source: "/farewell/:match*",
-        destination: "/:match*",
-      },
       {
         source: "/qr",
         destination: "/api/code",
