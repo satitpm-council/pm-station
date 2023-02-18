@@ -1,8 +1,0 @@
-{
-    "rewrites": [
-        {
-            "source": "/qr",
-            "destination": "/farewell/qr"
-        }
-    ]
-}

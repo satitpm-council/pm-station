@@ -5,15 +5,9 @@ type ObjectNonNullable<T> = {
 };
 
 export type DriveImageFile = ObjectNonNullable<
-  Pick<
-    drive_v3.Schema$File,
-    "id" | "name" | "createdTime" | "webViewLink" | "thumbnailLink"
-  >
+  Pick<drive_v3.Schema$File, "id" | "name" | "createdTime" | "thumbnailLink">
 > & {
-  imageMediaMetadata: Pick<
-    NonNullable<drive_v3.Schema$File["imageMediaMetadata"]>,
-    "width" | "height" | "time"
-  >;
+  blurDataUrl: string;
 };
 
 export interface ImageFile {
@@ -23,4 +17,7 @@ export interface ImageFile {
   public_id: string;
   format: string;
   blurDataUrl?: string;
+  driveId?: string;
 }
+
+export type ImageApiFile = Omit<ImageFile, "id">;

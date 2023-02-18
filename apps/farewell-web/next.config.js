@@ -2,7 +2,6 @@
 const nextConfig = {
   images: {
     formats: ["image/avif", "image/webp"],
-    domains: ["res.cloudinary.com"],
     remotePatterns: [
       {
         protocol: "https",
@@ -10,19 +9,23 @@ const nextConfig = {
       },
       {
         protocol: "https",
-
         hostname: "**.googleusercontent.com",
       },
     ],
-  },
-  experimental: {
-    appDir: true,
   },
   async rewrites() {
     return [
       {
         source: "/farewell/:match*",
         destination: "/:match*",
+      },
+      {
+        source: "/qr",
+        destination: "/api/code",
+      },
+      {
+        source: "/share",
+        destination: "/api/code",
       },
     ];
   },

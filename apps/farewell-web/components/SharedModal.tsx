@@ -1,20 +1,23 @@
-import { ImageFile } from "@/types/image";
+import { ImageApiFile, ImageFile } from "@/types/image";
+import downloadPhoto from "@/utils/downloadPhoto";
 import {
+  ArrowDownTrayIcon,
   ArrowRightIcon,
+  ArrowUturnLeftIcon,
   CheckIcon,
   ChevronLeftIcon,
   ChevronRightIcon,
+  PaintBrushIcon,
+  PencilIcon,
+  XMarkIcon,
 } from "@heroicons/react/24/outline";
 import { AnimatePresence, motion, MotionConfig } from "framer-motion";
 import Image from "next/image";
+import Link from "next/link";
 import { useCallback, useState } from "react";
 import { useSwipeable } from "react-swipeable";
 import { variants } from "../utils/animationVariants";
 import { range } from "../utils/range";
-
-import axios from "axios";
-
-import useKeyPress from "react-use-keypress";
 
 export interface SharedModalProps {
   index: number;
@@ -24,7 +27,7 @@ export interface SharedModalProps {
   closeModal: () => void;
   navigation: boolean;
   direction?: number;
-  backgroundImage?: string;
+  backgroundImage?: ImageApiFile;
 }
 
 export default function SharedModal({
@@ -44,8 +47,6 @@ export default function SharedModal({
       range(index - 15, index + 15).includes(img.id)
     ) ?? [];
 
-  console.log(filteredImages);
-
   const handlers = useSwipeable({
     onSwipedLeft: () => {
       if (images && index < images.length - 1) {
@@ -61,6 +62,24 @@ export default function SharedModal({
   });
 
   let currentImage = images ? images[index] : currentPhoto;
+
+  const downloadPhotoHandler = useCallback(() => {
+    const baseUrl = `https://res.cloudinary.com/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}/image/upload/`;
+
+    const image = backgroundImage ?? currentImage;
+    const public_id = `${image?.public_id}.${image?.format}`;
+    let overlay = "";
+    if (currentImage && backgroundImage) {
+      overlay = `c_scale,w_1200/l_${currentImage.public_id.replace(
+        /\//g,
+        ":"
+      )}/fl_layer_apply/`;
+    }
+    downloadPhoto(
+      `${baseUrl}${overlay}${public_id}`,
+      `${image?.public_id.slice(image?.public_id?.lastIndexOf("/") + 1)}`
+    );
+  }, [backgroundImage, currentImage]);
 
   return (
     <MotionConfig
@@ -86,30 +105,37 @@ export default function SharedModal({
                 exit="exit"
                 className={`absolute${backgroundImage ? " z-10" : ""}`}
               >
-                <Image
-                  src={`https://res.cloudinary.com/${
-                    process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME
-                  }/image/upload/c_scale,${navigation ? "w_1280" : "w_1920"}/${
-                    currentImage?.public_id
-                  }.${currentImage?.format}`}
-                  width={navigation ? 1280 : 1920}
-                  height={navigation ? 853 : 1280}
-                  placeholder="blur"
-                  blurDataURL={currentImage?.blurDataUrl}
-                  priority
-                  alt="PM Farewell 65"
-                  onLoadingComplete={() => setLoaded(true)}
-                />
+                {currentImage && (
+                  <Image
+                    src={`https://res.cloudinary.com/${
+                      process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME
+                    }/image/upload/c_scale,${
+                      navigation ? "w_1280" : "w_1920"
+                    }/${currentImage?.public_id}.${currentImage?.format}`}
+                    width={navigation ? 1280 : 1920}
+                    height={navigation ? 853 : 1280}
+                    placeholder="blur"
+                    blurDataURL={currentImage?.blurDataUrl}
+                    priority
+                    alt="PM Farewell 65"
+                    onLoadingComplete={() => setLoaded(true)}
+                  />
+                )}
               </motion.div>
             </AnimatePresence>
             {backgroundImage && (
               <Image
-                src={backgroundImage}
+                src={`https://res.cloudinary.com/${
+                  process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME
+                }/image/upload/c_scale,${navigation ? "w_1280" : "w_1920"}/${
+                  backgroundImage?.public_id
+                }.${backgroundImage?.format}`}
                 width={navigation ? 1280 : 1920}
                 height={navigation ? 853 : 1280}
-                alt="PM Farrwell 665"
+                placeholder="blur"
+                blurDataURL={backgroundImage?.blurDataUrl}
                 priority
-                className="absolute"
+                alt="PM Farewell 65"
               />
             )}
           </div>
@@ -146,17 +172,39 @@ export default function SharedModal({
                   )}
                 </>
               )}
-              <div className="absolute top-0 z-20 right-0 flex items-center gap-2 p-3 text-white">
+
+              {currentImage && (
+                <div className="absolute top-0 z-20 right-0 flex items-center gap-2 p-3 text-white">
+                  {!backgroundImage && (
+                    <>
+                      <Link
+                        className="rounded-full bg-black/50 p-2 text-white/75 backdrop-blur-lg transition hover:bg-black/75 hover:text-white"
+                        href={`/photos/${currentImage.driveId}/frames`}
+                        title="Insert frame"
+                      >
+                        <PaintBrushIcon className="h-5 w-5" />
+                      </Link>
+                    </>
+                  )}
+                  <button
+                    onClick={downloadPhotoHandler}
+                    className="rounded-full bg-black/50 p-2 text-white/75 backdrop-blur-lg transition hover:bg-black/75 hover:text-white"
+                    title="Download fullsize version"
+                  >
+                    <ArrowDownTrayIcon className="h-5 w-5" />
+                  </button>
+                </div>
+              )}
+              <div className="absolute top-0 left-0 flex items-center gap-2 p-3 text-white">
                 <button
-                  onClick={() => {
-                    const studentId = prompt("ป้อนรหัสประจำตัวนักเรียน");
-                    if (studentId) {
-                    }
-                  }}
+                  onClick={() => closeModal()}
                   className="rounded-full bg-black/50 p-2 text-white/75 backdrop-blur-lg transition hover:bg-black/75 hover:text-white"
-                  title="ต่อไป"
                 >
-                  <CheckIcon className="h-5 w-5" />
+                  {navigation ? (
+                    <XMarkIcon className="h-5 w-5" />
+                  ) : (
+                    <ArrowUturnLeftIcon className="h-5 w-5" />
+                  )}
                 </button>
               </div>
             </div>

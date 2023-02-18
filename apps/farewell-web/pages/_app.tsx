@@ -13,9 +13,22 @@ const promptFont = Prompt({
 export default function MyApp({ Component, pageProps }: AppProps) {
   return (
     <div
-      className={`${promptFont.variable} font-sans h-full min-h-screen bg-black px-4 py-6 lg:px-6 lg:py-10 text-white`}
+      className={`${promptFont.variable} font-sans h-full min-h-screen bg-black px-4 py-6 lg:px-6 lg:py-10 text-white flex flex-col`}
     >
       <Component {...pageProps} />
+      <footer className="w-full text-center leading-7 text-sm mt-4 px-4 pt-6 border-t border-gray-700 text-gray-300">
+        ดำเนินการโดย คณะกรรมการนักเรียนประจำปีการศึกษา 2565
+        <br />
+        IG:{" "}
+        <a
+          href="https://instagram.com/coolkidssatit/"
+          target="_blank"
+          rel="noreferrer noopener"
+          className="text-blue-400 hover:text-blue-500 underline"
+        >
+          @coolkidssatit
+        </a>
+      </footer>
     </div>
   );
 }
