@@ -4,7 +4,7 @@ import { NextApiHandler } from "next";
 
 const logoutRoute: NextApiHandler = async (req, res) => {
   req.session.destroy();
-  res.redirect("/");
+  res.redirect("/farewell");
 };
 
 export default withIronSessionApiRoute(logoutRoute, sessionOptions);
