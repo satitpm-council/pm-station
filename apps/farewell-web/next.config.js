@@ -21,8 +21,8 @@ const nextConfig = {
   async rewrites() {
     return [
       {
-        source: "/farewell",
-        destination: "/",
+        source: "/farewell/:match*",
+        destination: "/:match*",
       },
     ];
   },
