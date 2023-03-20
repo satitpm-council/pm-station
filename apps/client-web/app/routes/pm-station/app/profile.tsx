@@ -51,7 +51,6 @@ export const action: ActionFunction = async ({ request }) => {
     }
     return redirect("/pm-station/app", { headers });
   } catch (err) {
-    console.error(err);
     return json<ActionResponse>({ success: false, error: "bad-request" }, 400);
   }
 };

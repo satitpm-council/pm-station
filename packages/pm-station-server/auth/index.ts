@@ -65,6 +65,8 @@ export const verifySession = async ({
 
 const customTokenToIdToken = async (token: string) => {
   const key = process.env.PM_STATION_FIREBASE_PUBLIC_API_KEY;
+  console.log(process.env.NODE_ENV, "NODE ENV");
+  const baseURL = "https://identitytoolkit.googleapis.com/v1";
   const { data } = await axios.post<{ idToken: string }>(
     "/accounts:signInWithCustomToken",
     {
@@ -72,7 +74,12 @@ const customTokenToIdToken = async (token: string) => {
       returnSecureToken: true,
     },
     {
-      baseURL: "https://identitytoolkit.googleapis.com/v1",
+      baseURL: process.env.FIREBASE_AUTH_EMULATOR_HOST
+        ? baseURL.replace(
+            "https://",
+            `http://${process.env.FIREBASE_AUTH_EMULATOR_HOST}/`
+          )
+        : baseURL,
       params: {
         key,
       },

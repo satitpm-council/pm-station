@@ -13,8 +13,14 @@
 // https://on.cypress.io/configuration
 // ***********************************************************
 
-// Import commands.js using ES2015 syntax:
+import "./emulators";
 import "./commands";
+
+before(() => {
+  // before start running any tests
+  // make sure that we have clear all users from the firebase emulator.
+  cy.requestToAuthEmulator("DELETE", `/accounts`);
+});
 
 Cypress.on("uncaught:exception", (err) => {
   // Cypress and React Hydrating the document don't get along
@@ -28,6 +34,3 @@ Cypress.on("uncaught:exception", (err) => {
     return false;
   }
 });
-
-// Alternatively you can use CommonJS syntax:
-// require('./commands')

@@ -1,5 +1,12 @@
-const { getPackages, getPackagesPaths } = require("build-config");
+// @ts-check
+
+const { getPackages, getPackagesPaths, setupTestEnv } = require("build-config");
 const { withEsbuildOverride } = require("remix-esbuild-override");
+
+if (process.env.NODE_ENV === "test") {
+  // Sets test environment variables
+  setupTestEnv("client-web");
+}
 
 withEsbuildOverride((option) => {
   // update the option
@@ -25,13 +32,12 @@ withEsbuildOverride((option) => {
         );
       },
     },
-    ...option.plugins,
+    ...(option.plugins ?? []),
   ];
 
   return option;
 });
 
-console.log("NODE_ENV", process.env.NODE_ENV);
 /** @type {import('@remix-run/dev').AppConfig} */
 module.exports = {
   serverBuildTarget: "vercel",

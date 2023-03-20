@@ -5,6 +5,8 @@ yarn-error.log
 *.hprof
 .vercel
 **/*.env
+**/*.env.*
+!**/*.env.example
 .turbo
 out/*
 .vercel

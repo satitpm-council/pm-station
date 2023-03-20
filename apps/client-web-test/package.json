@@ -5,9 +5,7 @@
   "license": "MIT",
   "scripts": {
     "open": "cypress open",
-    "test": "run-p test:**",
-    "test:firebase": "yarn workspace pm-station-firebase test",
-    "test:web": "yarn workspace client-web test"
+    "test": "cypress test"
   },
   "devDependencies": {
     "cypress": "^12.8.1",

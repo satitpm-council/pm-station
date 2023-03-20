@@ -1,9 +1,9 @@
 import type { FirebaseApp, FirebaseError, FirebaseOptions } from "firebase/app";
 import { initializeApp } from "firebase/app";
-import type { Auth, User } from "firebase/auth";
+import { Auth, connectAuthEmulator, User } from "firebase/auth";
 import { onIdTokenChanged } from "firebase/auth";
 import { getAuth } from "firebase/auth";
-import type { Firestore } from "firebase/firestore";
+import { connectFirestoreEmulator, Firestore } from "firebase/firestore";
 import { getFirestore } from "firebase/firestore";
 import { useEffect, useState } from "react";
 import { getFirebaseConfig } from "./config";
@@ -31,6 +31,11 @@ export const useFirebase = (initialConfig?: FirebaseOptions): FirebaseStore => {
     const auth = getAuth(app);
     const db = getFirestore(app);
     auth.languageCode = "th";
+    //if (process.env.NODE_ENV === "test") {
+    console.log("Connecting to firebase emulators...");
+    connectAuthEmulator(auth, "http://localhost:9099");
+    connectFirestoreEmulator(db, "localhost", 8080);
+    //}
     const store: FirebaseStore = { app, auth, db };
     firebaseStore = store;
     return store;
