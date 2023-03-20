@@ -31,6 +31,7 @@ withEsbuildOverride((option) => {
   return option;
 });
 
+console.log("NODE_ENV", process.env.NODE_ENV);
 /** @type {import('@remix-run/dev').AppConfig} */
 module.exports = {
   serverBuildTarget: "vercel",
@@ -39,7 +40,7 @@ module.exports = {
   // assetsBuildDirectory: "public/build",
   // serverBuildPath: ".netlify/functions-internal/server.js",
   // publicPath: "/build/",
-  server: process.env.NODE_ENV === "development" ? undefined : "./server.js",
+  server: process.env.NODE_ENV === "production" ? "./server.js" : undefined,
   serverDependenciesToBundle: [/^@station\//, "shared"],
   watchPaths: async () => {
     return getPackagesPaths().map((p) => `../../${p}/**/*`);

@@ -22,8 +22,8 @@ Sentry.init({
   ],
 });
 
-LogRocket.init(
-  process.env.NODE_ENV === "production" ? SentryConfig.LOGROCKET_ID : undefined
-);
+if (SentryConfig.LOGROCKET_ID && process.env.NODE_ENV === "production") {
+  LogRocket.init(SentryConfig.LOGROCKET_ID);
+}
 
 hydrateRoot(document, <RemixBrowser />);

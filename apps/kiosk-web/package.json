@@ -19,7 +19,7 @@
     "@station/server": "*",
     "@station/shared": "*",
     "dayjs": "^1.11.7",
-    "firebase-admin": "^11.4.1",
+    "firebase-admin": "^11.5.0",
     "framer-motion": "^8.2.4",
     "kiosk-socket": "*",
     "logrocket": "^3.0.1",

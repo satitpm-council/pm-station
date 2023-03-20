@@ -3,7 +3,8 @@
   "name": "coolkidssatit",
   "workspaces": [
     "apps/*",
-    "packages/*"
+    "packages/*",
+    "apps/pm-station-firebase/functions"
   ],
   "scripts": {
     "client:dev": "yarn workspace client-web dev",
@@ -18,11 +19,14 @@
   },
   "dependencies": {
     "@lemasc/swr-firestore": "^2.2.1",
+    "concurrently": "^7.6.0",
     "dotenv": "^16.0.3",
     "patch-package": "^6.5.0",
     "turbo": "^1.6.3"
   },
   "devDependencies": {
+    "cross-env": "^7.0.3",
+    "cypress": "^12.8.1",
     "eslint": "^8.30.0",
     "lerna-update-wizard": "^1.1.2"
   },

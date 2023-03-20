@@ -1,0 +1,203 @@
+{
+  "indexes": [
+    {
+      "collectionGroup": "playlists",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "target",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "queuedDate",
+          "order": "ASCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "songrequests",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "lastPlayedAt",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "lastUpdatedAt",
+          "order": "ASCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "songrequests",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "lastPlayedAt",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "lastUpdatedAt",
+          "order": "DESCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "songrequests",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "lastPlayedAt",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "name",
+          "order": "ASCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "songrequests",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "lastPlayedAt",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "name",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "lastUpdatedAt",
+          "order": "ASCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "songrequests",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "lastPlayedAt",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "name",
+          "order": "DESCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "songrequests",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "lastPlayedAt",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "name",
+          "order": "DESCENDING"
+        },
+        {
+          "fieldPath": "lastUpdatedAt",
+          "order": "ASCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "songrequests",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "lastPlayedAt",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "submissionCount",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "lastUpdatedAt",
+          "order": "ASCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "songrequests",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "lastPlayedAt",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "submissionCount",
+          "order": "DESCENDING"
+        },
+        {
+          "fieldPath": "lastUpdatedAt",
+          "order": "ASCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "songrequests",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "name",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "lastUpdatedAt",
+          "order": "ASCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "songrequests",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "name",
+          "order": "DESCENDING"
+        },
+        {
+          "fieldPath": "lastUpdatedAt",
+          "order": "ASCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "songrequests",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "submissionCount",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "lastUpdatedAt",
+          "order": "ASCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "songrequests",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "submissionCount",
+          "order": "DESCENDING"
+        },
+        {
+          "fieldPath": "lastUpdatedAt",
+          "order": "ASCENDING"
+        }
+      ]
+    }
+  ],
+  "fieldOverrides": []
+}

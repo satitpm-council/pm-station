@@ -1,0 +1,26 @@
+rules_version = '2';
+
+//export enum UserRole {
+//  "USER" = 0,
+//  "EDITOR" = 1,
+//  "MODERATOR" = 2
+// }
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /playlists/{playlist} {
+      allow read: if true;
+      allow write: if int(request.auth.token.role) >= 1;
+    }
+    match /songrequests/{songrequest} {
+      allow read, write: if int(request.auth.token.role) >= 1;
+    }
+    
+     match /programs/{program} {
+      allow read: if true;
+      allow write: if int(request.auth.token.role) >= 2;
+    }
+
+    
+  }
+}

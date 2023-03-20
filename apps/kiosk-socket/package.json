@@ -12,7 +12,7 @@
         "@station/shared": "*",
         "@upstash/redis": "1.20.0",
         "dayjs": "^1.11.7",
-        "firebase-admin": "^11.4.1",
+        "firebase-admin": "^11.5.0",
         "shared": "*",
         "socket.io": "^4.5.4"
     },

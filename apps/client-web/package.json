@@ -14,7 +14,7 @@
     "dev:css": "postcss styles --base styles --dir app/styles -w --verbose",
     "start": "cross-env NODE_ENV=production node ./server.js",
     "deploy": "cd ../../ && flyctl deploy --dockerfile ./apps/client-web/Dockerfile --config ./apps/client-web/fly.toml",
-    "test": "tsc --skipLibCheck --noEmit"
+    "test": "cross-env NODE_ENV=test yarn dev"
   },
   "dependencies": {
     "@googleapis/drive": "4.0.2",
@@ -41,7 +41,7 @@
     "dayjs": "^1.11.7",
     "eslint-config-coolkidssatit": "*",
     "firebase": "^9.9.3",
-    "firebase-admin": "^11.4.1",
+    "firebase-admin": "^11.5.0",
     "logrocket": "^3.0.1",
     "nanoid": "^4.0.0",
     "node-youtube-music": "^0.10.1",

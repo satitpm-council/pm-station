@@ -1,0 +1,9 @@
+{
+    "name": "pm-station-firebase",
+    "version": "1.0.0",
+    "scripts": {
+        "init": "firebase init",
+        "test": "firebase emulators:start",
+        "deploy": "firebase deploy"
+    }
+}
