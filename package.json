@@ -7,6 +7,7 @@
     "apps/pm-station-firebase/functions"
   ],
   "scripts": {
+    "test": "turbo run test --parallel",
     "client:dev": "yarn workspace client-web dev",
     "client:test": "turbo run test --filter=!client-web-test --parallel",
     "kiosk:dev": "turbo run dev --filter=kiosk-web... --parallel",
@@ -26,6 +27,7 @@
     "turbo": "^1.6.3"
   },
   "devDependencies": {
+    "@types/node": "^18.15.5",
     "cross-env": "^7.0.3",
     "cypress": "^12.8.1",
     "eslint": "^8.30.0",

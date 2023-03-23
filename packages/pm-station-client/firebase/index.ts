@@ -19,7 +19,11 @@ let firebaseStore: FirebaseStore;
 
 const fallbackConfig = getFirebaseConfig();
 
-export const useFirebase = (initialConfig?: FirebaseOptions): FirebaseStore => {
+export const useFirebase = (
+  initialConfig?: FirebaseOptions & {
+    useEmulator?: boolean;
+  }
+): FirebaseStore => {
   if (firebaseStore) {
     return firebaseStore;
   }
@@ -31,11 +35,10 @@ export const useFirebase = (initialConfig?: FirebaseOptions): FirebaseStore => {
     const auth = getAuth(app);
     const db = getFirestore(app);
     auth.languageCode = "th";
-    //if (process.env.NODE_ENV === "test") {
-    console.log("Connecting to firebase emulators...");
-    connectAuthEmulator(auth, "http://localhost:9099");
-    connectFirestoreEmulator(db, "localhost", 8080);
-    //}
+    if (initialConfig?.useEmulator) {
+      connectAuthEmulator(auth, "http://localhost:9099");
+      connectFirestoreEmulator(db, "localhost", 8080);
+    }
     const store: FirebaseStore = { app, auth, db };
     firebaseStore = store;
     return store;

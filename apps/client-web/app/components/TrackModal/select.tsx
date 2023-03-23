@@ -35,6 +35,7 @@ export const SelectTrackModal = (props: TrackModalProps) => {
   return (
     <TrackModal {...props} {...stableTrack}>
       <SubmitButton
+        testId="select-track"
         onClick={selectTrack}
         loading={transition.state === "submitting"}
       >

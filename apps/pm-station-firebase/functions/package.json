@@ -1,9 +1,9 @@
 {
-  "name": "functions",
+  "name": "@station/firebase-functions",
   "version": "0.0.1",
   "scripts": {
     "build": "tsc",
-    "build:watch": "tsc --watch",
+    "watch": "tsc --watch",
     "serve": "npm run build && firebase emulators:start --only functions",
     "shell": "npm run build && firebase functions:shell",
     "start": "npm run shell",

@@ -16,7 +16,9 @@ import { createCSRFToken } from "@station/server/auth/remix";
 
 type PUBLIC_ENV = {
   ENV: {
-    firebaseConfig: FirebaseOptions;
+    firebaseConfig: FirebaseOptions & {
+      useEmulator?: boolean;
+    };
     csrf: string;
   };
 };
@@ -44,6 +46,9 @@ export const loader: LoaderFunction = async ({ request }) => {
       process.env.PM_STATION_FIREBASE_PUBLIC_MESSAGING_SENDER_ID,
     appId: process.env.PM_STATION_FIREBASE_PUBLIC_APP_ID,
     measurementId: process.env.PM_STATION_FIREBASE_PUBLIC_MEASUREMENT_ID,
+    useEmulator:
+      typeof process.env.FIRESTORE_EMULATOR_HOST !== "undefined" ||
+      typeof process.env.FIREBASE_AUTH_EMULATOR_HOST !== "undefined",
   };
   const { csrf, headers } = await createCSRFToken(request.headers);
   return json<PUBLIC_ENV>(

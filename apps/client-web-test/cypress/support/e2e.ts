@@ -14,13 +14,8 @@
 // ***********************************************************
 
 import "./emulators";
+import "./intercept";
 import "./commands";
-
-before(() => {
-  // before start running any tests
-  // make sure that we have clear all users from the firebase emulator.
-  cy.requestToAuthEmulator("DELETE", `/accounts`);
-});
 
 Cypress.on("uncaught:exception", (err) => {
   // Cypress and React Hydrating the document don't get along

@@ -5,13 +5,23 @@
   "license": "MIT",
   "scripts": {
     "open": "cypress open",
-    "test": "cypress test"
+    "start": "cypress run",
+    "test": "node ."
+  },
+  "dependencies": {
+    "@station/server": "*",
+    "@station/firebase-functions": "*",
+    "@station/shared": "*",
+    "@lemasc/swr-firestore": "2.2.1",
+    "ansi-regex": "^6.0.1",
+    "client-web": "*",
+    "ts-node": "^10.9.1"
   },
   "devDependencies": {
+    "@types/cross-spawn": "^6.0.2",
     "cypress": "^12.8.1",
     "eslint": "^8.36.0",
     "eslint-plugin-cypress": "^2.12.1",
-    "npm-run-all": "^4.1.5",
     "typescript": "4.9.5"
   }
 }

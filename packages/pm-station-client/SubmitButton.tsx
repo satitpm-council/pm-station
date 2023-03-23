@@ -9,15 +9,17 @@ type SubmitButtonProps = {
   loading?: boolean;
   onClick?: MouseEventHandler<HTMLButtonElement>;
   disabled?: boolean;
+  testId?: string;
 };
 
 export const SubmitButton = forwardRef<HTMLButtonElement, SubmitButtonProps>(
   function SubmitButton(
-    { children, loading, onClick, className, disabled },
+    { children, loading, onClick, className, disabled, testId },
     ref
   ) {
     return (
       <button
+        data-testid={testId}
         ref={ref}
         title={children}
         type={onClick ? "button" : "submit"}

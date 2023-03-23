@@ -1,9 +1,11 @@
 {
-    "name": "pm-station-firebase",
+    "name": "@station/firebase",
     "version": "1.0.0",
     "scripts": {
         "init": "firebase init",
-        "test": "firebase emulators:start",
+        "test": "cd ./functions && yarn build",
+        "test:exec": "firebase emulators:exec",
+        "start": "firebase emulators:start",
         "deploy": "firebase deploy"
     }
 }
