@@ -12,7 +12,6 @@
     "client:test": "turbo run test --filter=!client-web-test --parallel",
     "kiosk:dev": "turbo run dev --filter=kiosk-web... --parallel",
     "kiosk": "yarn workspace kiosk-web",
-    "fw": "yarn workspace farewell-web",
     "bootstrap": "turbo run bootstrap --no-cache",
     "build": "turbo run build",
     "deploy": "turbo run deploy",

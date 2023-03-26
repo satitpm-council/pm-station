@@ -1,7 +1,7 @@
 name: Build or Ignore
 on:
   push:
-    branches: ["main"]
+    branches: ["disabled"]
 jobs:
   build-or-ignore:
       name: Build and Deploy
