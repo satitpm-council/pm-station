@@ -50,6 +50,7 @@ const setupTestEnv = (appName) => {
 };
 
 module.exports = {
+  rootDir,
   getPackages,
   getPackagesPaths,
   setupTestEnv,
