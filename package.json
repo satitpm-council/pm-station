@@ -8,6 +8,7 @@
   ],
   "scripts": {
     "test": "turbo run test --parallel",
+    "web": "yarn workspace website",
     "client:dev": "yarn workspace client-web dev",
     "client:test": "turbo run test --filter=!client-web-test --parallel",
     "kiosk:dev": "turbo run dev --filter=kiosk-web... --parallel",
@@ -20,6 +21,7 @@
   },
   "dependencies": {
     "@lemasc/swr-firestore": "^2.2.1",
+    "axios": "^1.4.0",
     "concurrently": "^7.6.0",
     "dotenv": "^16.0.3",
     "patch-package": "^6.5.0",
