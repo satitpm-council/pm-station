@@ -12,9 +12,6 @@ const clientEnvVars = Object.fromEntries(
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  experimental: {
-    appDir: true,
-  },
   webpack: (config, { isServer }) => {
     config.plugins.push(
       new EnvironmentPlugin(isServer ? serverEnvVars : clientEnvVars)
