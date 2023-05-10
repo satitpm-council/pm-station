@@ -1,0 +1,5 @@
+.button {
+  @apply bg-[var(--provider-bg)] text-[var(--provider-color)];
+  @apply dark:bg-[var(--provider-dark-bg)] dark:text-[var(--provider-dark-color)];
+  @apply rounded-lg px-6 flex items-center gap-2 w-full min-h-[45px];
+}
