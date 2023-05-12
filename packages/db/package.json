@@ -1,0 +1,11 @@
+{
+    "name": "@station/db",
+    "scripts": {
+        "generate": "xata codegen",
+        "schema": "xata schema"
+    },
+    "main": "./src/xata.ts",
+    "dependencies": {
+        "@xata.io/client": "^0.23.5"
+    }
+}

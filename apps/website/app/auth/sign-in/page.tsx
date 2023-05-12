@@ -1,7 +1,7 @@
 import { getCSRFToken } from "@/auth/csrf";
 import { HeaderLarge } from "@/components";
 import { Metadata } from "next";
-import { cookies, headers } from "next/headers";
+import { headers } from "next/headers";
 import Login from "./Login";
 
 export const metadata: Metadata = {

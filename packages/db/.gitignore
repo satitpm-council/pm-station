@@ -1,0 +1,2 @@
+# contains databaseUrl of the Xata DB Client
+src/xata.ts

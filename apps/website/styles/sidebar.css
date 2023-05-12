@@ -6,6 +6,9 @@
   @apply px-4 py-2;
 }
 
+.pro-sidebar .pro-menu .pro-menu-item > .pro-inner-item {
+  padding: 0px;
+}
 .pro-sidebar,
 .pro-sidebar > .pro-sidebar-inner {
   @apply h-full min-h-screen select-none;

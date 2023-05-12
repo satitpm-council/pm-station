@@ -10,11 +10,14 @@ import {
 import { ArrowLeftOnRectangleIcon, UserIcon } from "@heroicons/react/20/solid";
 import Image from "next/image";
 import { SongRequestItem, ToggleCollapsedMenu } from "./Item";
+import { getCSRFToken } from "@/auth/csrf";
+import { headers } from "next/headers";
 
 // We didn't use the 1.x version of react-pro-sidebar
 // because it uses `emotion` CSS-in-JS library which is not compatible with React Server Components.
 
 export default function Sidebar() {
+  const csrfToken = getCSRFToken(headers());
   return (
     <ProSidebar collapsedWidth={83} breakPoint="lg">
       <SidebarHeader>
@@ -45,13 +48,16 @@ export default function Sidebar() {
         </Menu>
       </SidebarContent>
       <SidebarFooter>
-        <button className="w-full" type="button" title="ออกจากระบบ">
-          <Menu className="border-gray-600">
-            <MenuItem icon={<ArrowLeftOnRectangleIcon className="h-4 w-4" />}>
-              ออกจากระบบ
-            </MenuItem>
-          </Menu>
-        </button>
+        <form method="post" action="/api/auth/signout">
+          <input type="hidden" name="csrfToken" value={csrfToken} />
+          <button className="w-full" type="submit" title="ออกจากระบบ">
+            <Menu className="border-gray-600">
+              <MenuItem icon={<ArrowLeftOnRectangleIcon className="h-4 w-4" />}>
+                ออกจากระบบ
+              </MenuItem>
+            </Menu>
+          </button>
+        </form>
         <ToggleCollapsedMenu />
       </SidebarFooter>
     </ProSidebar>

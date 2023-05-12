@@ -1,5 +1,5 @@
 import { internal_createCSRFToken } from "./internal/csrf-token";
-import { internal_defaultCookies } from "./internal/cookie";
+import { CookieOption, internal_defaultCookies } from "./internal/cookie";
 import type { RequestCookies } from "next/dist/compiled/@edge-runtime/cookies";
 import type { ReadonlyHeaders } from "next/dist/server/web/spec-extension/adapters/headers";
 import { parse } from "cookie";
@@ -7,14 +7,19 @@ import { parse } from "cookie";
 const csrfCookie = (secure: boolean) =>
   internal_defaultCookies(secure).csrfToken;
 
+const secure =
+  process.env.NEXTAUTH_URL?.startsWith("https://") ?? !!process.env.VERCEL;
+
 /**
  * Create a CSRF Token for the current session
  */
-
 export const createCSRFToken = async (
-  cookies: RequestCookies,
-  secure: boolean
-) => {
+  cookies: RequestCookies
+): Promise<
+  CookieOption & {
+    value?: string;
+  }
+> => {
   const cookie = csrfCookie(secure);
   const csrfToken = await internal_createCSRFToken({
     isPost: false,
@@ -24,9 +29,8 @@ export const createCSRFToken = async (
     cookieValue: cookies.get(cookie.name)?.value,
   });
   return {
-    name: cookie.name,
+    ...cookie,
     value: csrfToken.cookie,
-    options: cookie.options,
   };
 };
 
@@ -35,11 +39,11 @@ export const createCSRFToken = async (
  */
 
 export const getCSRFToken = (headers: ReadonlyHeaders) => {
-  const secure = headers.get("x-forwarded-proto") === "https";
   // Using the Next.js `cookies` function doesn't return the latest update from the middleware.
-  const cookies = parse(
-    headers.get("cookie") ?? headers.get("set-cookie") ?? ""
-  );
+  const cookies = {
+    ...parse(headers.get("cookie") ?? ""),
+    ...parse(headers.get("set-cookie") ?? ""),
+  };
   const cookie = csrfCookie(secure);
   const [csrfToken] = cookies[cookie.name]?.split("|") ?? [];
   if (csrfToken) {
