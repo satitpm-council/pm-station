@@ -9,10 +9,10 @@
     "test": "node ."
   },
   "dependencies": {
-    "@station/server": "*",
-    "@station/firebase-functions": "*",
-    "@station/shared": "*",
     "@lemasc/swr-firestore": "2.2.1",
+    "@station/firebase-functions": "*",
+    "@station/server": "*",
+    "@station/shared": "*",
     "ansi-regex": "^6.0.1",
     "client-web": "*",
     "ts-node": "^10.9.1"

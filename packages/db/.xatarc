@@ -1,0 +1,5 @@
+{
+  "codegen": {
+    "output": "src/xata.ts"
+  }
+}

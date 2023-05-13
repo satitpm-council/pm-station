@@ -1,0 +1,65 @@
+.react-calendar {
+  font-family: unset;
+  width: unset;
+  @apply bg-zinc-800 border-zinc-800 rounded;
+}
+
+.react-calendar__navigation {
+  @apply bg-zinc-900;
+  margin-bottom: unset;
+}
+.react-calendar__navigation__arrow {
+  zoom: 1.25;
+}
+.react-calendar__month-view__weekdays {
+  font-size: 0.9em;
+}
+
+.react-calendar__tile--active {
+  @apply bg-blue-500;
+}
+
+.react-calendar__tile:not(.react-calendar__tile--active):not(.react-calendar__tile--now):enabled:hover,
+.react-calendar__tile:not(.react-calendar__tile--active):not(.react-calendar__tile--now):enabled:focus,
+.react-calendar__navigation button:enabled:hover,
+.react-calendar__navigation button:enabled:focus {
+  @apply bg-zinc-700;
+}
+
+.react-calendar__tile--now {
+  @apply bg-amber-500;
+}
+
+.react-calendar__tile--now:enabled:hover,
+.react-calendar__tile--now:enabled:focus {
+  @apply bg-amber-600;
+}
+
+.react-calendar__month-view__days__day--weekend:not(.react-calendar__tile--now):not(.react-calendar__tile--active) {
+  @apply text-red-400;
+}
+
+.react-calendar__month-view__days__day--weekend.react-calendar__tile--now:not(.react-calendar__tile--active) {
+  @apply text-red-100;
+}
+
+.react-calendar__tile {
+  @apply py-4 rounded;
+}
+
+.react-calendar__month-view__days__day {
+  position: relative;
+  min-height: 70px;
+}
+
+.has-item-badge-view {
+  @apply bottom-2 left-0 absolute flex justify-center w-full;
+}
+
+.has-item-badge-view > svg {
+  @apply h-4 w-4;
+}
+.react-calendar__month-view__days__day--neighboringMonth
+  > .has-item-badge-view {
+  @apply text-gray-500;
+}
