@@ -64,9 +64,9 @@ export default function ProfileForm({
       toast(
         <>
           <b>ปรับปรุงข้อมูลไม่สำเร็จ</b>
-          {/*  @ts-expect-error */}
           <span>
-            เนื่องจาก {error instanceof Error ? error.message : error}
+            เนื่องจาก{" "}
+            {error instanceof Error ? error.message : (error as any).toString()}
           </span>
         </>,
         {

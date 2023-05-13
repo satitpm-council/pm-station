@@ -10,5 +10,5 @@ import { PagesOptions } from "next-auth";
 export const pages: Omit<PagesOptions, "verifyRequest" | "signOut"> = {
   signIn: "/auth/sign-in",
   error: "/auth/sign-in", // Error code passed in query string as ?error=
-  //newUser: "/app/profile",
+  newUser: "/app/profile",
 };

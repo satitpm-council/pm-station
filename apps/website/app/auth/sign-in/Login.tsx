@@ -1,27 +1,29 @@
+import { Suspense } from "react";
+import { CSRFTokenField } from "@/auth/components";
 import { renderProviders, RenderedProvider } from "@/auth/providers";
 import Image from "next/image";
 import styles from "./styles.module.css";
 
 export type LoginProps = {
   callbackUrl?: string;
-  csrfToken: string;
 };
 
 type LoginButtonProps = RenderedProvider & LoginProps;
 
 const OAuthLoginButton = ({
   name,
-  callbackUrl,
   style,
   id,
-  csrfToken,
+  callbackUrl,
 }: LoginButtonProps) => {
   const signinUrl = `/api/auth/signin/${id}`;
   const logos = "https://authjs.dev/img/providers";
   const imageSize = id === "line" ? 30 : 20;
   return (
     <form action={signinUrl} method="POST">
-      <input type="hidden" name="csrfToken" value={csrfToken} />
+      <Suspense fallback={null}>
+        <CSRFTokenField />
+      </Suspense>
       {callbackUrl && (
         <input type="hidden" name="callbackUrl" value={callbackUrl} />
       )}

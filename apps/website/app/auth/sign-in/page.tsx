@@ -1,7 +1,5 @@
-import { getCSRFToken } from "@/auth/csrf";
 import { HeaderLarge } from "@/components";
 import { Metadata } from "next";
-import { headers } from "next/headers";
 import Login from "./Login";
 
 export const metadata: Metadata = {
@@ -13,7 +11,6 @@ export default function SignInPage({
 }: {
   searchParams: { [key: string]: string | string[] | undefined };
 }) {
-  const csrfToken = getCSRFToken(headers());
   const callbackUrl = searchParams.callbackUrl;
   return (
     <div className="bg-gradient-to-b from-[#151515] to-[#121212] text-white h-full min-h-screen flex flex-col text-center gap-6">
@@ -24,7 +21,7 @@ export default function SignInPage({
 
         <main className="flex flex-col gap-4 text-center items-center justify-center bg-white rounded-lg bg-opacity-10 mx-8 px-6 sm:px-10 py-6 text-sm">
           <h2 className="font-bold text-2xl">เข้าสู่ระบบ</h2>
-          <Login csrfToken={csrfToken} callbackUrl={callbackUrl?.toString()} />
+          <Login callbackUrl={callbackUrl?.toString()} />
         </main>
       </div>
       <footer className="text-sm mx-2 p-6 text-gray-300">
