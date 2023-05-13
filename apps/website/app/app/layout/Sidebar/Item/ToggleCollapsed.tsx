@@ -4,7 +4,7 @@ import {
   ChevronDoubleLeftIcon,
   ChevronDoubleRightIcon,
 } from "@heroicons/react/20/solid";
-import { Menu, MenuItem, sidebarStore } from "@/app/components/Sidebar";
+import { Menu, MenuItem, sidebarStore } from "@/components/Sidebar";
 
 export function ToggleCollapsedMenu() {
   const collapsed = sidebarStore((state) => state.collapsed);

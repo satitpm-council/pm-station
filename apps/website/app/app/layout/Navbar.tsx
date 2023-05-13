@@ -4,7 +4,7 @@ import { Bars4Icon } from "@heroicons/react/20/solid";
 import Link from "next/link";
 
 import { Header } from "@/components";
-import { sidebarStore } from "@/app/components/Sidebar";
+import { sidebarStore } from "@/components/Sidebar";
 
 export default function Navbar() {
   const openMenu = () => {
