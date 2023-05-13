@@ -99,3 +99,7 @@
   > .popper-inner {
   @apply bg-[#2b2b2b] shadow-lg shadow-zinc-900 rounded-xl ml-2 px-4 w-[15rem];
 }
+
+.pro-menu-item:not(.active) .pro-icon {
+  @apply opacity-50;
+}

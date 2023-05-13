@@ -1,3 +1,4 @@
+import { useSession } from "next-auth/react";
 import Link from "next/link";
 import type { MenuItemProps } from "react-pro-sidebar";
 import { MenuItem as Component } from "react-pro-sidebar";
@@ -10,8 +11,8 @@ export const MenuItem = ({
 }: Omit<MenuItemProps, "active"> & {
   route?: string;
 }) => {
-  // TODO: To be implemented
-  const isRegistered = false;
+  const { data } = useSession();
+  const isRegistered = data?.user?.type;
   const active = useDefaultOpen(route, true);
   return (
     <Component active={active} {...props}>

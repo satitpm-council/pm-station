@@ -1,4 +1,7 @@
+import { usePathname } from "next/navigation";
+
 export const useDefaultOpen = (pathname?: string, exact?: boolean) => {
-  // TODO: To be implemented
-  return false;
+  const path = usePathname();
+  if (!pathname) return false;
+  return exact ? pathname === path : path.startsWith(pathname);
 };
