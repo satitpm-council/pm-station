@@ -1,10 +1,16 @@
 import Pusher from "pusher";
 
+console.log({
+  appId: process.env.NEXT_PUBLIC_PUSHER_APP_ID,
+  key: process.env.NEXT_PUBLIC_PUSHER_APP_KEY,
+  secret: process.env.PUSHER_APP_SECRET,
+  cluster: process.env.NEXT_PUBLIC_PUSHER_APP_CLUSTER,
+});
 const pusher = new Pusher({
-  appId: "1600278",
-  key: "a4028358f5d1ff16ee16",
-  secret: "973c4750c8a43da7335a",
-  cluster: "ap1",
+  appId: process.env.NEXT_PUBLIC_PUSHER_APP_ID,
+  key: process.env.NEXT_PUBLIC_PUSHER_APP_KEY,
+  secret: process.env.PUSHER_APP_SECRET,
+  cluster: process.env.NEXT_PUBLIC_PUSHER_APP_CLUSTER,
   useTLS: true,
 });
 
