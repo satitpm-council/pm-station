@@ -21,7 +21,7 @@ const nextConfig = {
   reactStrictMode: true,
   output: "standalone",
   experimental: {
-    appDir: true,
+    serverActions: true,
     outputFileTracingRoot: path.join(__dirname, "../../"),
   },
   transpilePackages: getPackages(),
