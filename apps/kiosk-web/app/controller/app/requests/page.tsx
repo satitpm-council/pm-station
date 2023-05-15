@@ -1,4 +1,10 @@
+import { Metadata } from "next";
 import SongSelector from "../components/SongSelector";
+
+export const metadata: Metadata = {
+  title: "ส่งคำขอ",
+};
+
 export default function SongRequestsPage() {
   return (
     <>

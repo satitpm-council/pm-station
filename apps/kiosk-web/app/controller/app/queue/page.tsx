@@ -1,5 +1,11 @@
+import { Metadata } from "next";
 import ConnectionStatus from "../components/ConnectionStatus";
 import Queue from "../components/Queue";
+
+export const metadata: Metadata = {
+  title: "คิวเพลง",
+};
+
 export default function QueuePage() {
   return (
     <>
