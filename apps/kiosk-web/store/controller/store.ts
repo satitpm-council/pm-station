@@ -15,7 +15,6 @@ export type ClientSocket = Socket<never, ControllerSendEvents>;
 type ContollerState = {
   queue: Set<Track>;
   isConnected: boolean;
-  socket?: ClientSocket;
   user?: User;
   playlistId?: string;
   programId?: string;
@@ -26,7 +25,7 @@ type ContollerState = {
 
 export const controllerStore = create<ContollerState>()(
   subscribeWithSelector((set) => ({
-    isConnected: false,
+    isConnected: true,
     showBottomSheet: false,
     queue: new Set(),
     mediaStatus: null,

@@ -6,7 +6,9 @@ import { usePathname } from "next/navigation";
 type Item = {
   name: string;
   href: string;
-  icon: (props: React.ComponentProps<"svg">) => JSX.Element;
+  icon: React.ForwardRefExoticComponent<
+    React.PropsWithoutRef<React.SVGProps<SVGSVGElement>>
+  >;
 };
 const items: Item[] = [
   {
