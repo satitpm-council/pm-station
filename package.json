@@ -35,7 +35,10 @@
   "resolutions": {
     "axios": "0.27.2",
     "firebase": "9.9.3",
-    "@lemasc/firebase-wrapper": "1.1.1"
+    "@lemasc/firebase-wrapper": "1.1.1",
+    "zod": "3.21.4",
+    "pusher-js@^8.0.2": "patch:pusher-js@npm%3A8.0.2#./.yarn/patches/pusher-js-npm-8.0.2-b1fa866f31.patch",
+    "pusher@^5.1.3": "patch:pusher@npm%3A5.1.3#./.yarn/patches/pusher-npm-5.1.3-d35eaace40.patch"
   },
   "packageManager": "yarn@3.5.1"
 }

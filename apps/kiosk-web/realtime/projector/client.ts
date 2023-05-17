@@ -1,10 +1,9 @@
 import { projectorStore } from "kiosk-web/store/projector";
-import { CHANNELS } from "../constants";
 import pusher from "../pusher.client";
 
 export const initialize = () => {
   pusher.connect();
-  const channel = pusher.subscribe(CHANNELS.PROJECTOR);
+  const channel = pusher.subscribe("cache-projector");
   channel.bind("play", ({ track, trackEndTime }) => {
     const timeLeft = trackEndTime - new Date().valueOf();
     if (timeLeft < 0) return;

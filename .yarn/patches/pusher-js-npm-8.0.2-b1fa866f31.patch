@@ -1,0 +1,125 @@
+diff --git a/index.d.ts b/index.d.ts
+index 965bf7e6bf509608432c7adbae8f3ef946d23297..a132a11a238d831561644e4f10cd98e2f8a7cf50 100644
+--- a/index.d.ts
++++ b/index.d.ts
+@@ -18,7 +18,7 @@ export { default as Members } from './types/src/core/channels/members';
+ export { default as Runtime } from './types/src/runtimes/interface';
+ export { default as ConnectionManager } from './types/src/core/connection/connection_manager';
+ 
+-export { default } from './types/src/core/pusher';
++export { default, ChannelsMap } from './types/src/core/pusher';
+ 
+ // The following types are provided for backward compatability
+ export {
+diff --git a/types/src/core/channels/channel.d.ts b/types/src/core/channels/channel.d.ts
+index 021973bc22a18ea89301317eca906a58e72e067a..70fecdc6043a2eea76bcf6ac9e22d43dc24511d9 100644
+--- a/types/src/core/channels/channel.d.ts
++++ b/types/src/core/channels/channel.d.ts
+@@ -1,8 +1,9 @@
+-import { default as EventsDispatcher } from '../events/dispatcher';
++import { default as EventsDispatcher, EventsMap } from '../events/dispatcher';
+ import Pusher from '../pusher';
+ import { PusherEvent } from '../connection/protocol/message-types';
+ import { ChannelAuthorizationCallback } from '../auth/options';
+-export default class Channel extends EventsDispatcher {
++
++export default class Channel<E extends EventsMap = EventsMap> extends EventsDispatcher<E> {
+     name: string;
+     pusher: Pusher;
+     subscribed: boolean;
+diff --git a/types/src/core/events/dispatcher.d.ts b/types/src/core/events/dispatcher.d.ts
+index e2c681dfd6ea4084475f8a3265826c5852b26e06..e829bd7a9b6f2567f89a591a9da1781fe8b00c3c 100644
+--- a/types/src/core/events/dispatcher.d.ts
++++ b/types/src/core/events/dispatcher.d.ts
+@@ -1,14 +1,43 @@
+ import Metadata from '../channels/metadata';
+ import CallbackRegistry from './callback_registry';
+-export default class Dispatcher {
++
++type JSONValue =
++    | string
++    | number
++    | boolean
++    | null
++    | { [x: string]: JSONValue }
++    | Array<JSONValue>;
++
++/**
++ * An events map is an interface that maps event names to their value, which
++ * represents the type of the `on` listener.
++ */
++export interface EventsMap {
++    [event: string]: JSONValue;
++}
++
++/**
++ * Returns a union type containing all the keys of an event map.
++ */
++export type EventNames<Map extends EventsMap> = keyof Map & (string | symbol);
++
++/** The tuple type representing the data of an event listener */
++export type EventData<
++    Map extends EventsMap,
++    Ev extends EventNames<Map>
++> = Map[Ev];
++
++export default class Dispatcher<Events extends EventsMap = EventsMap> {
+     callbacks: CallbackRegistry;
+     global_callbacks: Function[];
+     failThrough: Function;
+     constructor(failThrough?: Function);
+-    bind(eventName: string, callback: Function, context?: any): this;
++    bind<Ev extends EventNames<Events>>(eventName: Ev, callback: (data: EventData<Events, Ev>) => void | Promise<void>, context?: any): this;
+     bind_global(callback: Function): this;
+     unbind(eventName?: string, callback?: Function, context?: any): this;
+     unbind_global(callback?: Function): this;
+     unbind_all(): this;
+-    emit(eventName: string, data?: any, metadata?: Metadata): Dispatcher;
++    emit(eventName: string, data?: any, metadata?: Metadata): Dispatcher<Events>;
+ }
++
+diff --git a/types/src/core/pusher.d.ts b/types/src/core/pusher.d.ts
+index 9d0f652d71dfa9dba01f42ef4ea2833484fe269e..b64b05d19f973c83dd693ef4086bdf578eea5bbd 100644
+--- a/types/src/core/pusher.d.ts
++++ b/types/src/core/pusher.d.ts
+@@ -1,7 +1,7 @@
+ import AbstractRuntime from '../runtimes/interface';
+ import Channels from './channels/channels';
+ import Channel from './channels/channel';
+-import { default as EventsDispatcher } from './events/dispatcher';
++import { default as EventsDispatcher, EventsMap } from './events/dispatcher';
+ import Timeline from './timeline/timeline';
+ import TimelineSender from './timeline/timeline_sender';
+ import ConnectionManager from './connection/connection_manager';
+@@ -9,7 +9,12 @@ import { PeriodicTimer } from './utils/timers';
+ import { Options } from './options';
+ import { Config } from './config';
+ import UserFacade from './user';
+-export default class Pusher {
++
++export type ChannelsMap = {
++    [channel: string]: EventsMap;
++}
++
++export default class Pusher<ChannelList extends ChannelsMap = ChannelsMap> {
+     static instances: Pusher[];
+     static isReady: boolean;
+     static logToConsole: boolean;
+@@ -31,7 +36,7 @@ export default class Pusher {
+     timelineSenderTimer: PeriodicTimer;
+     user: UserFacade;
+     constructor(app_key: string, options: Options);
+-    channel(name: string): Channel;
++    channel<ChannelName extends keyof ChannelList>(name: ChannelName): Channel<ChannelList[ChannelName]>;
+     allChannels(): Channel[];
+     connect(): void;
+     disconnect(): void;
+@@ -41,7 +46,7 @@ export default class Pusher {
+     unbind_global(callback?: Function): Pusher;
+     unbind_all(callback?: Function): Pusher;
+     subscribeAll(): void;
+-    subscribe(channel_name: string): Channel;
++    subscribe<ChannelName extends keyof ChannelList>(channel_name: ChannelName): Channel<ChannelList[ChannelName]>;
+     unsubscribe(channel_name: string): void;
+     send_event(event_name: string, data: any, channel?: string): boolean;
+     shouldUseTLS(): boolean;

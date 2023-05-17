@@ -1,27 +1,20 @@
 "use server";
 
-import { CHANNELS } from "../constants";
 import pusher from "../pusher.server";
-import { TrackResponse } from "@station/shared/schema/types";
+import { Channels } from "../types";
 
-export type ControllerSendEvents = {
-  play: {
-    track: TrackResponse;
-    trackEndTime: number;
-  };
-  stop: undefined;
-};
+type ControllerSendEvents = Channels["cache-projector"];
 
 export const sendPlayEvent = async ({
   track,
   trackEndTime,
 }: ControllerSendEvents["play"]) => {
-  await pusher.trigger(CHANNELS.PROJECTOR, "play", {
+  await pusher.trigger("cache-projector", "play", {
     track,
     trackEndTime,
   });
 };
 
 export const sendStopEvent = async () => {
-  await pusher.trigger(CHANNELS.PROJECTOR, "stop", null);
+  await pusher.trigger("cache-projector", "stop", null);
 };

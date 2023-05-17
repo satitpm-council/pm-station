@@ -1,0 +1,66 @@
+diff --git a/index.d.ts b/index.d.ts
+index 0d1089ca5744ac4ccc7474fdec383d0a4a14ffea..342489740fff89b2ec66c350dbaf9d0501c31215 100644
+--- a/index.d.ts
++++ b/index.d.ts
+@@ -3,18 +3,29 @@ import { Response } from "node-fetch"
+ 
+ export = Pusher
+ 
+-declare class Pusher {
++declare class Pusher<Channels extends Pusher.ChannelsMap = Pusher.ChannelsMap> {
+   constructor(opts: Pusher.Options)
+ 
++  trigger<
++    ChannelName extends keyof Channels,
++    EventName extends keyof Channels[ChannelName],
++    Data extends Channels[ChannelName][EventName]
++  >(
++    channel: ChannelName,
++    event: EventName,
++    data: Data,
++    params?: Pusher.TriggerParams
++  ): Promise<Response>
++
+   trigger(
+-    channel: string | Array<string>,
++    channel: Array<string>,
+     event: string,
+     data: any,
+     params?: Pusher.TriggerParams
+   ): Promise<Response>
+ 
+   trigger(
+-    channel: string | Array<string>,
++    channel: Array<string>,
+     event: string,
+     data: any
+   ): Promise<Response>
+@@ -52,7 +63,28 @@ declare class Pusher {
+   createSignedQueryString(opts: Pusher.SignedQueryStringOptions): string
+ }
+ 
++
+ declare namespace Pusher {
++  export type ChannelsMap = {
++    [channel: string]: EventsMap;
++  }
++
++  type JSONValue =
++    | string
++    | number
++    | boolean
++    | null
++    | { [x: string]: JSONValue }
++    | Array<JSONValue>;
++
++  /**
++  * An events map is an interface that maps event names to their value, which
++  * represents the type of the `on` listener.
++  */
++  export interface EventsMap {
++    [event: string]: JSONValue;
++  }
++
+   export function forCluster(cluster: string, opts: BaseOptions): Pusher
+   export function forURL(
+     connectionString: string,

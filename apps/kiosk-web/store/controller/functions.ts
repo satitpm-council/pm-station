@@ -1,3 +1,4 @@
+import { sendStopEvent } from "kiosk-web/realtime/controller/server";
 import { controllerStore, MediaStatus, Track } from "./store";
 
 export const toggleShowBottomSheet = () => {
@@ -42,10 +43,7 @@ export const playTrack = (track: Track) => {
 };
 
 export const stopTrack = () => {
-  const { socket } = controllerStore.getState();
-  if (socket) {
-    socket.emit("stop");
-  }
+  sendStopEvent()
   controllerStore.setState((s) => ({
     ...s,
     mediaStatus: null,

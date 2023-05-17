@@ -15249,7 +15249,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"pusher-js@npm:^8.0.2":
+"pusher-js@npm:8.0.2":
   version: 8.0.2
   resolution: "pusher-js@npm:8.0.2"
   dependencies:
@@ -15260,7 +15260,18 @@ __metadata:
   languageName: node
   linkType: hard
 
-"pusher@npm:^5.1.3":
+"pusher-js@patch:pusher-js@npm%3A8.0.2#./.yarn/patches/pusher-js-npm-8.0.2-b1fa866f31.patch::locator=coolkidssatit%40workspace%3A.":
+  version: 8.0.2
+  resolution: "pusher-js@patch:pusher-js@npm%3A8.0.2#./.yarn/patches/pusher-js-npm-8.0.2-b1fa866f31.patch::version=8.0.2&hash=e9c23e&locator=coolkidssatit%40workspace%3A."
+  dependencies:
+    "@types/express-serve-static-core": 4.17.28
+    "@types/node": ^14.14.31
+    tweetnacl: ^1.0.3
+  checksum: 720fb8246964e8493c81872448cf7d82c8bbcbea8bbc08bbc7b97d9bc26e48abd7a9dbc91bbca4d639c67f992ced264b9c104a2c965f4541a92c2375d412526e
+  languageName: node
+  linkType: hard
+
+"pusher@npm:5.1.3":
   version: 5.1.3
   resolution: "pusher@npm:5.1.3"
   dependencies:
@@ -15271,6 +15282,20 @@ __metadata:
     tweetnacl: ^1.0.0
     tweetnacl-util: ^0.15.0
   checksum: f68b6149ac38e3b49ad5ebe725c1c02f107f2133d34f5f827e841d52e577ee1dd4a5db9ca6f9b8689a7c828e7410e10663684d12a6aaf15bfabb14966f46b188
+  languageName: node
+  linkType: hard
+
+"pusher@patch:pusher@npm%3A5.1.3#./.yarn/patches/pusher-npm-5.1.3-d35eaace40.patch::locator=coolkidssatit%40workspace%3A.":
+  version: 5.1.3
+  resolution: "pusher@patch:pusher@npm%3A5.1.3#./.yarn/patches/pusher-npm-5.1.3-d35eaace40.patch::version=5.1.3&hash=7b36d8&locator=coolkidssatit%40workspace%3A."
+  dependencies:
+    "@types/node-fetch": ^2.5.7
+    abort-controller: ^3.0.0
+    is-base64: ^1.1.0
+    node-fetch: ^2.6.1
+    tweetnacl: ^1.0.0
+    tweetnacl-util: ^0.15.0
+  checksum: d8c86d06fad80929d84690db281aba1ebc3d4c67f551c29b6b6fc84e7d644472495a3b602cd7c4a28fe27d0f173dbc74a220aa2171648ebce0715f78b01df3fd
   languageName: node
   linkType: hard
 
@@ -18774,13 +18799,6 @@ __metadata:
     miniget: ^4.2.2
     sax: ^1.1.3
   checksum: 57df38b5b1e4955db0e0c0be8d185f34de9eaee102ad1281d69de91628230cc84e8d46d278409eafa68c4aab4085a0f9fe8de30e9ea8644e011e20cae7f37c0e
-  languageName: node
-  linkType: hard
-
-"zod@npm:3.20.6":
-  version: 3.20.6
-  resolution: "zod@npm:3.20.6"
-  checksum: 804b1934b8b5e2fa3750bec90043e8118b201f330b9957b8b768389a971acadf812d2060cf62921086512dab4af691d10490acb03333da58fc485c0791893c89
   languageName: node
   linkType: hard
 

@@ -1,9 +1,8 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
-import { AuthParam } from "kiosk-socket/types";
+import { useEffect, useRef } from "react";
 import { useFirebase, useFirebaseUser } from "@station/client/firebase";
-import { controllerStore, initializeSocket } from "kiosk-web/store/controller";
+import { controllerStore } from "kiosk-web/store/controller";
 import { User } from "@station/shared/user";
 import { signInWithCustomToken } from "firebase/auth";
 import axios from "shared/axios";
