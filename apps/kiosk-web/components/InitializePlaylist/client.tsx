@@ -1,6 +1,5 @@
 "use client";
 
-import { usePathname } from "next/navigation";
 import { ValidatedDocument } from "@lemasc/swr-firestore";
 import { TypeOf } from "zod";
 import { PlaylistRecord } from "@station/shared/schema";

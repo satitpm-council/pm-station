@@ -5,7 +5,7 @@ import { loader } from "@station/server/api/app-layout";
 import Image from "next/image";
 import Link from "next/link";
 
-import { getTodayPlaylist } from "kiosk-socket/utils";
+import { getTodayPlaylist } from "kiosk-web/utils";
 import { Suspense } from "react";
 import InitializePlaylist from "kiosk-web/components/InitializePlaylist";
 import MiniPlayer from "./components/MiniPlayer";

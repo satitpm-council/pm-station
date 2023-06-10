@@ -7,13 +7,11 @@ import { User } from "@station/shared/user";
 import { signInWithCustomToken } from "firebase/auth";
 import axios from "shared/axios";
 import { SessionActionResponse } from "@station/shared/api";
-import { useSocketEndpoint } from "kiosk-web/shared/useSocketEndpoint";
 
 export default function InitializeSocket({ user }: { user: User }) {
   const isLoading = useRef(false);
   const { auth } = useFirebase();
   const fb_user = useFirebaseUser();
-  const endpoint = useSocketEndpoint();
 
   useEffect(() => {
     controllerStore.setState({ user });

@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc";
 import timezone from "dayjs/plugin/timezone";
-import { getTodayPlaylist } from "kiosk-socket/utils";
+import { getTodayPlaylist } from "kiosk-web/utils";
 
 dayjs.extend(utc);
 dayjs.extend(timezone);
