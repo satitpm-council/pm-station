@@ -1,4 +1,4 @@
-import { Prompt } from "@next/font/google";
+import { Prompt } from "next/font/google";
 import { Metadata } from "next";
 import "react-toastify/dist/ReactToastify.min.css";
 import "../styles/globals.css";
