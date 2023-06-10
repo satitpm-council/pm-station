@@ -20,7 +20,6 @@
     "dayjs": "^1.11.7",
     "firebase-admin": "^11.5.0",
     "framer-motion": "^8.2.4",
-    "kiosk-socket": "*",
     "logrocket": "^3.0.1",
     "next": "13.4.2",
     "pusher": "^5.1.3",
