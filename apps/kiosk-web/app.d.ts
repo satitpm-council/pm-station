@@ -6,5 +6,9 @@ declare namespace NodeJS {
     KIOSK_CLIENT_EMAIL?: string;
     /** Kiosk Service Account Private Key */
     KIOSK_PRIVATE_KEY?: string;
+    NEXT_PUBLIC_PUSHER_APP_ID: string;
+    NEXT_PUBLIC_PUSHER_APP_KEY: string;
+    NEXT_PUBLIC_PUSHER_APP_CLUSTER: string;
+    PUSHER_APP_SECRET: string;
   }
 }

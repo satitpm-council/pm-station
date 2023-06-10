@@ -4,6 +4,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { controllerStore } from "kiosk-web/store/controller";
 import { useCallback } from "react";
 import { MediaStatusButtonIcon, MiniPlayerItem } from "./MiniPlayer/item";
+import usePlayListener from "./PlayerEvents";
 
 function MiniPlayer() {
   const currentTrack = controllerStore((state) => state.playingTrack);
@@ -25,6 +26,7 @@ function MiniPlayer() {
 }
 
 export default function BottomMiniPlayer() {
+  usePlayListener();
   const show = controllerStore((state) => state.showBottomSheet);
   const onClick = useCallback(() => {
     const { playingTrack } = controllerStore.getState();

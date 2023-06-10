@@ -38,7 +38,9 @@ export const MiniPlayerItem = ({
 
 const Icon: Record<
   NonNullable<MediaStatus>,
-  (props: React.ComponentProps<"svg">) => JSX.Element
+  React.ForwardRefExoticComponent<
+    React.PropsWithoutRef<React.SVGProps<SVGSVGElement>>
+  >
 > = {
   error: ExclamationTriangleIcon,
   paused: PlayIcon,

@@ -1,18 +1,14 @@
 "use client";
 
 import { useEffect, useMemo } from "react";
-import {
-  projectorStore,
-  initializeSocket,
-  cleanupSocket,
-} from "kiosk-web/store/projector";
+import { projectorStore } from "kiosk-web/store/projector";
 import dayjs from "dayjs";
 import { usePathname, useRouter } from "next/navigation";
 import { usePlaylist } from "@station/client/playlists";
 import { controllerStore } from "kiosk-web/store/controller";
 import { isDocumentValid } from "@lemasc/swr-firestore";
 import { useFirebase } from "@station/client/firebase";
-import { useSocketEndpoint } from "kiosk-web/shared/useSocketEndpoint";
+import { cleanup, initialize } from "kiosk-web/realtime/projector/client";
 
 export default function Initialize() {
   const router = useRouter();
@@ -62,12 +58,10 @@ export default function Initialize() {
     );
   }, [router, pathname]);
 
-  const endpoint = useSocketEndpoint();
   useEffect(() => {
-    if (!endpoint) return;
-    initializeSocket(endpoint);
-    return () => cleanupSocket();
-  }, [endpoint]);
+    initialize();
+    return () => cleanup();
+  }, []);
 
   return null;
 }

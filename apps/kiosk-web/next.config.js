@@ -1,8 +1,8 @@
 const path = require("path");
 const { getPackages } = require("build-config");
-const { DefinePlugin } = require("webpack");
+const { DefinePlugin, EnvironmentPlugin } = require("webpack");
 
-require("dotenv").config({ path: "../../.env" });
+const { parsed } = require("dotenv").config({ path: "../../.env" });
 
 // Although Next.js provides 'NEXT_PUBLIC' prefixes for env to be exposes to client
 // We just want to preserve variable names on both frameworks.
@@ -21,12 +21,16 @@ const nextConfig = {
   reactStrictMode: true,
   output: "standalone",
   experimental: {
-    appDir: true,
+    serverActions: true,
     outputFileTracingRoot: path.join(__dirname, "../../"),
   },
   transpilePackages: getPackages(),
-  webpack: (config) => {
-    config.plugins.push(new DefinePlugin(injectedEnvVars));
+  webpack: (config, { isServer }) => {
+    if (isServer) {
+      config.plugins.push(new EnvironmentPlugin(parsed));
+    } else {
+      config.plugins.push(new DefinePlugin(injectedEnvVars));
+    }
     // allow code reuse on both frameworks
     config.resolve.extensions = [
       ".next.ts",

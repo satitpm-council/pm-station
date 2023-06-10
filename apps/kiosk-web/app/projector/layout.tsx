@@ -1,4 +1,4 @@
-import { getTodayPlaylist } from "kiosk-socket/utils";
+import { getTodayPlaylist } from "kiosk-web/utils";
 import { Suspense } from "react";
 import Container from "./container";
 import InitializePlaylist from "kiosk-web/components/InitializePlaylist";

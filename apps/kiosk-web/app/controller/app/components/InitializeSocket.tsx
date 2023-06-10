@@ -1,22 +1,18 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
-import { AuthParam } from "kiosk-socket/types";
+import { useEffect, useRef } from "react";
 import { useFirebase, useFirebaseUser } from "@station/client/firebase";
-import { controllerStore, initializeSocket } from "kiosk-web/store/controller";
+import { controllerStore } from "kiosk-web/store/controller";
 import { User } from "@station/shared/user";
 import { signInWithCustomToken } from "firebase/auth";
 import axios from "shared/axios";
 import { SessionActionResponse } from "@station/shared/api";
-import { useSocketEndpoint } from "kiosk-web/shared/useSocketEndpoint";
 
 export default function InitializeSocket({ user }: { user: User }) {
   const isLoading = useRef(false);
   const { auth } = useFirebase();
   const fb_user = useFirebaseUser();
-  const endpoint = useSocketEndpoint();
 
-  console.log(fb_user);
   useEffect(() => {
     controllerStore.setState({ user });
   }, [user]);
@@ -40,24 +36,26 @@ export default function InitializeSocket({ user }: { user: User }) {
     }
   }, [user, fb_user, auth]);
 
+  /**
+   * As we send the events to the backend, there's no disconnect event
+   * except the user goes offline. We check for the navigator.onLine status.
+   */
   useEffect(() => {
-    if (!endpoint || !fb_user) return;
-    (async () => {
-      const setupAuthParam: AuthParam = {
-        type: "controller",
-        token: await fb_user.getIdToken(),
-      };
-
-      initializeSocket(endpoint, setupAuthParam);
-    })();
+    const onlineEventHandler = () => {
+      controllerStore.setState({
+        isConnected:
+          typeof navigator === undefined ? true : navigator.onLine ?? true,
+      });
+    };
+    onlineEventHandler();
+    window.addEventListener("online", onlineEventHandler);
+    window.addEventListener("offline", onlineEventHandler);
 
     return () => {
-      const { socket } = controllerStore.getState();
-      socket?.emit("stop");
-      socket?.disconnect();
-      controllerStore.setState({ socket: undefined, isConnected: false });
+      window.removeEventListener("online", onlineEventHandler);
+      window.removeEventListener("offline", onlineEventHandler);
     };
-  }, [fb_user, endpoint]);
+  }, []);
 
   return null;
 }
