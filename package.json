@@ -10,7 +10,6 @@
     "test": "turbo run test --parallel",
     "client:dev": "yarn workspace client-web dev",
     "client:test": "turbo run test --filter=!client-web-test --parallel",
-    "kiosk:dev": "turbo run dev --filter=kiosk-web... --parallel",
     "kiosk": "yarn workspace kiosk-web",
     "bootstrap": "turbo run bootstrap --no-cache",
     "build": "turbo run build",
