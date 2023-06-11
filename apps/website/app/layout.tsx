@@ -8,7 +8,7 @@ import { ToastContainer } from "@/components/client";
 
 const prompt = Prompt({
   subsets: ["latin", "thai"],
-  weight: ["400", "600"],
+  weight: ["400", "500", "600"],
   variable: "--font-prompt",
   display: "swap",
 });

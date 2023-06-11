@@ -1,4 +1,4 @@
-import { withAuth } from "next-auth/middleware";
+import { NextAuthMiddlewareOptions, withAuth } from "next-auth/middleware";
 import { pages } from "./auth/pages";
 import { NextMiddleware, NextResponse } from "next/server";
 import { createCSRFToken } from "./auth/csrf";
@@ -6,12 +6,24 @@ import { createCSRFToken } from "./auth/csrf";
 export const middleware: NextMiddleware = async (request, ...args) => {
   let response;
   if (!request.nextUrl.pathname.startsWith("/auth")) {
+    let isRegistered = false;
+    const middlewareOptions: NextAuthMiddlewareOptions = {
+      pages,
+      callbacks: {
+        authorized({ token }) {
+          if (!token) return false;
+          if (token.type) {
+            isRegistered = true;
+          }
+          return true;
+        },
+      },
+    };
     // Not an authentication page, runs the authentication middleware
-    response = await (
-      withAuth({
-        pages,
-      }) as NextMiddleware
-    )(request, ...args);
+    response = await (withAuth(middlewareOptions) as NextMiddleware)(
+      request,
+      ...args
+    );
 
     if (response) {
       // Check if the response is a redirect
@@ -27,6 +39,15 @@ export const middleware: NextMiddleware = async (request, ...args) => {
           // Apply the callbackUrl query parameter to the location header
           response.headers.set("location", url.toString());
         }
+      }
+    }
+
+    if (!isRegistered) {
+      // If the user is signed in but not registered, redirect to the profile registration page.
+      const url = request.nextUrl.clone();
+      if (url.pathname !== "/app/profile") {
+        url.pathname = "/app/profile";
+        response = NextResponse.redirect(url);
       }
     }
   }
