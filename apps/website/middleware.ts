@@ -4,7 +4,6 @@ import { NextMiddleware, NextResponse } from "next/server";
 import { createCSRFToken } from "./auth/csrf";
 
 export const middleware: NextMiddleware = async (request, ...args) => {
-  console.log(request.nextUrl.pathname);
   let response;
   if (!request.nextUrl.pathname.startsWith("/auth")) {
     // Not an authentication page, runs the authentication middleware

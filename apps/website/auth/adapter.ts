@@ -6,14 +6,14 @@ import { extendAdapter } from "./internal/adapter";
 const client = new XataClient({
   apiKey: process.env.XATA_API_KEY,
   branch: process.env.XATA_BRANCH,
-  /*fetch: (url, init) => {
+  fetch: (url, init) => {
     return fetch(url, {
       ...(init ?? {}),
-      next: {
+      /*next: {
         revalidate: 1000,
-      },
+      },*/
     });
-  },*/
+  },
 });
 
 const baseAdapter = XataAdapter(client);
