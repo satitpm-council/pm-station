@@ -1,6 +1,6 @@
 import { memo } from "react";
 import { classNames } from "@/shared/utils";
-import { ButtonProps, ButtonRenderer } from "./ButtonRenderer";
+import { ButtonProps, ButtonRenderer } from "../interactions/ButtonRenderer";
 
 export type PageHeaderInnerProps = {
   className?: string;

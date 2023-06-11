@@ -1,6 +1,7 @@
 import React, { useMemo } from "react";
-import { classNames } from "./utils";
+import { classNames } from "@/shared/utils";
 import type { TrackResponse } from "@station/shared/schema/types";
+import Image from "next/image";
 
 type BadgeComponentProps = Pick<
   React.HTMLAttributes<HTMLElement>,
@@ -34,7 +35,7 @@ export function TrackThumbnail({
     <div
       className={classNames(className.wrapper, children && badge && "relative")}
     >
-      <img
+      <Image
         referrerPolicy="no-referrer"
         draggable={false}
         src={track?.albumImage?.url}

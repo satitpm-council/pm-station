@@ -1,4 +1,4 @@
-import { PageHeader } from "@/components/PageHeader";
+import { PageHeader } from "@/components/layout/PageHeader";
 import { Metadata } from "next";
 import SearchForm from "./SearchForm";
 

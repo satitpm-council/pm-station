@@ -6,7 +6,7 @@ import {
   SidebarContent,
   SidebarHeader,
   SidebarFooter,
-} from "@/components/Sidebar";
+} from "@/components/layout/Sidebar";
 import { UserIcon } from "@heroicons/react/20/solid";
 import Image from "next/image";
 import { SongRequestItem, ToggleCollapsedMenu } from "./Item";

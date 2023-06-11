@@ -1,5 +1,5 @@
 import { MusicalNoteIcon } from "@heroicons/react/20/solid";
-import { MenuItem } from "@/components/Sidebar";
+import { MenuItem } from "@/components/layout/Sidebar";
 
 const MusicIcon = <MusicalNoteIcon className="h-4 w-4" />;
 

@@ -1,5 +1,5 @@
 import { ArrowLeftOnRectangleIcon } from "@heroicons/react/20/solid";
-import { Menu, MenuItem } from "@/components/Sidebar";
+import { Menu, MenuItem } from "@/components/layout/Sidebar";
 import { Suspense } from "react";
 import { CSRFTokenField } from "@/auth/components";
 
