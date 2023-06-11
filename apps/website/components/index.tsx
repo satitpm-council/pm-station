@@ -1,2 +1,2 @@
 export * from "./layout/Header";
-export * from "./primitives/TrackThumbnail";
+export * from "./layout/PageHeader";

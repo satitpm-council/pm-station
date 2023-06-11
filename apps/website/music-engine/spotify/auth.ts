@@ -1,4 +1,4 @@
-import axios from "axios";
+import ky from "ky";
 import { redis } from "@station/server/redis";
 import { isString, isNumber } from "shared/utils";
 
@@ -34,18 +34,17 @@ const tokenResponseToData = ({
 let tokenData: TokenData | undefined;
 
 const getRemoteToken = async (): Promise<TokenData> => {
-  const { data } = await axios.post<TokenResponse>(
-    "/api/token",
-    new URLSearchParams({
-      grant_type: "client_credentials",
-    }),
-    {
-      baseURL: "https://accounts.spotify.com",
+  const data = await ky
+    .post("api/token", {
+      body: new URLSearchParams({
+        grant_type: "client_credentials",
+      }),
+      prefixUrl: "https://accounts.spotify.com",
       headers: {
         Authorization: `Basic ${getCredentials()}`,
       },
-    }
-  );
+    })
+    .json<TokenResponse>();
   await redis.set(TOKEN_KEY, data["access_token"]);
   await redis.expire(TOKEN_KEY, data["expires_in"]);
   return tokenResponseToData(data);
@@ -64,7 +63,7 @@ const getCachedToken = async (): Promise<TokenData | undefined> => {
   return undefined;
 };
 
-const invalidateToken = async () => {
+export const invalidateToken = async () => {
   tokenData = undefined;
   await redis.del(TOKEN_KEY);
 };

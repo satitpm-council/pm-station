@@ -8,7 +8,7 @@ export default function SongRequestItem({ track }: { track: TrackResponse }) {
   return (
     <button
       onClick={() => {
-        songRequestModalStore.setState({ selectedTrack: track });
+        songRequestModalStore.setState({ selectedTrack: track, show: true });
       }}
       className="md:flex justify-center bg-white bg-opacity-10 rounded-lg hover:bg-opacity-20 transition-colors"
     >

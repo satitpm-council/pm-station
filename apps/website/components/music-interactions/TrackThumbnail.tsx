@@ -1,3 +1,5 @@
+"use client";
+
 import React, { useMemo } from "react";
 import { classNames } from "@/shared/utils";
 import type { TrackResponse } from "@station/shared/schema/types";
@@ -42,6 +44,8 @@ export function TrackThumbnail({
         className={className.image}
         alt={`${track?.name} - ${track?.artists[0]}`}
         title={`${track?.name} - ${track?.artists[0]}`}
+        width={track?.albumImage?.width}
+        height={track?.albumImage?.height}
       />
       {badge && children && (
         <Badge
