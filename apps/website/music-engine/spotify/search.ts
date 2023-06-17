@@ -1,5 +1,3 @@
-"use server";
-
 import { TrackResponse } from "@station/shared/schema/types";
 import SpotifyRequest from "./request";
 

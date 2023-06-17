@@ -1,5 +1,7 @@
 const { EnvironmentPlugin } = require("webpack");
 
+const { getPackages } = require("build-config");
+
 const { parsed: serverEnvVars } = require("dotenv").config({
   path: "../../.env",
 });
@@ -23,13 +25,10 @@ const nextConfig = {
       { protocol: "https", hostname: "i.scdn.co" },
     ],
   },
-  experimental: {
-    serverActions: true,
-  },
-  transpilePackages: ["@station/db"],
+  transpilePackages: getPackages(),
   webpack: (config, { isServer }) => {
     config.plugins.push(
-      new EnvironmentPlugin(isServer ? serverEnvVars : clientEnvVars)
+      new EnvironmentPlugin((isServer ? serverEnvVars : clientEnvVars) ?? {})
     );
     return config;
   },
