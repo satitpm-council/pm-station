@@ -1,18 +1,14 @@
 const { EnvironmentPlugin } = require("webpack");
 
-const { getPackages } = require("build-config");
-
 const { parsed: serverEnvVars } = require("dotenv").config({
   path: "../../.env",
 });
 
-const clientEnvVars = serverEnvVars
-  ? Object.fromEntries(
-      Object.entries(serverEnvVars).filter(([key]) =>
-        key.startsWith("NEXT_PUBLIC_")
-      )
-    )
-  : {};
+const clientEnvVars = Object.fromEntries(
+  Object.entries(serverEnvVars).filter(([key]) =>
+    key.startsWith("NEXT_PUBLIC_")
+  )
+);
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
@@ -25,10 +21,13 @@ const nextConfig = {
       { protocol: "https", hostname: "i.scdn.co" },
     ],
   },
-  transpilePackages: getPackages(),
+  experimental: {
+    serverActions: true,
+  },
+  transpilePackages: ["@station/db"],
   webpack: (config, { isServer }) => {
     config.plugins.push(
-      new EnvironmentPlugin((isServer ? serverEnvVars : clientEnvVars) ?? {})
+      new EnvironmentPlugin(isServer ? serverEnvVars : clientEnvVars)
     );
     return config;
   },
