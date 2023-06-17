@@ -180,22 +180,16 @@
           "type": "text"
         },
         {
-          "name": "thumbnail",
-          "type": "object",
-          "columns": [
-            {
-              "name": "url",
-              "type": "string"
-            },
-            {
-              "name": "height",
-              "type": "int"
-            },
-            {
-              "name": "width",
-              "type": "int"
-            }
-          ]
+          "name": "thumbnail_url",
+          "type": "string"
+        },
+        {
+          "name": "thumbnail_height",
+          "type": "int"
+        },
+        {
+          "name": "thumbnail_width",
+          "type": "int"
         }
       ]
     },

@@ -17,9 +17,9 @@ export default function SongRequestItem({ track }: { track: TrackResponse }) {
           <Image
             draggable={false}
             className="w-full h-auto rounded-lg"
-            src={track.thumbnail?.url ?? ""}
-            width={track.thumbnail?.width ?? 120}
-            height={track.thumbnail?.height ?? 120}
+            src={track.thumbnail_url ?? ""}
+            width={track.thumbnail_width ?? 120}
+            height={track.thumbnail_height ?? 120}
             alt={track.title ?? ""}
             title={`${track.title} - ${track.artists?.[0]}`}
             crossOrigin="anonymous"

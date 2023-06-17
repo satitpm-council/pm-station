@@ -16,11 +16,9 @@ const TrackResponse = z.object({
   id: z.string(),
   preview_url: z.string().nullable(),
   artists: z.array(z.string()),
-  thumbnail: z.object({
-    height: z.number().optional(),
-    url: z.string(),
-    width: z.number().optional(),
-  }),
+  thumbnail_height: z.number().optional(),
+  thumbnail_url: z.string(),
+  thumbnail_width: z.number().optional(),
   permalink: z.string(),
 });
 
@@ -36,7 +34,9 @@ const SongRequestSubmission = z.object({
 });
 
 const SongRequestSearchRecord = SongRequestRecord.pick({
-  thumbnail: true,
+  thumbnail_height: true,
+  thumbnail_url: true,
+  thumbnail_width: true,
   artists: true,
   title: true,
   playlistId: true,

@@ -16,6 +16,7 @@ export const toTrackResponse = (
     album: { images },
     external_urls: { spotify },
   } = track;
+  const { url, height, width } = images[1] ?? images[0];
   return {
     explicit,
     title: name,
@@ -23,7 +24,9 @@ export const toTrackResponse = (
     duration: duration_ms,
     id,
     preview_url,
-    thumbnail: images[1],
+    thumbnail_height: height,
+    thumbnail_width: width,
+    thumbnail_url: url,
     permalink: spotify,
   };
 };
