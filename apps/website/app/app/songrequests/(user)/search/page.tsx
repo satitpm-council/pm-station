@@ -2,17 +2,12 @@ import { searchTrack } from "@/music-engine/spotify";
 import SongRequestItem from "./Item";
 import { SelectTrackModal } from "./SelectModal";
 
-// The edge runtime has been tested on the Spotify music engine only.
-// YouTube Music engine is not supported.
-
-export const runtime = "edge";
-
 export default async function SearchPage({
-  params,
+  searchParams,
 }: {
-  params: { q: string };
+  searchParams: { q: string };
 }) {
-  const tracks = await searchTrack(decodeURIComponent(params.q));
+  const tracks = await searchTrack(decodeURIComponent(searchParams.q));
   return (
     <div className="flex flex-col gap-4">
       <span>เลือกรายการเพลงที่ต้องการส่งคำขอ</span>

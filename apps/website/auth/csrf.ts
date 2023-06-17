@@ -4,11 +4,7 @@ import type { RequestCookies } from "next/dist/compiled/@edge-runtime/cookies";
 import type { ReadonlyHeaders } from "next/dist/server/web/spec-extension/adapters/headers";
 import { parse } from "cookie";
 
-const csrfCookie = (secure: boolean) =>
-  internal_defaultCookies(secure).csrfToken;
-
-const secure =
-  process.env.NEXTAUTH_URL?.startsWith("https://") ?? !!process.env.VERCEL;
+const csrfCookie = internal_defaultCookies().csrfToken;
 
 /**
  * Create a CSRF Token for the current session
@@ -20,16 +16,15 @@ export const createCSRFToken = async (
     value?: string;
   }
 > => {
-  const cookie = csrfCookie(secure);
   const csrfToken = await internal_createCSRFToken({
     isPost: false,
     options: {
       secret: process.env.NEXTAUTH_SECRET,
     },
-    cookieValue: cookies.get(cookie.name)?.value,
+    cookieValue: cookies.get(csrfCookie.name)?.value,
   });
   return {
-    ...cookie,
+    ...csrfCookie,
     value: csrfToken.cookie,
   };
 };
@@ -44,8 +39,7 @@ export const getCSRFToken = (headers: ReadonlyHeaders) => {
     ...parse(headers.get("cookie") ?? ""),
     ...parse(headers.get("set-cookie") ?? ""),
   };
-  const cookie = csrfCookie(secure);
-  const [csrfToken] = cookies[cookie.name]?.split("|") ?? [];
+  const [csrfToken] = cookies[csrfCookie.name]?.split("|") ?? [];
   if (csrfToken) {
     return csrfToken;
   }

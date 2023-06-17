@@ -11,6 +11,7 @@ export interface CookieOption {
 
 /** [Documentation](https://next-auth.js.org/configuration/options#cookies) */
 export interface CookiesOptions {
+  sessionToken: CookieOption;
   csrfToken: CookieOption;
 }
 
@@ -24,11 +25,21 @@ export interface CookiesOptions {
  *
  * @TODO Review cookie settings (names, options)
  */
-export function internal_defaultCookies(
-  useSecureCookies: boolean
-): CookiesOptions {
+export function internal_defaultCookies(): CookiesOptions {
+  const useSecureCookies =
+    process.env.NEXTAUTH_URL?.startsWith("https://") ?? !!process.env.VERCEL;
+  const cookiePrefix = useSecureCookies ? "__Secure-" : "";
   return {
     // default cookie options
+    sessionToken: {
+      name: `${cookiePrefix}next-auth.session-token`,
+      options: {
+        httpOnly: true,
+        sameSite: "lax",
+        path: "/",
+        secure: useSecureCookies,
+      },
+    },
     csrfToken: {
       // Default to __Host- for CSRF token for additional protection if using useSecureCookies
       // NB: The `__Host-` prefix is stricter than the `__Secure-` prefix.

@@ -10,6 +10,7 @@ import type { User } from "next-auth";
 import { SubmitButton } from "@station/client/SubmitButton";
 import type { UserType } from "@/schema/user";
 import { profileUpdateSchema } from "@/schema/profile";
+import { errorToast } from "@/shared/toast";
 
 const typeRadio: Record<UserType, string> = {
   student: "นักเรียน",
@@ -51,28 +52,9 @@ export default function ProfileForm({
         ...body,
         csrfToken,
       });
-      toast(
-        <>
-          <b>ปรับปรุงข้อมูลเรียบร้อยแล้ว</b>
-        </>,
-        {
-          type: "success",
-        }
-      );
     } catch (error) {
       console.error(error);
-      toast(
-        <>
-          <b>ปรับปรุงข้อมูลไม่สำเร็จ</b>
-          <span>
-            เนื่องจาก{" "}
-            {error instanceof Error ? error.message : (error as any).toString()}
-          </span>
-        </>,
-        {
-          type: "error",
-        }
-      );
+      errorToast(error, { title: "ปรับปรุงข้อมูลไม่สำเร็จ" });
     } finally {
       setIsLoading(false);
       startTransition(() => {
