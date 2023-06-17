@@ -151,6 +151,72 @@
           }
         }
       ]
+    },
+    {
+      "name": "songrequests",
+      "columns": [
+        {
+          "name": "title",
+          "type": "string"
+        },
+        {
+          "name": "duration",
+          "type": "int"
+        },
+        {
+          "name": "explicit",
+          "type": "bool"
+        },
+        {
+          "name": "artists",
+          "type": "multiple"
+        },
+        {
+          "name": "permalink",
+          "type": "text"
+        },
+        {
+          "name": "preview_url",
+          "type": "text"
+        },
+        {
+          "name": "thumbnail",
+          "type": "object",
+          "columns": [
+            {
+              "name": "url",
+              "type": "string"
+            },
+            {
+              "name": "height",
+              "type": "int"
+            },
+            {
+              "name": "width",
+              "type": "int"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "songrequests_submissions",
+      "columns": [
+        {
+          "name": "songrequest",
+          "type": "link",
+          "link": {
+            "table": "songrequests"
+          }
+        },
+        {
+          "name": "user",
+          "type": "link",
+          "link": {
+            "table": "nextauth_users"
+          }
+        }
+      ]
     }
   ]
 }

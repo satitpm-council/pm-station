@@ -17,11 +17,11 @@ export default function SongRequestItem({ track }: { track: TrackResponse }) {
           <Image
             draggable={false}
             className="w-full h-auto rounded-lg"
-            src={track.albumImage?.url ?? ""}
-            width={track.albumImage?.width ?? 120}
-            height={track.albumImage?.height ?? 120}
-            alt={track.name ?? ""}
-            title={`${track.name} - ${track.artists?.[0]}`}
+            src={track.thumbnail?.url ?? ""}
+            width={track.thumbnail?.width ?? 120}
+            height={track.thumbnail?.height ?? 120}
+            alt={track.title ?? ""}
+            title={`${track.title} - ${track.artists?.[0]}`}
             crossOrigin="anonymous"
           />
         </div>
@@ -35,7 +35,7 @@ export default function SongRequestItem({ track }: { track: TrackResponse }) {
                 E
               </span>
             )}
-            {track.name}
+            {track.title}
           </b>
           <span className="truncate min-w-0 w-full">
             {track.artists?.join("/")}
