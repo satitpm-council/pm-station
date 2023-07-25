@@ -9,4 +9,5 @@ sentry.client.json
 /*/__pycache__
 /api/index.js
 /api/index.js.map
+/api/*.json
 .vercel

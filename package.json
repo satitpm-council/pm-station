@@ -2,9 +2,8 @@
   "private": true,
   "name": "coolkidssatit",
   "workspaces": [
-    "apps/*",
-    "packages/*",
-    "apps/pm-station-firebase/functions"
+    "apps/client-web",
+    "packages/*"
   ],
   "scripts": {
     "test": "turbo run test --parallel",

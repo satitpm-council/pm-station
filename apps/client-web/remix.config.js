@@ -1,12 +1,6 @@
 // @ts-check
-
-const { getPackages, getPackagesPaths, setupTestEnv } = require("build-config");
+const { getPackages, getPackagesPaths } = require("build-config");
 const { withEsbuildOverride } = require("remix-esbuild-override");
-
-if (process.env.NODE_ENV === "test") {
-  // Sets test environment variables
-  setupTestEnv("client-web");
-}
 
 withEsbuildOverride((option) => {
   // update the option
@@ -40,14 +34,17 @@ withEsbuildOverride((option) => {
 
 /** @type {import('@remix-run/dev').AppConfig} */
 module.exports = {
-  serverBuildTarget: "vercel",
   ignoredRouteFiles: ["**/.*"],
   // appDirectory: "app",
   // assetsBuildDirectory: "public/build",
   // serverBuildPath: ".netlify/functions-internal/server.js",
   // publicPath: "/build/",
   server: process.env.NODE_ENV === "production" ? "./server.js" : undefined,
+  serverBuildPath: "api/index.js",
+  serverModuleFormat: "cjs",
   serverDependenciesToBundle: [/^@station\//, "shared"],
+  tailwind: true,
+  postcss: true,
   watchPaths: async () => {
     return getPackagesPaths().map((p) => `../../${p}/**/*`);
   },
