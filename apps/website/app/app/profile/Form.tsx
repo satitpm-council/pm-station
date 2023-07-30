@@ -49,7 +49,7 @@ export default function ProfileForm({
     try {
       const body = formData(profileUpdateSchema).parse(data);
       await axios.post("/api/auth/session", {
-        ...body,
+        data: body,
         csrfToken,
       });
     } catch (error) {

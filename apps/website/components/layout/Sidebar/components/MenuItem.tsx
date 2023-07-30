@@ -1,3 +1,4 @@
+import { isRegistered } from "@/auth/utils";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
 import type { MenuItemProps } from "react-pro-sidebar";
@@ -12,12 +13,12 @@ export const MenuItem = ({
   route?: string;
 }) => {
   const { data } = useSession();
-  const isRegistered = data?.user?.type;
+  const userRegistered = isRegistered(data?.user);
   const active = useDefaultOpen(route, true);
   return (
     <Component active={active} {...props}>
       {/* We don't allow navigation if user doesn't registered yet. */}
-      {route && isRegistered ? (
+      {route && userRegistered ? (
         <Link
           title={typeof children === "string" ? children : undefined}
           href={route}

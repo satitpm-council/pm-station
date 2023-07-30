@@ -22,6 +22,32 @@
         {
           "name": "type",
           "type": "string"
+        },
+        {
+          "name": "role",
+          "type": "string"
+        }
+      ],
+      "revLinks": [
+        {
+          "column": "user",
+          "table": "nextauth_accounts"
+        },
+        {
+          "column": "user",
+          "table": "nextauth_users_accounts"
+        },
+        {
+          "column": "user",
+          "table": "nextauth_users_sessions"
+        },
+        {
+          "column": "user",
+          "table": "nextauth_sessions"
+        },
+        {
+          "column": "user",
+          "table": "songrequests_submissions"
         }
       ]
     },
@@ -74,6 +100,12 @@
         {
           "name": "session_state",
           "type": "string"
+        }
+      ],
+      "revLinks": [
+        {
+          "column": "account",
+          "table": "nextauth_users_accounts"
         }
       ]
     },
@@ -150,15 +182,17 @@
             "table": "nextauth_users"
           }
         }
+      ],
+      "revLinks": [
+        {
+          "column": "session",
+          "table": "nextauth_users_sessions"
+        }
       ]
     },
     {
       "name": "songrequests",
       "columns": [
-        {
-          "name": "title",
-          "type": "string"
-        },
         {
           "name": "duration",
           "type": "int"
@@ -172,11 +206,15 @@
           "type": "multiple"
         },
         {
-          "name": "permalink",
+          "name": "preview_url",
           "type": "text"
         },
         {
-          "name": "preview_url",
+          "name": "title",
+          "type": "string"
+        },
+        {
+          "name": "permalink",
           "type": "text"
         },
         {
@@ -190,6 +228,12 @@
         {
           "name": "thumbnail_width",
           "type": "int"
+        }
+      ],
+      "revLinks": [
+        {
+          "column": "songrequest",
+          "table": "songrequests_submissions"
         }
       ]
     },
