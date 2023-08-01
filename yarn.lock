@@ -4616,7 +4616,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@station/db@workspace:packages/db"
   dependencies:
-    "@xata.io/client": ^0.23.5
+    "@xata.io/client": ^0.25.1
   languageName: unknown
   linkType: soft
 
@@ -4713,6 +4713,25 @@ __metadata:
   peerDependencies:
     tailwindcss: ">=3.0.0 || >= 3.0.0-alpha.1"
   checksum: 9eddb4dbd06d01b1068138ff52a54ed0e35a28e7bfd3c72e226fc28658ecd92a9c078c4abe9c83db090984672040644d7ae2e035933fb619dd703df1d87aa275
+  languageName: node
+  linkType: hard
+
+"@tanstack/react-table@npm:^8.9.3":
+  version: 8.9.3
+  resolution: "@tanstack/react-table@npm:8.9.3"
+  dependencies:
+    "@tanstack/table-core": 8.9.3
+  peerDependencies:
+    react: ">=16"
+    react-dom: ">=16"
+  checksum: a71fbbc608bb11b79ecd2b1a838fad2fc4140f9eb1a25bd44b6b1b4c6acd52741b5745e3e022390c642c284d0d528249360e322c0dbc3d34fea031611c207a7d
+  languageName: node
+  linkType: hard
+
+"@tanstack/table-core@npm:8.9.3":
+  version: 8.9.3
+  resolution: "@tanstack/table-core@npm:8.9.3"
+  checksum: 52c7e57daaa3160450fb0bde702ec0b8aab159e2b19efd1012e03b3e167acc52839f5b39578cc8bf96e91346719f400d0435a5191384c168d9477da82f276c38
   languageName: node
   linkType: hard
 
@@ -5675,12 +5694,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@xata.io/client@npm:^0.23.5":
-  version: 0.23.5
-  resolution: "@xata.io/client@npm:0.23.5"
+"@xata.io/client@npm:^0.25.1":
+  version: 0.25.1
+  resolution: "@xata.io/client@npm:0.25.1"
   peerDependencies:
     typescript: ">=4.5"
-  checksum: 4291d8d0e2a77f005416027a61f410934b4a60ff15a52aef1b0177118f12d5c59f78e8b73fde4a0d1fa80a563f0583572031839e7bdb49292a832427f3389c27
+  checksum: 041988667b19e84a4af27b8abb6c3ca79904df595a687e4a8cd19ce0c1e3d180781fb2e54ba55de2217893f76b05048cffa99d171034f9a4229d694904d43bcd
   languageName: node
   linkType: hard
 
@@ -7718,6 +7737,13 @@ __metadata:
   version: 1.11.7
   resolution: "dayjs@npm:1.11.7"
   checksum: 5003a7c1dd9ed51385beb658231c3548700b82d3548c0cfbe549d85f2d08e90e972510282b7506941452c58d32136d6362f009c77ca55381a09c704e9f177ebb
+  languageName: node
+  linkType: hard
+
+"dayjs@npm:^1.11.9":
+  version: 1.11.9
+  resolution: "dayjs@npm:1.11.9"
+  checksum: a4844d83dc87f921348bb9b1b93af851c51e6f71fa259604809cfe1b49d1230e6b0212dab44d1cb01994c096ad3a77ea1cf18fa55154da6efcc9d3610526ac38
   languageName: node
   linkType: hard
 
@@ -18856,12 +18882,14 @@ __metadata:
     "@station/db": "workspace:*"
     "@station/shared": "workspace:*"
     "@tailwindcss/forms": ^0.5.3
+    "@tanstack/react-table": ^8.9.3
     "@types/node": 18.16.3
     "@types/react": 18.2.0
     "@types/react-dom": 18.2.1
     autoprefixer: 10.4.14
     axios: ^1.4.0
     client-only: ^0.0.1
+    dayjs: ^1.11.9
     eslint: 8.39.0
     eslint-config-next: 13.3.2
     firebase: ^9.21.0
