@@ -7,7 +7,7 @@ import { formData } from "zod-form-data";
 import { useRouter } from "next/navigation";
 
 import type { User } from "next-auth";
-import { SubmitButton } from "@station/client/SubmitButton";
+import { SubmitButton } from "@/components/interactions";
 import type { UserType } from "@/schema/user";
 import { profileUpdateSchema } from "@/schema/profile";
 import { errorToast } from "@/shared/toast";

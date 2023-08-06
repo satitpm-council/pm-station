@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useState, useTransition } from "react";
-import { SubmitButton } from "@station/client/SubmitButton";
+import { SubmitButton } from "@/components/interactions";
 import { TrackModal } from "@/components/client";
 import { songRequestModalStore } from "@/shared/modalStore";
 import { useRouter } from "next/navigation";

@@ -1,4 +1,3 @@
-import { submitSongRequest } from "@/features/songrequests";
 import { getTrack } from "@/music-engine/spotify";
 import Link from "next/link";
 import Image from "next/image";
@@ -14,7 +13,6 @@ export default async function SongRequestSubmitPage({
     return redirect("/app/songrequests");
   }
   const track = await getTrack(id);
-  await submitSongRequest(track);
   return (
     <div className="my-4 flex flex-col gap-6 md:w-full max-w-2xl transform rounded-xl bg-stone-800 px-6 sm:px-8 py-8 shadow-xl transition-all text-white">
       <h3 className="text-2xl font-bold text-center">
