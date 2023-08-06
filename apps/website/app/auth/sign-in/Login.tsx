@@ -20,7 +20,7 @@ const OAuthLoginButton = ({
   const logos = "https://authjs.dev/img/providers";
   const imageSize = id === "line" ? 30 : 20;
   return (
-    <form action={signinUrl} method="POST">
+    <form action={signinUrl} method="POST" className="w-full text-center">
       <Suspense fallback={null}>
         <CSRFTokenField />
       </Suspense>
@@ -29,7 +29,7 @@ const OAuthLoginButton = ({
       )}
       <button
         type="submit"
-        className={styles.button}
+        className={`${styles.button} w-full justify-center text-base font-medium`}
         style={
           {
             "--provider-bg": style?.bg ?? "",
@@ -59,7 +59,7 @@ const OAuthLoginButton = ({
             alt={name}
           />
         )}
-        <span>Sign in with {name}</span>
+        <span>Sign In</span>
       </button>
     </form>
   );
