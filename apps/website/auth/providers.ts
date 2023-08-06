@@ -1,10 +1,10 @@
-import { env } from "@/env.mjs";
-import GoogleProvider from "next-auth/providers/google";
+import KindeProvider from "./kinde/provider";
 
 export const providers = [
-  GoogleProvider({
-    clientId: env.GOOGLE_CLIENT_ID,
-    clientSecret: env.GOOGLE_CLIENT_SECRET,
+  KindeProvider({
+    clientId: process.env.KINDE_CLIENT_ID,
+    clientSecret: process.env.KINDE_CLIENT_SECRET,
+    issuer: process.env.KINDE_ISSUER_URL,
   }),
 ];
 
