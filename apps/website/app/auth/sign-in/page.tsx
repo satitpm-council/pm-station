@@ -19,7 +19,7 @@ export default function SignInPage({
           <HeaderLarge />
         </header>
 
-        <main className="flex flex-col gap-4 text-center items-center justify-center bg-white rounded-lg bg-opacity-10 mx-8 px-6 sm:px-10 py-6 text-sm">
+        <main className="flex flex-col gap-4 text-center items-center justify-center bg-white rounded-lg bg-opacity-10 mx-8 px-6 sm:px-10 py-6 text-sm w-full max-w-md">
           <h2 className="font-bold text-2xl">เข้าสู่ระบบ</h2>
           <Login callbackUrl={callbackUrl?.toString()} />
         </main>

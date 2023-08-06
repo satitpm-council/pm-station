@@ -1,17 +1,14 @@
-import GoogleProvider from "next-auth/providers/google";
-import LineProvider from "next-auth/providers/line";
+import KindeProvider from "./kinde/provider";
+
 export const providers = [
-  GoogleProvider({
-    clientId: process.env.GOOGLE_CLIENT_ID,
-    clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-  }),
-  LineProvider({
-    clientId: process.env.GOOGLE_CLIENT_ID,
-    clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+  KindeProvider({
+    clientId: process.env.KINDE_CLIENT_ID,
+    clientSecret: process.env.KINDE_CLIENT_SECRET,
+    issuer: process.env.KINDE_ISSUER_URL,
   }),
 ];
 
-type Provider = typeof providers[number];
+type Provider = (typeof providers)[number];
 
 export type RenderedProvider = Pick<Provider, "id" | "name" | "style" | "type">;
 
