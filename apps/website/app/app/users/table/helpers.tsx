@@ -10,7 +10,6 @@ const columnHelper = createColumnHelper<WithXataMetadata<User>>();
 const columns = [
   columnHelper.display({
     id: "image",
-
     cell: ({ row }) => {
       const image = row.original.image;
       return (
@@ -26,33 +25,29 @@ const columns = [
       );
     },
   }),
-  columnHelper.group({
-    id: "profile",
-    columns: [
-      columnHelper.accessor("name", {
-        header: () => "ชื่อ",
-        meta: {
-          hideOnSmallViewPort: true,
-        },
-      }),
-      columnHelper.accessor("email", {
-        header: () => "อีเมล",
-      }),
-    ],
+  columnHelper.accessor("name", {
+    header: () => "ชื่อ",
+    meta: {
+      hideOnViewPort: "sm",
+    },
+  }),
+  columnHelper.accessor("email", {
+    header: () => "อีเมล",
   }),
   columnHelper.accessor("metadata.createdAt", {
     cell: ({ getValue }) => dayjs(getValue()).format("ll HH:mm น."),
     header: () => "สร้างเมื่อ",
     meta: {
-      hideOnSmallViewPort: true,
+      hideOnViewPort: "lg",
     },
   }),
   columnHelper.accessor("role", {
-    cell: ({ getValue, cell }) => {
+    cell: ({ getValue }) => {
       const value = getValue();
       return value ? thaiUserRoles[value] : "ยังไม่ได้ลงทะเบียน";
     },
     header: () => "สิทธิ์",
+    enableSorting: false,
   }),
 ];
 

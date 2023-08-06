@@ -6,7 +6,6 @@ import { TrackModal } from "@/components/client";
 import { songRequestModalStore } from "@/shared/modalStore";
 import { useRouter } from "next/navigation";
 import ky from "ky";
-import { toast } from "react-toastify";
 import { errorToast } from "@/shared/toast";
 
 export const SelectTrackModal = () => {
@@ -24,7 +23,9 @@ export const SelectTrackModal = () => {
           id,
         },
       });
-      replace(`/app/songrequests/submit?id=${id}`);
+      startTransition(() => {
+        replace(`/app/songrequests/submit?id=${id}`);
+      });
     } catch (error) {
       console.error(error);
       errorToast(error, { title: "เลือกรายการเพลงไม่สำเร็จ" });

@@ -5,6 +5,8 @@ import { XataClient } from "./xata";
 
 let instance: XataClient | undefined = undefined;
 
+export type { XataRecord };
+
 export type WithXataMetadata<T extends Record<string, unknown>> = T & {
   metadata: XataRecord<any>["xata"];
 };
