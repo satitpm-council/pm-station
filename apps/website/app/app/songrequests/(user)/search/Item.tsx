@@ -1,7 +1,7 @@
 "use client";
 
 import { songRequestModalStore } from "@/shared/modalStore";
-import { TrackResponse } from "@station/shared/schema/types";
+import { TrackResponse } from "@/schema/songrequests";
 import Image from "next/image";
 
 export default function SongRequestItem({ track }: { track: TrackResponse }) {

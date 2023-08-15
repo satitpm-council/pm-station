@@ -11,6 +11,17 @@ export type WithXataMetadata<T extends Record<string, unknown>> = T & {
   metadata: XataRecord<any>["xata"];
 };
 
+/**
+ * In Xata, fields that are linked can be create or updated by providing the ID of the linked record.
+ * This type allows us to specify that a field is linked, and that it should be a string.
+ */
+export type LinkedFields<
+  T extends Record<string, unknown>,
+  K extends keyof T
+> = Omit<T, K> & {
+  [P in K]: string;
+};
+
 export const getDb = () => {
   if (instance) return instance;
 

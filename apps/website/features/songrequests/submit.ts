@@ -1,5 +1,15 @@
-import { TrackResponse } from "@station/shared/schema/types";
-import { getDb, Songrequests, XataClient } from "@station/db";
+import {
+  TrackResponse,
+  SongRequest as SongRequestSchema,
+  SongRequestSubmission as SongRequestSubmissionSchema,
+} from "@/schema/songrequests";
+import {
+  getDb,
+  LinkedFields,
+  Songrequests,
+  SongrequestsSubmissions,
+  XataClient,
+} from "@station/db";
 import { cookies } from "next/headers";
 import { getUser } from "@/auth/server-token";
 
@@ -13,10 +23,17 @@ export async function submitSongRequest(track: TrackResponse) {
     throw new Error("User not found");
   }
   const client = getDb();
-  const record = track satisfies Songrequests;
-  const submissionRecord = {
+  const record: SongRequestSchema = {
+    ...track,
+    lastSubmittedAt: new Date(),
+  } satisfies Songrequests;
+  const submissionRecord: LinkedFields<
+    SongRequestSubmissionSchema,
+    "songrequest" | "user"
+  > = {
     user: user.sub as string,
     songrequest: track.id,
+    songRequestId: track.id,
   } satisfies SubmissionCreateRecord;
   await client.transactions.run([
     {

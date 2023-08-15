@@ -1,7 +1,7 @@
 import { z } from "zod";
 import { HitResult, mapObjectIdToId } from "../algolia";
 import { docRef, preprocessDate } from "../utils";
-
+import { User, userSchema } from "website/schema/user";
 const SongRequestSummary = z.object({
   lastUpdatedAt: z.preprocess(preprocessDate, z.date()),
   submissionCount: z.number().min(0),
@@ -23,14 +23,13 @@ const TrackResponse = z.object({
 });
 
 const SongRequestRecord = TrackResponse.extend({
-  playlistId: z.array(z.preprocess(docRef, z.string())).optional(),
-  youtubeId: z.string().optional(),
+  lastSubmittedAt: z.date(),
 });
 
 const SongRequestSubmission = z.object({
-  submittedBy: z.string(),
-  updatedAt: z.preprocess(preprocessDate, z.date()),
-  trackId: z.string(),
+  user: userSchema,
+  songrequest: SongRequestRecord,
+  songRequestId: z.string(),
 });
 
 const SongRequestSearchRecord = SongRequestRecord.pick({
@@ -39,7 +38,6 @@ const SongRequestSearchRecord = SongRequestRecord.pick({
   thumbnail_width: true,
   artists: true,
   title: true,
-  playlistId: true,
   explicit: true,
 })
   .merge(HitResult)

@@ -28,7 +28,7 @@
     "react-pro-sidebar": "^0.7.1",
     "react-toastify": "^9.1.2",
     "server-only": "^0.0.1",
-    "swr": "^2.1.5",
+    "swr": "^2.2.0",
     "youtubei.js": "^5.0.4",
     "zod": "^3.21.4",
     "zod-form-data": "^2.0.1",

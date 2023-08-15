@@ -38,7 +38,8 @@
     "axios": "0.27.2",
     "firebase": "9.9.3",
     "prettier": "2.8.8",
-    "@lemasc/firebase-wrapper": "1.1.1"
+    "@lemasc/firebase-wrapper": "1.1.1",
+    "zod": "3.21.4"
   },
   "packageManager": "yarn@3.5.1"
 }

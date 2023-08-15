@@ -1,4 +1,4 @@
-import { TrackResponse } from "@station/shared/schema/types";
+import { TrackResponse } from "@/schema/songrequests";
 import { create } from "zustand";
 
 type SongRequestModalStore = {

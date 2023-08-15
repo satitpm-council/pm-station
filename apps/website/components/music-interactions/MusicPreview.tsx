@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
-import type { TrackResponse } from "@station/shared/schema/types";
+import type { TrackResponse } from "@/schema/songrequests";
 import { PlayIcon, PauseIcon } from "@heroicons/react/20/solid";
 import { TrackThumbnail } from "./TrackThumbnail";
 

@@ -228,6 +228,10 @@
         {
           "name": "thumbnail_width",
           "type": "int"
+        },
+        {
+          "name": "lastSubmittedAt",
+          "type": "datetime"
         }
       ],
       "revLinks": [
@@ -253,6 +257,10 @@
           "link": {
             "table": "nextauth_users"
           }
+        },
+        {
+          "name": "songRequestId",
+          "type": "string"
         }
       ]
     }

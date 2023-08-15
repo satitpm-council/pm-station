@@ -1,6 +1,6 @@
 "use server";
 
-import { TrackResponse } from "@station/shared/schema/types";
+import { TrackResponse } from "@/schema/songrequests";
 import SpotifyRequest from "./request";
 
 /// <reference types="spotify-api" />
