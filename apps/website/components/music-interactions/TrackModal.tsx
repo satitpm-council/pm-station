@@ -1,5 +1,7 @@
+"use client";
+
 import { Dialog } from "@headlessui/react";
-import { useCallback } from "react";
+import { useCallback, useEffect } from "react";
 import { ArrowTopRightOnSquareIcon } from "@heroicons/react/20/solid";
 
 import { MusicPreview } from "./MusicPreview";
@@ -23,6 +25,12 @@ export function TrackModal({
   const closeModal = useCallback(() => {
     songRequestModalStore.setState({ show: false });
   }, []);
+
+  useEffect(() => {
+    return () => {
+      songRequestModalStore.setState({ show: false, selectedTrack: null });
+    };
+  });
 
   return (
     <Modal onClose={onClose} isOpen={isOpen} closeModal={closeModal}>

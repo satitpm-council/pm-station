@@ -1,5 +1,5 @@
 import { searchTrack } from "@/music-engine/spotify";
-import SongRequestItem from "./Item";
+import { SongRequestItem } from "@/components/music-interactions";
 import { SelectTrackModal } from "./SelectModal";
 
 export default async function SearchPage({
@@ -14,7 +14,7 @@ export default async function SearchPage({
       <SelectTrackModal />
       <div className="flex flex-col md:flex-row md:flex-wrap gap-4 md:gap-8">
         {tracks.map((track) => (
-          <SongRequestItem key={track.id} track={track} />
+          <SongRequestItem key={track.id} data={track} />
         ))}
       </div>
     </div>

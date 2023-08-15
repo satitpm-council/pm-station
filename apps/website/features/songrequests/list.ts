@@ -4,11 +4,10 @@ import { getDb } from "@station/db";
 
 export const listSongRequests = async () => {
   const client = getDb();
-  const items = await client.db.songrequests.getPaginated({
-    pagination: {
-      size: 5,
-    },
-  });
+  const items = await client.db.songrequests
+    .sort("lastSubmittedAt", "desc")
+    .sort("title", "asc")
+    .getAll();
 
-  return parseResultsWithMetadata(items.records, songRequestSchema);
+  return parseResultsWithMetadata(items, songRequestSchema);
 };

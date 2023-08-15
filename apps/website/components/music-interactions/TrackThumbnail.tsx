@@ -53,6 +53,7 @@ export function TrackThumbnail({
         title={`${track?.title} - ${track?.artists[0]}`}
         width={track?.thumbnail_width ?? 300}
         height={track?.thumbnail_height ?? 300}
+        crossOrigin="anonymous"
       />
       {badge && children && (
         <Badge
