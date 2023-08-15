@@ -11,15 +11,15 @@ import { songRequestModalStore } from "@/shared/modalStore";
 export function TrackModal({
   children,
   className,
-}: Pick<ModalProps, "children"> & {
+}: Partial<Pick<ModalProps, "children">> & {
   className?: string;
 }) {
-  const track = songRequestModalStore((state) => state.selectedTrack);
+  const track = songRequestModalStore((state) => state.selected?.data);
   const isOpen = songRequestModalStore((state) => state.show);
 
   const onClose = useCallback(() => {
     // The modal has been closed completely, so it is safe to remove the track from the store.
-    songRequestModalStore.setState({ selectedTrack: null });
+    songRequestModalStore.setState({ selected: null });
   }, []);
 
   const closeModal = useCallback(() => {
@@ -28,9 +28,9 @@ export function TrackModal({
 
   useEffect(() => {
     return () => {
-      songRequestModalStore.setState({ show: false, selectedTrack: null });
+      songRequestModalStore.setState({ show: false, selected: null });
     };
-  });
+  }, []);
 
   return (
     <Modal onClose={onClose} isOpen={isOpen} closeModal={closeModal}>

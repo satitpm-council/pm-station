@@ -13,11 +13,11 @@ export const SelectTrackModal = () => {
   const [isPending, startTransition] = useTransition();
   const [isLoading, setIsLoading] = useState(false);
   const selectTrack = useCallback(async () => {
-    const { selectedTrack } = songRequestModalStore.getState();
-    if (!selectedTrack) return;
+    const { selected } = songRequestModalStore.getState();
+    if (!selected) return;
     try {
       setIsLoading(true);
-      const id = selectedTrack.id;
+      const id = selected.data.id;
       await ky.post("/api/songrequests/submit", {
         searchParams: {
           id,

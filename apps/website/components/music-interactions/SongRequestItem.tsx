@@ -11,7 +11,7 @@ export function SongRequestItem({ data }: { data: TrackOrSongRequest }) {
     <button
       onClick={() => {
         songRequestModalStore.setState({
-          selectedTrack: parsed.data,
+          selected: parsed,
           show: true,
         });
       }}
@@ -21,10 +21,27 @@ export function SongRequestItem({ data }: { data: TrackOrSongRequest }) {
         <TrackThumbnail
           track={parsed.data}
           className={{
-            wrapper: "basis-1/4 min-w-[85px]",
+            wrapper: "basis-1/4 min-w-[85px] relative",
             image: "w-full h-auto rounded-lg",
+            ...(parsed.type === "record"
+              ? {
+                  badge:
+                    "bg-yellow-400 text-gray-900 font-medium px-4 py-2 bottom-1 left-1 md:bottom-2 md:left-2",
+                }
+              : {}),
           }}
-        ></TrackThumbnail>
+          badge={
+            parsed.type === "record"
+              ? {
+                  title: `จำนวนผู้ส่งคำขอ ${parsed.data.submissionCount} คน`,
+                }
+              : undefined
+          }
+        >
+          {parsed.type === "record" &&
+            parsed.data.submissionCount !== 1 &&
+            parsed.data.submissionCount}
+        </TrackThumbnail>
         <TrackMeta {...parsed} />
       </div>
     </button>

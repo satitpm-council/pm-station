@@ -24,6 +24,7 @@ const TrackResponse = z.object({
 
 const SongRequestRecord = TrackResponse.extend({
   lastSubmittedAt: z.preprocess(preprocessDate, z.date()),
+  submissionCount: z.number().min(0),
 });
 
 const SongRequestSubmission = z.object({

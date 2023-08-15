@@ -9,5 +9,28 @@ export const listSongRequests = async () => {
     .sort("title", "asc")
     .getAll();
 
-  return parseResultsWithMetadata(items, songRequestSchema);
+  const idsFromQuery = items.map((q) => q.id);
+
+  // Summarize to get submissionCount
+  const { summaries } = await client.db.songrequests_submissions.summarize({
+    filter: {
+      "songrequest.id": {
+        $any: idsFromQuery,
+      },
+    },
+    columns: ["songrequest.id"],
+    summaries: {
+      submissionCount: {
+        count: "songrequest",
+      },
+    },
+  });
+
+  return parseResultsWithMetadata(items, songRequestSchema, (id) => {
+    const submissionCount =
+      summaries.find((s) => s.songrequest?.id === id)?.submissionCount ?? 0;
+    return {
+      submissionCount,
+    };
+  });
 };

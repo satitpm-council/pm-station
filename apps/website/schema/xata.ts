@@ -13,10 +13,14 @@ export const parseWithMetadata = <
   O extends ZodObject<T>
 >(
   record: XataRecord,
-  schema: O
+  schema: O,
+  additionalFields?: Partial<z.infer<O>>
 ): WithXataMetadata<z.infer<O>> => {
   try {
-    const parsed = schema.parse(record.toSerializable());
+    const parsed = schema.parse({
+      ...record.toSerializable(),
+      ...(additionalFields ?? {}),
+    });
     return {
       ...parsed,
       metadata: record.xata,
@@ -40,12 +44,13 @@ export const parseResultsWithMetadata = <
   O extends ZodObject<T>
 >(
   results: XataRecord[],
-  schema: O
+  schema: O,
+  additionalFields?: (id: string) => Partial<z.infer<O>>
 ): WithXataMetadata<z.infer<O>>[] => {
   return results
     .map((record) => {
       try {
-        return parseWithMetadata(record, schema);
+        return parseWithMetadata(record, schema, additionalFields?.(record.id));
       } catch {
         return undefined;
       }
