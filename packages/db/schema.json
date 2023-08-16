@@ -22,6 +22,32 @@
         {
           "name": "type",
           "type": "string"
+        },
+        {
+          "name": "role",
+          "type": "string"
+        }
+      ],
+      "revLinks": [
+        {
+          "column": "user",
+          "table": "nextauth_accounts"
+        },
+        {
+          "column": "user",
+          "table": "nextauth_users_accounts"
+        },
+        {
+          "column": "user",
+          "table": "nextauth_users_sessions"
+        },
+        {
+          "column": "user",
+          "table": "nextauth_sessions"
+        },
+        {
+          "column": "user",
+          "table": "songrequests_submissions"
         }
       ]
     },
@@ -74,6 +100,12 @@
         {
           "name": "session_state",
           "type": "string"
+        }
+      ],
+      "revLinks": [
+        {
+          "column": "account",
+          "table": "nextauth_users_accounts"
         }
       ]
     },
@@ -149,6 +181,86 @@
           "link": {
             "table": "nextauth_users"
           }
+        }
+      ],
+      "revLinks": [
+        {
+          "column": "session",
+          "table": "nextauth_users_sessions"
+        }
+      ]
+    },
+    {
+      "name": "songrequests",
+      "columns": [
+        {
+          "name": "duration",
+          "type": "int"
+        },
+        {
+          "name": "explicit",
+          "type": "bool"
+        },
+        {
+          "name": "artists",
+          "type": "multiple"
+        },
+        {
+          "name": "preview_url",
+          "type": "text"
+        },
+        {
+          "name": "title",
+          "type": "string"
+        },
+        {
+          "name": "permalink",
+          "type": "text"
+        },
+        {
+          "name": "thumbnail_url",
+          "type": "string"
+        },
+        {
+          "name": "thumbnail_height",
+          "type": "int"
+        },
+        {
+          "name": "thumbnail_width",
+          "type": "int"
+        },
+        {
+          "name": "lastSubmittedAt",
+          "type": "datetime"
+        }
+      ],
+      "revLinks": [
+        {
+          "column": "songrequest",
+          "table": "songrequests_submissions"
+        }
+      ]
+    },
+    {
+      "name": "songrequests_submissions",
+      "columns": [
+        {
+          "name": "songrequest",
+          "type": "link",
+          "link": {
+            "table": "songrequests"
+          }
+        },
+        {
+          "name": "user",
+          "type": "link",
+          "link": {
+            "table": "nextauth_users"
+          }
+        },
+        {
+          "name": "songRequestId",
+          "type": "string"
         }
       ]
     }

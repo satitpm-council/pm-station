@@ -1,5 +1,5 @@
 import { headers } from "next/headers";
-import { PageHeader } from "@station/client/layout";
+import { PageHeader } from "@/components";
 import { getSession } from "@/auth/server";
 import { getCSRFToken } from "@/auth/csrf";
 import ProfileForm from "./Form";

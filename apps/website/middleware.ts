@@ -2,19 +2,18 @@ import { NextAuthMiddlewareOptions, withAuth } from "next-auth/middleware";
 import { pages } from "./auth/pages";
 import { NextMiddleware, NextResponse } from "next/server";
 import { createCSRFToken } from "./auth/csrf";
+import { isRegistered } from "./auth/utils";
 
 export const middleware: NextMiddleware = async (request, ...args) => {
   let response;
   if (!request.nextUrl.pathname.startsWith("/auth")) {
-    let isRegistered = false;
+    let userRegistered = false;
     const middlewareOptions: NextAuthMiddlewareOptions = {
       pages,
       callbacks: {
         authorized({ token }) {
           if (!token) return false;
-          if (token.type) {
-            isRegistered = true;
-          }
+          userRegistered = isRegistered(token);
           return true;
         },
       },
@@ -42,7 +41,7 @@ export const middleware: NextMiddleware = async (request, ...args) => {
       }
     }
 
-    if (!isRegistered) {
+    if (!userRegistered) {
       // If the user is signed in but not registered, redirect to the profile registration page.
       const url = request.nextUrl.clone();
       if (url.pathname !== "/app/profile") {

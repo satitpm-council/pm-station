@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
-import type { TrackResponse } from "@station/shared/schema/types";
+import type { TrackResponse } from "@/schema/songrequests";
 import { PlayIcon, PauseIcon } from "@heroicons/react/20/solid";
 import { TrackThumbnail } from "./TrackThumbnail";
 
@@ -60,9 +60,10 @@ export function MusicPreview({
       audioInstance.current.pause();
     }
   };
+  if (!track) return null;
   return (
     <TrackThumbnail
-      track={track as TrackResponse}
+      track={track}
       className={{
         wrapper: className,
         badge: "bg-green-500 md:bottom-4 md:right-4 right-2 bottom-2",

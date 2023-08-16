@@ -17,7 +17,14 @@ export type TrackThumbnailProps = {
     onClick?: () => void;
   };
   children?: React.ReactNode;
-  track: Pick<TrackResponse, "albumImage" | "name" | "artists">;
+  track: Pick<
+    TrackResponse,
+    | "thumbnail_width"
+    | "thumbnail_height"
+    | "thumbnail_url"
+    | "title"
+    | "artists"
+  >;
 };
 
 export function TrackThumbnail({
@@ -40,12 +47,13 @@ export function TrackThumbnail({
       <Image
         referrerPolicy="no-referrer"
         draggable={false}
-        src={track?.albumImage?.url}
+        src={track?.thumbnail_url}
         className={className.image}
-        alt={`${track?.name} - ${track?.artists[0]}`}
-        title={`${track?.name} - ${track?.artists[0]}`}
-        width={track?.albumImage?.width}
-        height={track?.albumImage?.height}
+        alt={`${track?.title} - ${track?.artists[0]}`}
+        title={`${track?.title} - ${track?.artists[0]}`}
+        width={track?.thumbnail_width ?? 300}
+        height={track?.thumbnail_height ?? 300}
+        crossOrigin="anonymous"
       />
       {badge && children && (
         <Badge

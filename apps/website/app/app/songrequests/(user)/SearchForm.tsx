@@ -1,22 +1,18 @@
 "use client";
 
-import { useParams, useRouter } from "next/navigation";
+import { useClientSubmit } from "@/shared/form";
+import { useSearchParams } from "next/navigation";
 
 export default function SearchForm() {
-  const params = useParams();
-  const { replace } = useRouter();
+  const params = useSearchParams();
+  const { handleSubmit } = useClientSubmit({
+    action: "/app/songrequests/search",
+    query: ["q"],
+  });
 
-  const submit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    const q = data.get("q");
-    if (q) {
-      replace(`/app/songrequests/search/${encodeURIComponent(q.toString())}`);
-    }
-  };
   return (
     <form
-      onSubmit={submit}
+      onSubmit={handleSubmit}
       className="flex flex-row flex-wrap gap-4 text-sm"
       autoComplete="off"
     >
@@ -26,7 +22,7 @@ export default function SearchForm() {
         autoComplete="off"
         className="pm-station-input"
         placeholder="ป้อนชื่อเพลงหรือศิลปิน"
-        defaultValue={decodeURIComponent(params.q ?? "")}
+        defaultValue={decodeURIComponent(params.get("q") ?? "")}
       />
       <button
         type="submit"

@@ -1,15 +1,9 @@
+"use server";
+
+import { TrackResponse } from "@/schema/songrequests";
 import SpotifyRequest from "./request";
 
 /// <reference types="spotify-api" />
-
-export type TrackResponse = Pick<
-  SpotifyApi.TrackSearchResponse["tracks"]["items"]["0"],
-  "explicit" | "name" | "duration_ms" | "id" | "preview_url" | "uri"
-> & {
-  artists: string[];
-  albumImage: SpotifyApi.ImageObject;
-  external_urls: string;
-};
 
 export const toTrackResponse = (
   track: SpotifyApi.TrackObjectFull
@@ -23,18 +17,19 @@ export const toTrackResponse = (
     preview_url,
     album: { images },
     external_urls: { spotify },
-    uri,
   } = track;
+  const { url, height, width } = images[1] ?? images[0];
   return {
     explicit,
-    name,
+    title: name,
     artists: artists.map((v) => v.name),
-    duration_ms,
+    duration: duration_ms,
     id,
     preview_url,
-    albumImage: images[1],
-    external_urls: spotify,
-    uri,
+    thumbnail_height: height,
+    thumbnail_width: width,
+    thumbnail_url: url,
+    permalink: spotify,
   };
 };
 

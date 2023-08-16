@@ -1,4 +1,4 @@
-import ky from "ky";
+import ky, { HTTPError } from "ky";
 import { getToken, invalidateToken } from "./auth";
 
 const SpotifyRequest = ky.create({
@@ -12,20 +12,25 @@ const SpotifyRequest = ky.create({
         );
       },
     ],
-    beforeError: [
-      async (error) => {
-        if (error.response?.status === 401) {
-          invalidateToken();
+    beforeRetry: [
+      async ({ request, error }) => {
+        if (error instanceof HTTPError && error.response.status === 401) {
+          await invalidateToken();
         }
-        return error;
+        request.headers.set(
+          "Authorization",
+          `Bearer ${(await getToken()).access_token}`
+        );
       },
     ],
   },
   retry: {
     limit: 2,
-    methods: ["get"],
-    statusCodes: [401],
-    backoffLimit: 3000,
+    methods: ["get", "put", "head", "delete", "options", "trace"],
+    statusCodes: [401, 408, 413, 429, 500, 502, 503, 504],
+  },
+  fetch: (...args) => {
+    return fetch(...args);
   },
 });
 

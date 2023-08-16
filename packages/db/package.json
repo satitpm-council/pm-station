@@ -2,10 +2,13 @@
     "name": "@station/db",
     "scripts": {
         "generate": "xata codegen",
-        "schema": "xata schema"
+        "schema": "xata schema",
+        "schema:pull": "xata schema dump --file schema.json",
+        "schema:push": "xata schema upload schema.json",
+        "xata": "xata"
     },
-    "main": "./src/xata.ts",
+    "main": "./src/index.ts",
     "dependencies": {
-        "@xata.io/client": "^0.23.5"
+        "@xata.io/client": "^0.25.1"
     }
 }

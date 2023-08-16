@@ -1,9 +1,5 @@
 import { Spinner } from "@/components/client";
 
-/**
- * This loading page will be shown when the user is searching for a song.
- * This is done automatically by React Server Components.
- */
 export default function Loading() {
   return (
     <div className="flex flex-col gap-4 items-center justify-center py-6 opacity-75 text-sm">
