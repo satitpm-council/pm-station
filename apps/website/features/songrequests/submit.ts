@@ -3,13 +3,7 @@ import {
   SongRequest as SongRequestSchema,
   SongRequestSubmission as SongRequestSubmissionSchema,
 } from "@/schema/songrequests";
-import {
-  getDb,
-  LinkedFields,
-  Songrequests,
-  SongrequestsSubmissions,
-  XataClient,
-} from "@station/db";
+import { getDb, LinkedFields, Songrequests, XataClient } from "@station/db";
 import { cookies } from "next/headers";
 import { getUser } from "@/auth/server-token";
 
@@ -23,7 +17,8 @@ export async function submitSongRequest(track: TrackResponse) {
     throw new Error("User not found");
   }
   const client = getDb();
-  const record: SongRequestSchema = {
+  // submissionCount is a client generated field, so we need to omit it
+  const record: Omit<SongRequestSchema, "submissionCount"> = {
     ...track,
     lastSubmittedAt: new Date(),
   } satisfies Songrequests;
