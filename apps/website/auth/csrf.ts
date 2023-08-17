@@ -19,7 +19,7 @@ export const createCSRFToken = async (
   const csrfToken = await internal_createCSRFToken({
     isPost: false,
     options: {
-      secret: process.env.NEXTAUTH_SECRET,
+      secret: process.env.NEXTAUTH_SECRET as string,
     },
     cookieValue: cookies.get(csrfCookie.name)?.value,
   });

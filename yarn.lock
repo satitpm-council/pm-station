@@ -4694,6 +4694,28 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@t3-oss/env-core@npm:0.6.0":
+  version: 0.6.0
+  resolution: "@t3-oss/env-core@npm:0.6.0"
+  peerDependencies:
+    typescript: ">=4.7.2"
+    zod: ^3.0.0
+  checksum: 00c5b8e2d893f85e9d33099fded1e9ee1c74e642144b91d60096d31ed5bcd09986f14b275316568aa1a1f42d1b01a34b67dcf1396e11d837ff5c11b4bfb56a3a
+  languageName: node
+  linkType: hard
+
+"@t3-oss/env-nextjs@npm:^0.6.0":
+  version: 0.6.0
+  resolution: "@t3-oss/env-nextjs@npm:0.6.0"
+  dependencies:
+    "@t3-oss/env-core": 0.6.0
+  peerDependencies:
+    typescript: ">=4.7.2"
+    zod: ^3.0.0
+  checksum: d3708558241bcf857dfcfbc778a4d0166a5e690414893d7a4eb95dcafa12810d4fdc1cffe41402004acdd0d8f558f9369499bd9032d04e158d8698b5e85c7f32
+  languageName: node
+  linkType: hard
+
 "@tailwindcss/forms@npm:^0.5.2":
   version: 0.5.2
   resolution: "@tailwindcss/forms@npm:0.5.2"
@@ -5582,6 +5604,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@upstash/redis@npm:1.21.0":
+  version: 1.21.0
+  resolution: "@upstash/redis@npm:1.21.0"
+  dependencies:
+    isomorphic-fetch: ^3.0.0
+  checksum: ba2ba971c1f6d0297afddf73aba0817a39fcf8d71e51131030a24541e4564138a11bae50b78da7dd0eca5a11baa1322888688cb206f078603ea3a8d0a639a30e
+  languageName: node
+  linkType: hard
+
 "@vanilla-extract/babel-plugin-debug-ids@npm:^1.0.1":
   version: 1.0.1
   resolution: "@vanilla-extract/babel-plugin-debug-ids@npm:1.0.1"
@@ -5640,6 +5671,15 @@ __metadata:
   version: 6.1.0
   resolution: "@vercel/build-utils@npm:6.1.0"
   checksum: 8e06d6aacb58958c2c058501c798b1656363e9c9effa9cde03888f2f6dce42d32a871ae11af8a114f043b223f891f3b145b58e17d13c9f882e61286d40f63e6f
+  languageName: node
+  linkType: hard
+
+"@vercel/kv@npm:^0.2.2":
+  version: 0.2.2
+  resolution: "@vercel/kv@npm:0.2.2"
+  dependencies:
+    "@upstash/redis": 1.21.0
+  checksum: ba724fe25cc4f2eba6b94ff7cc057e9e30481beb89ada5a9c121544f284e47eed5586996ed1fb3c11b5455e8f67b281713805638c215fb172b3f566e4ad509d1
   languageName: node
   linkType: hard
 
@@ -18881,11 +18921,13 @@ __metadata:
     "@next-auth/xata-adapter": ^0.2.2
     "@station/db": "workspace:*"
     "@station/shared": "workspace:*"
+    "@t3-oss/env-nextjs": ^0.6.0
     "@tailwindcss/forms": ^0.5.3
     "@tanstack/react-table": ^8.9.3
     "@types/node": 18.16.3
     "@types/react": 18.2.0
     "@types/react-dom": 18.2.1
+    "@vercel/kv": ^0.2.2
     autoprefixer: 10.4.14
     axios: ^1.4.0
     client-only: ^0.0.1

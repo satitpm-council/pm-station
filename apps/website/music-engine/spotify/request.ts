@@ -1,36 +1,14 @@
-import ky, { HTTPError } from "ky";
-import { getToken, invalidateToken } from "./auth";
+import { env } from "@/env.mjs";
+import { serverApiRequest } from "@/shared/server-api";
 
-const SpotifyRequest = ky.create({
+const SpotifyRequest = serverApiRequest({
   prefixUrl: "https://api.spotify.com/v1",
-  hooks: {
-    beforeRequest: [
-      async (request) => {
-        request.headers.set(
-          "Authorization",
-          `Bearer ${(await getToken()).access_token}`
-        );
-      },
-    ],
-    beforeRetry: [
-      async ({ request, error }) => {
-        if (error instanceof HTTPError && error.response.status === 401) {
-          await invalidateToken();
-        }
-        request.headers.set(
-          "Authorization",
-          `Bearer ${(await getToken()).access_token}`
-        );
-      },
-    ],
-  },
-  retry: {
-    limit: 2,
-    methods: ["get", "put", "head", "delete", "options", "trace"],
-    statusCodes: [401, 408, 413, 429, 500, 502, 503, 504],
-  },
-  fetch: (...args) => {
-    return fetch(...args);
+  auth: {
+    clientId: env.SPOTIFY_CLIENT_ID,
+    clientSecret: env.SPOTIFY_CLIENT_SECRET,
+    tokenEndpoint: "https://accounts.spotify.com/api/token",
+    cachedKVKey: "spotify-token",
+    clientAuthMode: "basic",
   },
 });
 
