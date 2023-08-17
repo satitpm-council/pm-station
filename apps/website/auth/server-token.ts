@@ -15,7 +15,7 @@ const getTokenFromCookies = (cookies: ReadonlyRequestCookies) => {
 export async function getUser(cookies: ReadonlyRequestCookies) {
   try {
     const tokendata = await decode({
-      secret: process.env.NEXTAUTH_SECRET,
+      secret: process.env.NEXTAUTH_SECRET as string,
       token: getTokenFromCookies(cookies),
     });
     if (tokendata?.sub) return tokendata;
