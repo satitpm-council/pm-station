@@ -1,10 +1,11 @@
+import { env } from "@/env.mjs";
 import KindeProvider from "./kinde/provider";
 
 export const providers = [
   KindeProvider({
-    clientId: process.env.KINDE_CLIENT_ID,
-    clientSecret: process.env.KINDE_CLIENT_SECRET,
-    issuer: process.env.KINDE_ISSUER_URL,
+    clientId: env.KINDE_CLIENT_ID,
+    clientSecret: env.KINDE_CLIENT_SECRET,
+    issuer: env.KINDE_ISSUER_URL,
   }),
 ];
 

@@ -18,6 +18,10 @@ export const env = createEnv({
     // Spotify
     SPOTIFY_CLIENT_ID: z.string().min(1),
     SPOTIFY_CLIENT_SECRET: z.string().min(1),
+    // Kinde
+    KINDE_CLIENT_ID: z.string().min(1),
+    KINDE_CLIENT_SECRET: z.string().min(1),
+    KINDE_ISSUER_URL: z.string().url(),
   },
   experimental__runtimeEnv: {},
 });
