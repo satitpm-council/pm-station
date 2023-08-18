@@ -1,0 +1,16 @@
+{
+  "id": "mig_civsvutrush92r8hn3mg",
+  "parentID": "mig_ci6prss95tpf0mj7gsog",
+  "checksum": "1:2aa98371a78bf694674d0d90a84eb4587334bd04c92d53909eb75e1149368b88",
+  "operations": [
+    {
+      "addColumn": {
+        "column": {
+          "name": "role",
+          "type": "multiple"
+        },
+        "table": "nextauth_users"
+      }
+    }
+  ]
+}

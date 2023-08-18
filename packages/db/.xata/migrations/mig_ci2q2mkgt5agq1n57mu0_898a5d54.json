@@ -1,0 +1,12 @@
+{
+  "id": "mig_ci2q2mkgt5agq1n57mu0",
+  "parentID": "mig_ci2q16kgt5agq1n57mfg",
+  "checksum": "1:898a5d54de7bb7868ad2af831eb56c1351d37666493a4ec87e038e1d3ea506ff",
+  "operations": [
+    {
+      "addTable": {
+        "table": "songrequests_submissions"
+      }
+    }
+  ]
+}

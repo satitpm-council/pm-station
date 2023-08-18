@@ -1,0 +1,14 @@
+{
+  "id": "mig_ci2q3vcgt5agq1n57n10",
+  "parentID": "mig_ci2q334gt5agq1n57n00",
+  "checksum": "1:a7ce005c91caf52dfcd76d2a784cafcf53e9b1b7bba8c7dca5836768d5a354a3",
+  "operations": [
+    {
+      "renameColumn": {
+        "newName": "user",
+        "oldName": "userId",
+        "table": "songrequests_submissions"
+      }
+    }
+  ]
+}

@@ -1,0 +1,71 @@
+{
+  "id": "mig_ci2qqss1ns6vpphqerkg",
+  "parentID": "mig_ci2qppsgt5agq1n59b4g",
+  "checksum": "1:427498502633dcb510b89979232e8ffce0c431f2dd6241bcea1b7d34b87ba59d",
+  "operations": [
+    {
+      "removeColumn": {
+        "column": "name",
+        "table": "songrequests"
+      }
+    },
+    {
+      "removeColumn": {
+        "column": "uri",
+        "table": "songrequests"
+      }
+    },
+    {
+      "removeColumn": {
+        "column": "external_urls",
+        "table": "songrequests"
+      }
+    },
+    {
+      "renameColumn": {
+        "newName": "duration",
+        "oldName": "duration_ms",
+        "table": "songrequests"
+      }
+    },
+    {
+      "renameColumn": {
+        "newName": "thumbnail.url",
+        "oldName": "albumImage.url",
+        "table": "songrequests"
+      }
+    },
+    {
+      "renameColumn": {
+        "newName": "thumbnail.height",
+        "oldName": "albumImage.height",
+        "table": "songrequests"
+      }
+    },
+    {
+      "renameColumn": {
+        "newName": "thumbnail.width",
+        "oldName": "albumImage.width",
+        "table": "songrequests"
+      }
+    },
+    {
+      "addColumn": {
+        "column": {
+          "name": "title",
+          "type": "string"
+        },
+        "table": "songrequests"
+      }
+    },
+    {
+      "addColumn": {
+        "column": {
+          "name": "permalink",
+          "type": "text"
+        },
+        "table": "songrequests"
+      }
+    }
+  ]
+}

@@ -1,0 +1,12 @@
+{
+  "id": "mig_ci2pv9k3sabgk354qv0g",
+  "parentID": "mig_chctajf4obeppt47057g",
+  "checksum": "1:9e715c03128ec45968d7cc2531d5f08c66c390494e5cf0935e9d80f66331a94c",
+  "operations": [
+    {
+      "addTable": {
+        "table": "songrequests"
+      }
+    }
+  ]
+}

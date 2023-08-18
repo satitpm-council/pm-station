@@ -1,0 +1,16 @@
+{
+  "id": "mig_cj7omjcpaso9q8roots0",
+  "parentID": "mig_cj7ojo4paso9q8rootr0",
+  "checksum": "1:2220689071ffd612f2968e541d34bec1cb1459423846f41421eb6463b02da18b",
+  "operations": [
+    {
+      "addColumn": {
+        "column": {
+          "name": "lastUpdatedAt",
+          "type": "datetime"
+        },
+        "table": "songrequests_submissions"
+      }
+    }
+  ]
+}

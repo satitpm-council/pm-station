@@ -1,0 +1,14 @@
+{
+  "id": "mig_chavi2kn8bck992b2ejg",
+  "parentID": "mig_cha8o93m3iomior5uiu0",
+  "checksum": "1:e09e3797927b2013dce0e1a0130099d1d6a14e969e2f6e571f410b5051f6b593",
+  "operations": [
+    {
+      "renameColumn": {
+        "newName": "name",
+        "oldName": "title",
+        "table": "songrequests"
+      }
+    }
+  ]
+}

@@ -1,4 +1,5 @@
 {
+  "databaseURL": "https://lemasc-da3ikp.us-west-2.xata.sh/db/satitpm65-station",
   "codegen": {
     "output": "src/xata.ts"
   }

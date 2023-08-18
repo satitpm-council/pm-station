@@ -1,0 +1,16 @@
+{
+  "id": "mig_cj7ojo4paso9q8rootr0",
+  "parentID": "mig_cj7o6jbf4jbik5f5eas0",
+  "checksum": "1:599576ac15729e467a31f4879b33ce13098f5911513eaf19089473c8ab904791",
+  "operations": [
+    {
+      "addColumn": {
+        "column": {
+          "name": "songRequestId",
+          "type": "string"
+        },
+        "table": "songrequests_submissions"
+      }
+    }
+  ]
+}

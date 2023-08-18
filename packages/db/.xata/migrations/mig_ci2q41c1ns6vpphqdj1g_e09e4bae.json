@@ -1,0 +1,14 @@
+{
+  "id": "mig_ci2q41c1ns6vpphqdj1g",
+  "parentID": "mig_ci2q3vcgt5agq1n57n10",
+  "checksum": "1:e09e4bae3e1dd5d44b9344b2a57767a213081bf287cec42c101a6afe878ce1b6",
+  "operations": [
+    {
+      "renameColumn": {
+        "newName": "songrequest",
+        "oldName": "trackId",
+        "table": "songrequests_submissions"
+      }
+    }
+  ]
+}

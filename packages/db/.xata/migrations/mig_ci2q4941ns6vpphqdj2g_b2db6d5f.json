@@ -1,0 +1,16 @@
+{
+  "id": "mig_ci2q4941ns6vpphqdj2g",
+  "parentID": "mig_ci2q41c1ns6vpphqdj1g",
+  "checksum": "1:b2db6d5fd930a8a4caf6f3468721d02d50ea7f2d0669f29b59d4beb5d9be1db5",
+  "operations": [
+    {
+      "addColumn": {
+        "column": {
+          "name": "external_urls",
+          "type": "text"
+        },
+        "table": "songrequests"
+      }
+    }
+  ]
+}

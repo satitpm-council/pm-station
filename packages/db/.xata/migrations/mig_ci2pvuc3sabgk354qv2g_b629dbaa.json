@@ -1,0 +1,16 @@
+{
+  "id": "mig_ci2pvuc3sabgk354qv2g",
+  "parentID": "mig_ci2pvoc3sabgk354qv1g",
+  "checksum": "1:b629dbaac29dc79f2581936bbc72052018c904fc85fe90029b6fff133e80f5e9",
+  "operations": [
+    {
+      "addColumn": {
+        "column": {
+          "name": "duration_ms",
+          "type": "int"
+        },
+        "table": "songrequests"
+      }
+    }
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "id": "mig_ci2q334gt5agq1n57n00",
+  "parentID": "mig_ci2q2tkgt5agq1n57mv0",
+  "checksum": "1:a77ce62266e76453df316b7220d987ccf9383d547ddec0d0e5f8a9443074c2d7",
+  "operations": [
+    {
+      "addColumn": {
+        "column": {
+          "name": "userId",
+          "type": "link",
+          "link": {
+            "table": "nextauth_users"
+          }
+        },
+        "table": "songrequests_submissions"
+      }
+    }
+  ]
+}

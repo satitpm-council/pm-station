@@ -1,0 +1,52 @@
+{
+  "id": "mig_ci6prss95tpf0mj7gsog",
+  "parentID": "mig_ci2qqss1ns6vpphqerkg",
+  "checksum": "1:d29b875debf44e7ad62ccca61fbbd84da7a02145f4af3794630153e1937eefd2",
+  "operations": [
+    {
+      "removeColumn": {
+        "column": "thumbnail.url",
+        "table": "songrequests"
+      }
+    },
+    {
+      "removeColumn": {
+        "column": "thumbnail.height",
+        "table": "songrequests"
+      }
+    },
+    {
+      "removeColumn": {
+        "column": "thumbnail.width",
+        "table": "songrequests"
+      }
+    },
+    {
+      "addColumn": {
+        "column": {
+          "name": "thumbnail_url",
+          "type": "string"
+        },
+        "table": "songrequests"
+      }
+    },
+    {
+      "addColumn": {
+        "column": {
+          "name": "thumbnail_height",
+          "type": "int"
+        },
+        "table": "songrequests"
+      }
+    },
+    {
+      "addColumn": {
+        "column": {
+          "name": "thumbnail_width",
+          "type": "int"
+        },
+        "table": "songrequests"
+      }
+    }
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "id": "mig_cjaf1goeoqf8q61e8irg",
+  "parentID": "mig_cjaf1coeoqf8q61e8iqg",
+  "checksum": "1:5cabb82a0ddf341165c280212eda1bf99a914f77fcdf0ca2b21b2d13758781b4",
+  "operations": [
+    {
+      "removeColumn": {
+        "column": "updatedAt",
+        "table": "songrequests_submissions"
+      }
+    }
+  ]
+}

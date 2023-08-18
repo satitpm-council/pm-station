@@ -1,0 +1,16 @@
+{
+  "id": "mig_ci2q16kgt5agq1n57mfg",
+  "parentID": "mig_ci2q11k1ns6vpphqdin0",
+  "checksum": "1:41c054d9ecdd593354aa4dadd4c281dce565b1e16bfc1cc108bdc707d7a3f02c",
+  "operations": [
+    {
+      "addColumn": {
+        "column": {
+          "name": "artists",
+          "type": "multiple"
+        },
+        "table": "songrequests"
+      }
+    }
+  ]
+}

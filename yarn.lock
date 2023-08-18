@@ -4616,7 +4616,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@station/db@workspace:packages/db"
   dependencies:
-    "@xata.io/client": ^0.25.1
+    "@xata.io/client": ^0.25.2
   languageName: unknown
   linkType: soft
 
@@ -5734,12 +5734,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@xata.io/client@npm:^0.25.1":
-  version: 0.25.1
-  resolution: "@xata.io/client@npm:0.25.1"
+"@xata.io/client@npm:^0.25.2":
+  version: 0.25.2
+  resolution: "@xata.io/client@npm:0.25.2"
   peerDependencies:
     typescript: ">=4.5"
-  checksum: 041988667b19e84a4af27b8abb6c3ca79904df595a687e4a8cd19ce0c1e3d180781fb2e54ba55de2217893f76b05048cffa99d171034f9a4229d694904d43bcd
+  checksum: f9d4953474bb2aa89bfa0a4ae7026a99deca786adf749e2610b2f42f64973ed09cd481e9d98eb3fdb08dcab9bf5dec2472bae6e4788c033cab2c479dc9565a30
   languageName: node
   linkType: hard
 

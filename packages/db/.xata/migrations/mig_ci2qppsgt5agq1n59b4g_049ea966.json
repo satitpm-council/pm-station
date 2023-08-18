@@ -1,0 +1,34 @@
+{
+  "id": "mig_ci2qppsgt5agq1n59b4g",
+  "parentID": "mig_ci2q4bk1ns6vpphqdj4g",
+  "checksum": "1:049ea9666c1fc8ab5ef19cecea24ffcb8e32635d88fb52045a77ac0ced547143",
+  "operations": [
+    {
+      "addColumn": {
+        "column": {
+          "name": "albumImage.url",
+          "type": "string"
+        },
+        "table": "songrequests"
+      }
+    },
+    {
+      "addColumn": {
+        "column": {
+          "name": "albumImage.height",
+          "type": "int"
+        },
+        "table": "songrequests"
+      }
+    },
+    {
+      "addColumn": {
+        "column": {
+          "name": "albumImage.width",
+          "type": "int"
+        },
+        "table": "songrequests"
+      }
+    }
+  ]
+}

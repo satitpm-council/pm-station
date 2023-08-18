@@ -1,0 +1,19 @@
+{
+  "id": "mig_ci2q2tkgt5agq1n57mv0",
+  "parentID": "mig_ci2q2mkgt5agq1n57mu0",
+  "checksum": "1:0ee95d5528975053a5a952166252ccf9a601e954ee50199d000433da0ce42f39",
+  "operations": [
+    {
+      "addColumn": {
+        "column": {
+          "name": "trackId",
+          "type": "link",
+          "link": {
+            "table": "songrequests"
+          }
+        },
+        "table": "songrequests_submissions"
+      }
+    }
+  ]
+}
