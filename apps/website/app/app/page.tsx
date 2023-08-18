@@ -1,3 +1,4 @@
+"use client";
 import { ActionBox } from "./ActionBox";
 import { MusicalNoteIcon } from "@heroicons/react/20/solid";
 
