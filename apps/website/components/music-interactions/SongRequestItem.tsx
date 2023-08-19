@@ -21,7 +21,9 @@ export function SongRequestItem({ data }: { data: TrackOrSongRequest }) {
         <TrackThumbnail
           track={parsed.data}
           className={{
-            wrapper: "basis-1/4 min-w-[85px] relative",
+            wrapper: `basis-1/4 ${
+              parsed.type === "record" ? "min-w-[85px]" : "w-full"
+            } relative`,
             image: "w-full h-auto rounded-lg",
             ...(parsed.type === "record"
               ? {
