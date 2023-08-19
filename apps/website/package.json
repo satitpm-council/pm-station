@@ -16,6 +16,7 @@
     "@station/shared": "workspace:*",
     "@t3-oss/env-nextjs": "^0.6.0",
     "@tanstack/react-table": "^8.9.3",
+    "@types/spotify-api": "^0.0.22",
     "@vercel/kv": "^0.2.2",
     "axios": "^1.4.0",
     "client-only": "^0.0.1",
