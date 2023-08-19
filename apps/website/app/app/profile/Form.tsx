@@ -1,8 +1,7 @@
 "use client";
 
 import { FormEvent, startTransition, useEffect, useState } from "react";
-import axios from "axios";
-import { toast } from "react-toastify";
+import ky from "ky";
 import { formData } from "zod-form-data";
 import { useRouter } from "next/navigation";
 
@@ -48,9 +47,11 @@ export default function ProfileForm({
     setIsLoading(true);
     try {
       const body = formData(profileUpdateSchema).parse(data);
-      await axios.post("/api/auth/session", {
-        data: body,
-        csrfToken,
+      await ky.post("/api/auth/session", {
+        json: {
+          data: body,
+          csrfToken,
+        },
       });
     } catch (error) {
       console.error(error);
