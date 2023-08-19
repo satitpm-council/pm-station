@@ -1,8 +1,8 @@
 import "react-pro-sidebar/dist/css/styles.css";
 import "@/styles/sidebar.css";
 
-import Sidebar from "./Sidebar";
-import Navbar from "./Navbar";
+import Sidebar from "./layout/Sidebar";
+import Navbar from "./layout/Navbar";
 import { SessionProvider } from "@/auth/client";
 
 export default function Layout({ children }: { children: React.ReactNode }) {

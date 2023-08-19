@@ -28,10 +28,7 @@
   },
   "devDependencies": {
     "@types/node": "^18.15.5",
-    "cross-env": "^7.0.3",
-    "cypress": "^12.8.1",
-    "eslint": "^8.30.0",
-    "lerna-update-wizard": "^1.1.2"
+    "eslint": "^8.30.0"
   },
   "resolutions": {
     "axios": "0.27.2",
